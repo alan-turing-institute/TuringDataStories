@@ -1,4 +1,4 @@
-name: covid
+name: DataStories
 channels:
   - defaults
 dependencies:
