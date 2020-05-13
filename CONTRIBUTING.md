@@ -46,10 +46,10 @@ The list of labels for current issues can be found [here][turing-way-labels] and
 
 - [![Enhancement](https://img.shields.io/badge/-enhancement-84b6eb.svg)][labels-enhancement] _These issues are suggesting new features that can be added to the project._
 
-  If you want to ask for something new, please try to make sure that your request is distinct from any others that are already in the queue (or part of the Turing Way).
+  If you want to ask for something new, please try to make sure that your request is distinct from any others that are already in the queue (or part of the Turing Data Stories).
   If you find one that's similar but there are subtle differences please reference the other enhancement in your issue.
 
-- [![good-first-issue](https://img.shields.io/badge/-good%20first%20issue-1b3487.svg)][labels-firstissue] _These issues are particularly appropriate if it is your first contribution to the Turing Way, or to GitHub overall._
+- [![good-first-issue](https://img.shields.io/badge/-good%20first%20issue-1b3487.svg)][labels-firstissue] _These issues are particularly appropriate if it is your first contribution to the Turing Data Stories, or to GitHub overall._
 
   If you're not sure about how to go about contributing, these are good places to start. You'll be mentored through the process by the maintainers team.
   If you're a seasoned contributor, please select a different issue to work from and keep these available for the newer and potentially more anxious team members.
@@ -58,7 +58,7 @@ The list of labels for current issues can be found [here][turing-way-labels] and
 
   If you feel that you can contribute to one of these issues, we especially encourage you to do so!
 
-- [![project-management](https://img.shields.io/badge/-project%20management-bfd86c.svg)][labels-project-management] _We like to model best practice, so the Turing Way itself is managed through these issues.
+- [![project-management](https://img.shields.io/badge/-project%20management-bfd86c.svg)][labels-project-management] _We like to model best practice, so the Turing Data Stories itself is managed through these issues.
   These issues help us to coordinate some logistics._
 
 - [![question](https://img.shields.io/badge/-question-cc317c.svg)][labels-question] _These issues contain a question that you'd like to have answered._
@@ -72,15 +72,15 @@ The list of labels for current issues can be found [here][turing-way-labels] and
 
 The following steps are a guide to help you contribute in a way that will be easy for everyone to review and accept with ease :sunglasses:.
 
-### 1. Comment on an [existing issue](https://github.com/alan-turing-institute/the-turing-way/issues) or open a new issue referencing your addition
+### 1. Comment on an [existing issue](https://github.com/alan-turing-institute/TuringDataStories/issues) or open a new issue referencing your addition
 
 This allows other members of the Turing Data Stories team to confirm that you aren't overlapping with work that's currently underway and that everyone is on the same page with the goal of the work you're going to carry out.
 
 [This blog](https://www.igvita.com/2011/12/19/dont-push-your-pull-requests/) is a nice explanation of why putting this work in up front is so useful to everyone involved.
 
-### 2. [Fork][github-fork] the [Turing Way repository][turing-way-repo] to your profile
+### 2. [Fork][github-fork] the [Turing Data Stories repository][turing-data-stories] to your profile
 
-This is now your own unique copy of the Turing Way.
+This is now your own unique copy of the Turing Data Stories repo.
 Changes here won't affect anyone else's work, so it's a safe space to explore edits to the code!
 
 Make sure to [keep your fork up to date][github-syncfork] with the master repository, otherwise you can end up with lots of dreaded [merge conflicts][github-mergeconflicts].
@@ -102,7 +102,7 @@ If you feel tempted to "branch out" then please make a [new branch][github-branc
 Please do not re-write history!
 That is, please do not use the [rebase](https://help.github.com/en/articles/about-git-rebase) command to edit previous commit messages, combine multiple commits into one, or delete or revert commits that are no longer necessary.
 
-Are you new to Git and GitHub or just want a detailed guide on getting started with version control? Check out our [Version Control chapter](https://the-turing-way.netlify.com/version_control/version_control.html) in the Turing Way Book!
+Are you new to Git and GitHub or just want a detailed guide on getting started with version control? Check out our [Version Control chapter](https://the-turing-way.netlify.com/version_control/version_control.html) in the Turing Data StoriesBook!
 
 ### 4. Submit a [pull request][github-pullrequest]
 
@@ -122,11 +122,11 @@ By filling out the "_Lorem ipsum_" sections of the pull request template with as
 If you have opened the pull request early and know that its contents are not ready for review or to be merged, add "[WIP]" at the start of the pull request title, which stands for "Work in Progress".
 When you are happy with it and are happy for it to be merged into the main repository, change the "[WIP]" in the title of the pull request to "[Ready for review]".
 
-A member of the Turing Way team will then review your changes to confirm that they can be merged into the main repository.
+A member of the Turing Data Storiesteam will then review your changes to confirm that they can be merged into the main repository.
 A [review][github-review] will probably consist of a few questions to help clarify the work you've done.
 Keep an eye on your GitHub notifications and be prepared to join in that conversation.
 
-You can update your [fork][github-fork] of the Turing Way [repository][turing-way-repo] and the pull request will automatically update with those changes.
+You can update your [fork][github-fork] of the Turing Data Stories[repository][turing-data-stories] and the pull request will automatically update with those changes.
 You don't need to submit a new pull request when you make a change in response to a review.
 
 You can also submit pull requests to other contributors' branches!
@@ -141,65 +141,22 @@ You can learn more about Travis in the [Continuous Integration chapter](https://
 
 GitHub has a [nice introduction][github-flow] to the pull request workflow, but please [get in touch](#get-in-touch) if you have any questions :balloon:.
 
-## The process of writing chapters
+## The process of writing a data story
 
 - Fork the repository from the alan turing version if you have not done so already.
-- On the alan turing version create a branch with the same name as the chapter to be written.
+- On the alan turing version create a branch with the same name as the data story to be written.
 - On your fork create a branch with the same name and create a markdown file on it.
-- Copy the chapter template in the templates directory into the markdown file, and commit.
-- Make a pull request to the turing way version of the chapter branch.
+- Make a pull request to the Turing Data Stories version of the story branch.
   The title of this request should have the form "[WIP] Write Chapter_name chapter".
   WIP indicates the chapter is a Work In Progress and not yet ready for review.
-- On your branch add material to the chapter and commit.
+- On your branch add material to the story and commit.
   The goal of this project is to collate and build on the many good resources already available about good practise in data science.
   As such this material should primarily be drawn from outside sources.
   Note the link and (if available) license of the source.
-- Once a significant amount of material has been amassed, work (preferably with others) to develop a chapter outline.
-- Edit the amassed material into a coherent chapter, adding more material if gaps become apparent.
-- Edit the chapter for style.
-- Once the first draft of the chapter is complete change [WIP] in the pull request title to [Ready for review].
-- Add a comment on the pull request indicating that this chapter is ready for high level review, i.e discussion of changes of scale of a paragraph or larger such as adding material and restructuring sections.
-- Discuss and make these high level changes on this pull request. Once this is complete merge the chapter into the alan turing intitute's version of the chapter branch.
-- Make another pull request from your fork's version of the branch to the alan turing institute's version of the branch. Title this "[Ready for review] Chapter_name chapter- low level reviews".
-- Discuss and make low level changes to the chapter on this pull request, such as rewording sentences, typos and the like.
-- This division of the pull requests into high and low level changes stops discussion threads becoming unmanagably long.
-- Once this is complete merge the pull request into the alan turing intitute's version of the chapter branch.
-- Merge the alan turing intitute's version of the chapter branch into the alan turing master branch.
+- Once the first draft of the data story is complete change [WIP] in the pull request title to [Ready for review].
+- Once the review is complete merge the pull request into the alan turing intitute's version of the chapter branch.
+- Merge the alan turing intitute's version of the story branch into the alan turing master branch.
 - DO not delete the branch as the chapter may continue to undergo improvement and development in the future.
-
-## Local development
-
-You can build and host the book website locally. The steps are:
-
-### To build book locally
-
-1. Install the required software to build the book, optionally in a [virtual environment](https://packaging.python.org/tutorials/installing-packages/#creating-virtual-environments):
-
-   ```
-   pip install -r book/website/requirements.txt
-   ```
-
-2. You can now build or refresh the book using:
-
-   ```
-   jupyter-book build .
-   ```
-
-### To host the book locally
-
-1. Install [docker](https://www.docker.com/): see [Reproducible Environments](https://the-turing-way.netlify.com/reproducible_environments/reproducible_environments.html#Containers_section) for discussion of docker and containers.
-
-2. Make sure you have docker-compose installed: [compose installation instructions](https://docs.docker.com/compose/install/)
-
-Start the website locally using the following commands:
-
-   ```
-   cd book/website
-   docker-compose up
-   ```
-
-   This will install all ruby requirements and make the site available at `http://0.0.0.0:4000/introduction/introduction`.
-
 
 ## Style Guide
 
@@ -238,21 +195,6 @@ There is no one alive who is youer than you.
 - Dr Seuss
 ```
 
-### Opinions
-
-The Turing Way book is intended to be only lightly opinionated.
-Whilst more opinionated content is allowed, such content should be clearly marked.
-The best way to do this is by displaying it in a quote box.
-This can be done by either prefixing every line with the greater than symbol `>`.
-Note, that the formatting will be retained, so we can split each sentence to a new line as recommended before.
-
-```
-> I will not eat them in a house,
-> i will not eat them with a mouse,
-> i will not eat them in a box i will not eat them with a fox,
-> i will not eat them here of there i will not eat them anywhere,
-> I do not like green eggs and ham i do not like them sam i am
-```
 
 ### Figures
 
@@ -267,104 +209,13 @@ This can be done simply as:
 
 Figures should be added to the `book/content/figures` directory.
 
-
-### Auto-formatting
-
-The Travis continuous-integration tests will check for formatting errors using [prettier.io](https://prettier.io). You can see a list of all files with style issues by looking at the Travis build logs, for example:
-
-```
-Checking formatting...
-book/content/introduction/introduction.md
-book/content/open_research/open_research.md
-Code style issues found in the above file(s). Forgot to run Prettier?
-The command "prettier --check ./book/content/**/*.md" exited with 1.
-```
-
-*Optional:* If you would like to apply auto-formatting when editing locally, we recommend [pre-commit](https://pre-commit.com/). To get started, run the following from your shell:
-
-```
-pip install pre-commit
-pre-commit install
-```
-
-Each time you attempt to commit a change with git, pre-commit will run the prettier auto-formatter and automagically fix any style issues.
-
-
-
 ### Referencing and Citing
 
-We maintain a centralised [bibtex](http://www.bibtex.org/) file containing all references. The file is located at
-
-```
-./book/website/_bibliography/references.bib
-```
-
-#### Adding a new reference
-
-You can edit references locally using a method from the following:
-
-- Edit `references.bib` directly using a text editor
-- Edit `references.bib` directly using a managing program such as [JabRef](http://www.jabref.org/) (linux, windows, macOS) or [BibDesk](https://bibdesk.sourceforge.io/) (macOS)
-
-To include a citation in your content, follow the guide for [jekyll-scholar](https://github.com/inukshuk/jekyll-scholar). The key concepts are:
-
-- Include a reference using `{% cite CITEKEY %}`, where `CITEKEY` is the corresponding citation key in `references.bib`
-- Add a bibliography entry to your section using
-  ```
-  {% bibliography --cited %}
-  ```
-
-For example, say we have an entry in the `references.bib` file as:
-
-```
-@article{Kuula2010archiving,
-	Author = {Kuula, Arja},
-	Date-Added = {2019-05-28 17:47:46 +0100},
-	Date-Modified = {2019-05-30 8:57:26 am +0100},
-	Journal = {IASSIST Quarterly},
-	Number = {3-4},
-	Pages = {35},
-	Title = {Methodological and Ethical Dilemmas of Archiving Qualitative Data},
-	Url = {http://www.iassistdata.org/sites/default/files/iqvol34_35_kuula.pdf},
-	Volume = {34},
-	Year = {2010}}
-```
-
-We could cite this article in the book using `{% cite Kuula2010archiving %}`.
-
-#### Citation key style guide
-
-We recommend using the following structure for citation keys:
-
-```
-AuthorYYYYword
-```
-
-where
-
-1. `Author` is the surname of the first author (`Kuula` above)
-2. `YYYY` is the year (`2010` above)
-3. `word` is the first meaningful word in the title (`archiving` above). Note, this is subjective – choose a name that makes it easy to remember the reference when you see the citation key.
-
-### Adding links between pages within the book
-
-Links between different pages within the book (e.g. [Open Research](https://the-turing-way.netlify.com/open_research/open_research.html) and [Version Control](https://the-turing-way.netlify.com/version_control/version_control.html)) should be added as relative links.
-Relative links are added by inserting the file path in brackets, ( ), where you would usually add a URL as demonstrated below:
-
-```
-> [Experience with version control](/version_control/version_control)
-> The [next section](../03/definitions.html) of this chapter
-```
-
-The path you add _starts_ from the [`content`](https://github.com/alan-turing-institute/the-turing-way/tree/master/book/content) folder in this github repository.
-Note the difference between starting your path with `/`, which means it will start from the `content` folder vs starting from the location of the file you're writing in.
-
-A nice easy way to find absolute path can be found by looking at the page you would like to link to (for example, https://the-turing-way.netlify.com/testing/testing.html) and then taking everything after https://the-turing-way.netlify.com.
-Please note that you do not need to include the file extension, for example .html, in your relative path.
+Make sure you story has all the references included.
 
 ## Recognising Contributions
 
-The Turing Way follows the [all-contributors][all-contributors] specification, so we welcome and recognise all contributions from documentation to testing to writing chapters.
+The Turing Data Stories follows the [all-contributors][all-contributors] specification, so we welcome and recognise all contributions from documentation to testing to writing chapters.
 You can see a list of current contributors [here](https://github.com/alan-turing-institute/the-turing-way/blob/master/contributors.md). 😍
 
 The all-contributors bot usage is described [here](https://allcontributors.org/docs/en/bot/usage).
@@ -385,16 +236,16 @@ Therefore, please check the [open pull requests](https://github.com/alan-turing-
 What happens if you accidentally run the bot before the previous run was merged and you got those pesky merge conflicts?
 (Don't feel bad, we have all done it! 🙈)
 Simply close the pull request and delete the branch (`all-contributors/add-<username>`).
-If you are unable to do this for any reason, please let us know in the [Gitter channel](https://gitter.im/alan-turing-institute/the-turing-way) or by opening an issue, and a Turing Way team member will be very happy to help!
+If you are unable to do this for any reason, please let us know in the [Gitter channel](https://gitter.im/alan-turing-institute/the-turing-way) or by opening an issue, and a Turing Data Stories team member will be very happy to help!
 
 Finally, don't forget to add yourself to the list of contributors [here](https://github.com/alan-turing-institute/the-turing-way/blob/master/contributors.md)!
 
 ---
 
-_These Contributing Guidelines have been adapted from the [Contributing Guidelines](https://github.com/bids-standard/bids-starter-kit/blob/master/CONTRIBUTING.md) of the [BIDS Starter Kit](https://github.com/bids-standard/bids-starter-kit)! (License: CC-BY)_
+_These Contributing Guidelines have been adapted from the [Contributing Guidelines](https://github.com/alan-turing-institute/the-turing-way/blob/master/CONTRIBUTING.md) of [The Turing Way project](https://github.com/alan-turing-institute/the-turing-way)  (License: CC-BY)_
 
-[turing-way-repo]: https://github.com/alan-turing-institute/the-turing-way/
-[turing-way-book-repo]: https://github.com/alan-turing-institute/the-turing-way-book/
+[turing-data-stories]: https://github.com/alan-turing-institute/TuringDataStories/issues
+[turing-data-stories-repo]: https://github.com/alan-turing-institute/TuringDataStories/
 [turing-way-issues]: https://github.com/alan-turing-institute/the-turing-way/issues
 [turing-way-labels]: https://github.com/alan-turing-institute/the-turing-way/labels
 [git]: https://git-scm.com
@@ -408,12 +259,6 @@ _These Contributing Guidelines have been adapted from the [Contributing Guidelin
 [github-syncfork]: https://help.github.com/articles/syncing-a-fork
 [issue-template]: https://github.com/alan-turing-institute/the-turing-way/blob/master/ISSUE_TEMPLATE.md
 [labels-link]: https://github.com/alan-turing-institute/the-turing-way/labels
-[labels-approval-request]: https://github.com/alan-turing-institute/the-turing-way/labels/approval%20request
-[labels-binderhub]: https://github.com/alan-turing-institute/the-turing-way/labels/binderhub
-[labels-book-build]: https://github.com/alan-turing-institute/the-turing-way/labels/book%2Dbuild
-[labels-book-dash-feb20]: https://github.com/alan-turing-institute/the-turing-way/labels/book%2Ddash%2Dfeb20
-[labels-book-dash-ldn19]: https://github.com/alan-turing-institute/the-turing-way/labels/book%2Ddash%2Dldn2019
-[labels-book-dash-mcr19]: https://github.com/alan-turing-institute/the-turing-way/labels/book%2Ddash%2Dmcr2019
 [labels-book]: https://github.com/alan-turing-institute/the-turing-way/labels/book
 [labels-bug]: https://github.com/alan-turing-institute/the-turing-way/labels/bug
 [labels-bug-fixed]: https://github.com/alan-turing-institute/the-turing-way/labels/bug%20fixed
