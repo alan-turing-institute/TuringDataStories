@@ -10,6 +10,7 @@ Table of contents:
 
 - About the project
 - The team
+- What is a Turing Data Story?
 - Contributing
 - Citing _TuringDataStories_
 - Get in touch
@@ -24,6 +25,22 @@ As part of this process we recognised that government reporting of Covid-19 data
 Our goal was therefore to help provide educational data science content that would guide the user through the process of making the data accessible, to using the data for analysis.
 
 We hope that by using the story telling medium, we can bring people along the data science journey and showcase how these techniques can answer both fascinating and very much relevant societal questions. 
+
+### What is a Turing Data Story?
+
+The Turing Data Stories should be detailed and pedagogic jupyter notebooks that document an interesting insight or result using real 
+world data. The aim of the Turing Data Stories is to spark curiosity and motivate more people to play with data. 
+
+We expect that the notebook of a data story takes the reader through each step of the analysis
+done to  create the data story results. You can have also scripts to make the jupyter notebook more light weight but we
+expect each function to be properly documented and refered to in the story. The results should be fully reproducible and the notebooks
+should be able to be ran by others using a determined computer environment.
+
+If you have an idea of a Turing Data Story you want to develop please follow these guidelines to make sure your 
+contributions can be easily integrated in the project. 
+
+We hope that this guideline document will make it as easy as possible for you to get involved.
+We welcome all contributions to this project via GitHub issues and pull requests. 
 
 ### The team
 
