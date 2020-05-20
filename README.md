@@ -2,7 +2,7 @@
 
 Our goal at _TuringDataStories_ is to produce educational data science content through the story telling medium. 
 
-Our content will be split into different _Story Packages_, which begin with an interesting and relevant hypothesis and walks the user through the entire data science process - from gathering and cleaning the data, to visualisation and machine learning. 
+Our content will be split into different _Story Packages_, which begin with an interesting and relevant hypothesis and walks the user through the entire data science process - from gathering and cleaning the data, to using it for data analysis.
 
 Our hope is that through these stories, readers will be motivated by the explanatory power of data science techniques, but also feel enabled to try it out themselves.
 
@@ -43,6 +43,8 @@ We currently meet every wednesday afternoon
 
 This repository is always a work in progress and **everyone** is encouraged to help us build something that is useful to the many.
 
+Everyone is asked to follow our [code of conduct](CODE_OF_CONDUCT.md) and to checkout our [contributing guidelines](CONTRIBUTING.md) for more information on how to get started. 
+
 ### Citing _TuringDataStories_
 
 
@@ -50,7 +52,7 @@ This repository is always a work in progress and **everyone** is encouraged to h
 
 ### Get in touch
 
-We currently have a slack channel:
+We currently have a slack channel: #Covid19devteam
 
 If you are interested in getting involved, please feel free to contact []. We would love for _TuringDataStories_ to develop into a large community.
 
