@@ -65,8 +65,6 @@ Everyone is asked to follow our [code of conduct](CODE_OF_CONDUCT.md) and to che
 ### Citing _TuringDataStories_
 
 
-
-
 ### Get in touch
 
 We currently have a slack channel: #Covid19devteam
