@@ -4,18 +4,25 @@
 
 _We're so excited you're here and want to contribute._ 
 
-We hope that this guideline document will make it as easy as possible for you to get involved.
 
+## What is a Turing Data Story?
+
+The Turing Data Stories should be detailed and pedagogic jupyter notebooks that document an interesting insight or result using real 
+world data. The aim of the Turing Data Stories is to spark curiosity and motivate more people to play with data. 
+
+We expect that the notebook of a data story takes the reader through each step of the analysis
+done to  create the data story results. You can have also scripts to make the jupyter notebook more light weight but we
+expect each function to be properly documented and refered to in the story. The results should be fully reproducible and the notebooks
+should be able to be ran by others using a determined computer environment.
+
+If you have an idea of a Turing Data Story you want to develop please follow these guidelines to make sure your 
+contributions can be easily integrated in the project. 
+
+We hope that this guideline document will make it as easy as possible for you to get involved.
 We welcome all contributions to this project via GitHub issues and pull requests. 
-Please follow these guidelines to make sure your contributions can be easily integrated in the projects. 
 
 # Contributing through GitHub
 
-[Git][git] is a really useful tool for version control. [GitHub][github] sits on top of Git and supports collaborative and distributed working.
-
-In order to contribute via GitHub you'll need to set up a free account and sign in.
-Here are some [instructions](https://help.github.com/articles/signing-up-for-a-new-github-account/) to help you get going.
-Remember that you can ask us any questions you need to along the way.
 
 ## Where to start: issues
 
@@ -43,16 +50,12 @@ If you prefer working in the browser, [these instructions](https://github.com/Ki
 
 ### 3. Make the changes you've discussed
 
-Try to keep the changes focused.
-If you submit a large amount of work all in one go it will be much more work for whomever is reviewing your pull request.
-[Help them help you.][jerry-maguire] :wink:
-
-While making your changes, commit often and write good, detailed commit messages.
+Try to keep the changes focused. While making your changes, commit often and write good, detailed commit messages.
 [This blog](https://chris.beams.io/posts/git-commit/) explains how to write a good Git commit message and why it matters.
 It is also perfectly fine to have a lot of commits - including ones that break code.
 A good rule of thumb is to push up to GitHub when you _do_ have passing tests then the continuous integration (CI) has a good chance of passing everything. 😸
 
-If you feel tempted to "branch out" then please make a [new branch][github-branches] and a [new issue][turing-way-issues] to go with it. [This blog](https://nvie.com/posts/a-successful-git-branching-model/) details the different Git branching models.
+If you feel tempted to "branch out" then please make a [new branch][github-branches] and a new issue to go with it. [This blog](https://nvie.com/posts/a-successful-git-branching-model/) details the different Git branching models.
 
 Please do not re-write history!
 That is, please do not use the [rebase](https://help.github.com/en/articles/about-git-rebase) command to edit previous commit messages, combine multiple commits into one, or delete or revert commits that are no longer necessary.
@@ -91,9 +94,10 @@ GitHub has a [nice introduction][github-flow] to the pull request workflow, but 
 
 ## The process of writing a data story
 
+
 - Fork the repository from the alan turing version if you have not done so already.
 - On the alan turing version create a branch with the same name as the data story to be written.
-- On your fork create a branch with the same name and create a markdown file on it.
+- On your fork create a branch with the same name and create the data story jupyter notebook file on it.
 - Make a pull request to the Turing Data Stories version of the data story branch.
   The title of this request should have the form "[WIP] Write data_story_name data story".
   WIP indicates the data story is a Work In Progress and not yet ready for review.
