@@ -54,8 +54,5 @@ Everyone is asked to follow our [code of conduct](CODE_OF_CONDUCT.md) and to che
 
 We currently have a slack channel: #Covid19devteam
 
-If you are interested in getting involved, please feel free to contact []. We would love for _TuringDataStories_ to develop into a large community.
-
-
 
 ### Contributors
