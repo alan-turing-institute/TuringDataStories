@@ -1,0 +1,25 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "DavidBeavan",
+      "name": "David Beavan",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/6524799?v=4",
+      "profile": "https://github.com/DavidBeavan",
+      "contributions": [
+        "ideas",
+        "test"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "TuringDataStories",
+  "projectOwner": "alan-turing-institute",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
