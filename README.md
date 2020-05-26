@@ -50,13 +50,13 @@ We don't expect sofisticated analyses, just insteresting stories told with data.
 
 The team is currently composed of four members:
 
-Camila
+David Beavan 
 
-David
+Camila Rangel Smith 
 
-Kevin
+Sam Van Stroud 
 
-Sam
+Kevin Xu
 
 We currently meet every wednesday afternoon
 
@@ -72,9 +72,8 @@ Everyone is asked to follow our [code of conduct](CODE_OF_CONDUCT.md) and to che
 ### Get in touch
 
 We currently have a slack channel: #Covid19devteam
+We virtually meet on Wensdays afternoons and work toguether.  
 
-
-### Contributors
 
 ## Contributors ✨
 
