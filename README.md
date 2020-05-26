@@ -34,19 +34,17 @@ We hope that by using the story telling medium, we can bring people along the da
 
 ### What is a Turing Data Story?
 
-The Turing Data Stories should be detailed and pedagogic jupyter notebooks that document an interesting insight or result using real 
-world data. The aim of the Turing Data Stories is to spark curiosity and motivate more people to play with data. 
+The Turing Data Stories should be detailed and pedagogic jupyter notebooks that document an interesting insight or result using real world data. The aim of the Turing Data Stories is to spark curiosity and motivate more people to play with data. 
 
 We expect that the notebook of a data story takes the reader through each step of the analysis
-done to  create the data story results. You can have also scripts to make the jupyter notebook more light weight but we
-expect each function to be properly documented and refered to in the story. The results should be fully reproducible and the notebooks
-should be able to be ran by others using a determined computer environment.
+done to create the data story results. The Turing Data Stories should follow these principles:
 
-If you have an idea of a Turing Data Story you want to develop please follow these guidelines to make sure your 
-contributions can be easily integrated in the project. 
+* The story should be told in a pedagogical way, describing both the context of the story and the methods used in the analysis.
+* The analysis must be fully reproducible (the notebooks should be able to be ran by others using a defined computer environment).
+* The results should be transparent, all data sources are correctly refered to and included. 
+* In order to mantain the quality of the results, the Turing Data Story should be peer-reviewed by other contributors before published.
 
-We hope that this guideline document will make it as easy as possible for you to get involved.
-We welcome all contributions to this project via GitHub issues and pull requests. 
+We don't expect sofisticated analyses, just insteresting stories told with data. If you have an idea of a Turing Data Story you want to develop please follow our[contributing guidelines](CONTRIBUTING.md) to make sure your contributions can be easily integrated in the project. 
 
 ### The team
 
