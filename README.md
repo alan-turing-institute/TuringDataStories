@@ -49,8 +49,8 @@ We don't expect sofisticated analyses, just insteresting stories told with data.
 
 The team is currently composed of four members:
 
-* David Beavan GitHub:[@DavidBeavan](https://github.com/DavidBeavan) Twitter:[@DavidBeavan](https://twitter.com/davidbeavan) Web:[https://www.turing.ac.uk/people/researchers/david-beavan](https://www.turing.ac.uk/people/researchers/david-beavan)
-* Camila Rangel Smith 
+* David Beavan - GitHub:[@DavidBeavan](https://github.com/DavidBeavan) Twitter:[@DavidBeavan](https://twitter.com/davidbeavan) Web:[https://www.turing.ac.uk/people/researchers/david-beavan](https://www.turing.ac.uk/people/researchers/david-beavan)
+* Camila Rangel Smith - GitHub:[@crangelsmith](https://github.com/crangelsmith). Twitter:[@CamilaRangelS](https://twitter.com/CamilaRangelS). Web:[https://www.turing.ac.uk/people/researchers/camila-rangel-smith](https://www.turing.ac.uk/people/researchers/camila-rangel-smith)
 * Sam Van Stroud 
 * Kevin Xu
 
