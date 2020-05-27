@@ -4,9 +4,6 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Our goal at _TuringDataStories_ is to produce educational data science content through the story telling medium. 
 
@@ -52,13 +49,10 @@ We don't expect sofisticated analyses, just insteresting stories told with data.
 
 The team is currently composed of four members:
 
-David Beavan 
-
-Camila Rangel Smith 
-
-Sam Van Stroud 
-
-Kevin Xu
+* David Beavan GitHub:[@DavidBeavan](https://github.com/DavidBeavan) Twitter:[@DavidBeavan](https://twitter.com/davidbeavan) Web:[https://www.turing.ac.uk/people/researchers/david-beavan](https://www.turing.ac.uk/people/researchers/david-beavan)
+* Camila Rangel Smith 
+* Sam Van Stroud 
+* Kevin Xu
 
 We currently meet every wednesday afternoon
 
@@ -70,6 +64,16 @@ Everyone is asked to follow our [code of conduct](CODE_OF_CONDUCT.md) and to che
 
 ### Citing _TuringDataStories_
 
+Beavan, D., C. Rangel Smith, S. Van Stroud, and K. Xu. Turing Data Stories, 2020. https://github.com/alan-turing-institute/TuringDataStories.
+
+```
+@misc{beavan_turing_2020,
+	title = {Turing {Data} {Stories}},
+	url = {https://github.com/alan-turing-institute/TuringDataStories},
+	author = {Beavan, D. and Rangel Smith, C. and Van Stroud, S. and Xu, K.},
+	year = {2020}
+}
+```
 
 ### Get in touch
 
