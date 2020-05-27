@@ -5,3 +5,4 @@ geopandas
 scipy
 matplotlib
 seaborn
+xlrd
