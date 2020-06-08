@@ -3,13 +3,14 @@ channels:
   - defaults
 dependencies:
   - python=3.7
-  - datetime
   - requests
   - numpy
   - pandas
   - geopandas
+  - descartes
   - scipy
   - matplotlib
   - seaborn
   - xlrd
   - jupyter
+  - jupyter_contrib_nbextensions
