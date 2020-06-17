@@ -1,4 +1,4 @@
-name: TDS
+name: turingdatastories
 channels:
   - defaults
 dependencies:
@@ -13,4 +13,5 @@ dependencies:
   - seaborn
   - xlrd
   - jupyter
-  - jupyter_contrib_nbextensions
+  - autopep8
+  - conda-forge::jupyter_contrib_nbextensions
