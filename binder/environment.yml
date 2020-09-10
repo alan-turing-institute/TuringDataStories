@@ -1,4 +1,4 @@
-name: turingdatastories
+name: TDS
 channels:
   - defaults
 dependencies:
