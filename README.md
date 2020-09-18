@@ -69,7 +69,8 @@ Beavan, D., C. Rangel Smith, S. Van Stroud, and K. Xu. Turing Data Stories, 2020
 ### Get in touch
 
 We currently have a slack channel: #Covid19devteam
-We virtually meet on Wensdays afternoons and work toguether.  
+
+We virtually meet on Wednesday afternoons to work collaboratively.  
 
 
 ## Contributors ✨
