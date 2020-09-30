@@ -32,7 +32,10 @@
       "contributions": [
         "ideas",
         "test",
-        "content"
+        "content",
+        "code",
+        "doc",
+        "projectManagement"
       ]
     },
     {
