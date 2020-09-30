@@ -5,12 +5,9 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-Our goal at Turing Data Stories is to produce educational data science content through the story telling medium. 
+### Our vision
 
-We want to build a community that encourages people to harness the potential of open data by creating socially relevant, reproducible and pedagogical data stories.
-Openness is embedded in every step of this project - from the data to the content and to the community driven peer review process.
-
-We want to create a platform through which authors can publish different data stories, whilst maintaining a high standard for openness and reproducibility. Our stories should provide pedagogical content and transparency in the process of extracting insight from the data. We hope this will develop our readers’ data literacy and help them better understand an increasingly data driven world.
+Our aim is to help us all understand the data driven world around us. We want to inspire an open community around a central platform. One that encourages us all to harness the potential of open data by creating 'data stories'. These 'data stories' will mix computer code, narrative, visuals and real world data to document an interesting insight or result. The stories will relate to society in a way that people care about and be educational. They must maintain a high standard of openness and reproducibility and be and approved by the community in a peer review process. The stories will develop data literacy and critical thinking in the general readership.
 
 ### About the project
 
