@@ -9,10 +9,10 @@ assignees: ''
 # Story description 
 
 **Please provide a high level description of the Turing Data Story**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+A clear and concise description of what the data story is going to be about.
 
 **Which datasets will you be using in this Turing Data Story?**
-A clear and concise description of what you want to happen.
+Cite the dataset that are going to be used in this story (these of course can change whilst developing the story).
 
 **Additional context**
 Add any other context or screenshots about the story here.
@@ -22,7 +22,7 @@ Add any other context or screenshots about the story here.
 This chapter is empty. If anyone would like to make a start they are more than welcome to do so.
 
  - [ ] Write story outline
- - [ ] Add material to the notebook
+ - [ ] Add material to the story notebook
  - [ ] Combine materials into a readable story
  - [ ] Proofread
  - [ ] Request reviews
