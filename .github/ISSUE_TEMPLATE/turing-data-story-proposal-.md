@@ -1,7 +1,7 @@
 ---
 name: '📔 📈 Turing Data Story Proposal '
 about: Suggest an idea for this project
-title: ''
+title: '[Turing Data Story]'
 labels: data-story-idea
 assignees: ''
 
