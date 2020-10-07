@@ -2,7 +2,7 @@
 
 We value the participation of every member of our community and want to ensure 
 that every contributer has an enjoyable and fulfilling experience. Accordingly, 
-everyone who participates in the `repro-catalogue` project is expected to show respect and 
+everyone who participates in the `Turing Data Studies` project is expected to show respect and 
 courtesy to other community members at all time.
 
 In the interest of fostering an open and welcoming environment, we as
@@ -49,7 +49,7 @@ threatening, offensive, or harmful.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported by contacting the project team at [rjersakova@turing.ac.uk](mailto:rjersakova@turing.ac.uk). All
+reported by contacting the project team either [David Beavan](https://www.turing.ac.uk/people/researchers/david-beavan) or [Camila Rangel Smith ](https://www.turing.ac.uk/people/researchers/camila-rangel-smith). All
 complaints will be reviewed and investigated and will result in a response that
 is deemed necessary and appropriate to the circumstances. The project team is
 obligated to maintain confidentiality with regard to the reporter of an incident.
@@ -62,4 +62,4 @@ members of the project's leadership.
 ## Attribution
 
 This Code of Conduct is adapted from the [scona project Code of Conduct](https://github.com/WhitakerLab/scona/blob/master/CODE_OF_CONDUCT.md) 
-and the [Contributor Covenant][https://www.contributor-covenant.org], version [1.4](https://www.contributor-covenant.org/version/1/4/code-of-conduct.html)
+and the [Contributor Covenant](https://www.contributor-covenant.org), version [1.4](https://www.contributor-covenant.org/version/1/4/code-of-conduct.html)
