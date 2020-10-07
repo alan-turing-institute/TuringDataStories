@@ -1,5 +1,5 @@
 ---
-name: "🔦 Story review"
+name: "🔦 Turing Data Story Review"
 about: Procedure and Checklist to review a Turing Data Story 
 title: 
 labels:
