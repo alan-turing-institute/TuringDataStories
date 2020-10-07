@@ -31,7 +31,7 @@ done to create the data story results. Turing Data Stories should follow these p
 * The results should be transparent, all data sources are correctly refered to and included. 
 * In order to mantain the quality of the results, the Turing Data Story should be peer-reviewed by other contributors before published.
 
-We don't expect sophisticated analyses, just insteresting stories told with data. If you have an idea of a Turing Data Story you want to develop please follow our[contributing guidelines](CONTRIBUTING.md) to make sure your contributions can be easily integrated in the project. 
+We don't expect sophisticated analyses, just insteresting stories told with data. If you have an idea of a Turing Data Story you want to develop please follow our [contributing guidelines](CONTRIBUTING.md) to make sure your contributions can be easily integrated in the project. 
 
 ### The team
 
@@ -65,8 +65,7 @@ Beavan, D., C. Rangel Smith, S. Van Stroud, and K. Xu. Turing Data Stories, 2020
 
 ### Get in touch
 
-We currently have a slack channel: #Covid19devteam
-
+You can join our community at Slack 🏡 (turingdatastories.slack.com) by opening an issue here along with your email id.
 We virtually meet on Wednesday afternoons to work collaboratively.  
 
 
