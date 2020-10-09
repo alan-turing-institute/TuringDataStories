@@ -11,7 +11,12 @@
       "avatar_url": "https://avatars2.githubusercontent.com/u/48526846?v=4",
       "profile": "https://github.com/kevinxufs",
       "contributions": [
-        "test"
+        "ideas",
+        "test",
+        "content",
+        "code",
+        "doc",
+        "projectManagement"
       ]
     },
     {
@@ -21,7 +26,11 @@
       "profile": "https://github.com/crangelsmith",
       "contributions": [
         "ideas",
-        "blog"
+        "test",
+        "content",
+        "code",
+        "doc",
+        "projectManagement"
       ]
     },
     {
@@ -31,7 +40,11 @@
       "profile": "https://github.com/DavidBeavan",
       "contributions": [
         "ideas",
-        "test"
+        "test",
+        "content",
+        "code",
+        "doc",
+        "projectManagement"
       ]
     },
     {
@@ -40,7 +53,12 @@
       "avatar_url": "https://avatars0.githubusercontent.com/u/16232199?v=4",
       "profile": "https://github.com/samvanstroud",
       "contributions": [
-        "blog"
+        "ideas",
+        "test",
+        "content",
+        "code",
+        "doc",
+        "projectManagement"
       ]
     }
   ],
