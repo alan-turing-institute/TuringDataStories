@@ -7,7 +7,7 @@
 
 ### Our vision
 
-Our aim is to help people understand the data driven world around us. We want to inspire an open community around a central platform. One that encourages us all to harness the potential of open data by creating 'data stories'. These 'data stories' will mix computer code, narrative, visuals and real world data to document an insightful result. They should relate to society in a way that people care about, and be educational. They must maintain a high standard of openness and reproducibility and be and approved by the community in a peer review process. The stories will develop data literacy and critical thinking in the general readership.
+Our aim is to help people understand the data driven world around us. We want to inspire an open community around a central platform. One that encourages us all to harness the potential of open data by creating 'data stories'. These 'data stories' will mix computer code, narrative, visuals and real world data to document an insightful result. They should relate to society in a way that people care about, and be educational. They must maintain a high standard of openness and reproducibility and be approved by the community in a peer review process. The stories will develop data literacy and critical thinking in the general readership.
 
 ### About the project
 
