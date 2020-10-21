@@ -2,7 +2,7 @@
 
 # TuringDataStories
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ### Our vision
@@ -80,6 +80,7 @@ We virtually meet on Wednesday afternoons to work collaboratively.
     <td align="center"><a href="https://github.com/crangelsmith"><img src="https://avatars2.githubusercontent.com/u/11162074?v=4" width="100px;" alt=""/><br /><sub><b>Camila Rangel Smith</b></sub></a><br /><a href="#ideas-crangelsmith" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=crangelsmith" title="Tests">⚠️</a> <a href="#content-crangelsmith" title="Content">🖋</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=crangelsmith" title="Code">💻</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=crangelsmith" title="Documentation">📖</a> <a href="#projectManagement-crangelsmith" title="Project Management">📆</a></td>
     <td align="center"><a href="https://github.com/DavidBeavan"><img src="https://avatars3.githubusercontent.com/u/6524799?v=4" width="100px;" alt=""/><br /><sub><b>David Beavan</b></sub></a><br /><a href="#ideas-DavidBeavan" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=DavidBeavan" title="Tests">⚠️</a> <a href="#content-DavidBeavan" title="Content">🖋</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=DavidBeavan" title="Code">💻</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=DavidBeavan" title="Documentation">📖</a> <a href="#projectManagement-DavidBeavan" title="Project Management">📆</a></td>
     <td align="center"><a href="https://github.com/samvanstroud"><img src="https://avatars0.githubusercontent.com/u/16232199?v=4" width="100px;" alt=""/><br /><sub><b>Sam Vs</b></sub></a><br /><a href="#ideas-samvanstroud" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=samvanstroud" title="Tests">⚠️</a> <a href="#content-samvanstroud" title="Content">🖋</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=samvanstroud" title="Code">💻</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=samvanstroud" title="Documentation">📖</a> <a href="#projectManagement-samvanstroud" title="Project Management">📆</a></td>
+    <td align="center"><a href="http://yo-yehudi.com"><img src="https://avatars0.githubusercontent.com/u/9271438?v=4" width="100px;" alt=""/><br /><sub><b>Yo Yehudi</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=yochannah" title="Documentation">📖</a></td>
   </tr>
 </table>
 
