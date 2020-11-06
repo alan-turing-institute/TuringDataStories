@@ -70,6 +70,15 @@
         "doc",
         "ideas"
       ]
+    },
+    {
+      "login": "LouiseABowler",
+      "name": "Louise Bowler",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/25640708?v=4",
+      "profile": "https://github.com/LouiseABowler",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
