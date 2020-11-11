@@ -1,6 +1,9 @@
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/alan-turing-institute/TuringDataStories/master)
 
-# TuringDataStories
+<p align="center">
+<img src="https://github.com/alan-turing-institute/TuringDataStories/blob/logos/logos/TDS-logo-thin.png" align="center" width="600" />
+</p>
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
