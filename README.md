@@ -1,4 +1,4 @@
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/alan-turing-institute/TuringDataStories/story/1?filepath=stories%2FWho_was_protected_by_the_first_COVID-19_lockdown.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/alan-turing-institute/TuringDataStories/master?filepath=stories%2FWho_was_protected_by_the_first_COVID-19_lockdown.ipynb)
 
 <p align="center">
 <img src="https://github.com/alan-turing-institute/TuringDataStories/blob/logos/logos/TDS-logo-thin.png" align="center" width="600" />
