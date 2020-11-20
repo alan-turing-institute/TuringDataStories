@@ -1,4 +1,4 @@
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/alan-turing-institute/TuringDataStories/master)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/alan-turing-institute/TuringDataStories/story/1?filepath=stories%2FWho_was_protected_by_the_first_COVID-19_lockdown.ipynb)
 
 <p align="center">
 <img src="https://github.com/alan-turing-institute/TuringDataStories/blob/logos/logos/TDS-logo-thin.png" align="center" width="600" />
@@ -7,6 +7,7 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
+
 
 ### Our vision
 
@@ -45,8 +46,9 @@ done to create the data story results. Turing Data Stories should follow these p
 
 * The story should be told in a pedagogical way, describing both the context of the story and the methods used in the analysis.
 * The analysis must be fully reproducible (the notebooks should be able to be ran by others using a defined computer environment).
-* The results should be transparent, all data sources are correctly refered to and included. 
-* In order to mantain the quality of the results, the Turing Data Story should be peer-reviewed by other contributors before published.
+* The results should be transparent, all data sources are correctly referred to and included.
+* In order to maintain the quality of the results, the Turing Data Story should be peer-reviewed by other contributors before published.
+
 
 We don't expect sophisticated analyses, just insteresting stories told with data. If you have an idea of a Turing Data Story you want to develop please follow our [contributing guidelines](CONTRIBUTING.md) to make sure your contributions can be easily integrated in the project. 
 
@@ -56,6 +58,7 @@ The team is currently composed of four members:
 
 * David Beavan - GitHub:[@DavidBeavan](https://github.com/DavidBeavan) Twitter:[@DavidBeavan](https://twitter.com/davidbeavan) Web:[https://www.turing.ac.uk/people/researchers/david-beavan](https://www.turing.ac.uk/people/researchers/david-beavan)
 * Camila Rangel Smith - GitHub:[@crangelsmith](https://github.com/crangelsmith). Twitter:[@CamilaRangelS](https://twitter.com/CamilaRangelS). Web:[https://www.turing.ac.uk/people/researchers/camila-rangel-smith](https://www.turing.ac.uk/people/researchers/camila-rangel-smith)
+
 * Sam Van Stroud - Github: [@samvanstround](https://github.com/samvanstroud). Web:[https://www.turing.ac.uk/people/enrichment-students/sam-van-stroud](https://www.turing.ac.uk/people/enrichment-students/sam-van-stroud)
 * Kevin Xu - Github: [@kevinxufs](https://github.com/kevinxufs)
 
@@ -63,9 +66,9 @@ We currently meet every Wednesday afternoon
 
 ### Contributing
 
-This repository is always a work in progress and **everyone** is encouraged to help us build something that is useful to the many.
+This repository is always a work in progress and **everyone** is encouraged to help us build something that will be useful to the many.
 
-Everyone is asked to follow our [code of conduct](CODE_OF_CONDUCT.md) and to checkout our [contributing guidelines](CONTRIBUTING.md) for more information on how to get started. 
+All contributors are asked to follow our [code of conduct](CODE_OF_CONDUCT.md) and to checkout our [contributing guidelines](CONTRIBUTING.md) for more information on how to get started.
 
 ### Citing _TuringDataStories_
 
@@ -81,6 +84,7 @@ Beavan, D., C. Rangel Smith, S. Van Stroud, and K. Xu. Turing Data Stories, 2020
 ```
 
 ### Get in touch
+
 
 You can join our community at Slack 🏡 (turingdatastories.slack.com) by opening an issue here along with your email id.
 We virtually meet on Wednesday afternoons to work collaboratively.  

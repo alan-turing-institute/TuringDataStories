@@ -1,0 +1,17 @@
+name: TDS
+channels:
+  - defaults
+dependencies:
+  - python=3.7
+  - requests
+  - numpy
+  - pandas
+  - geopandas
+  - descartes
+  - scipy
+  - matplotlib
+  - seaborn
+  - xlrd
+  - jupyter
+  - autopep8
+  - conda-forge::jupyter_contrib_nbextensions
