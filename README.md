@@ -22,6 +22,20 @@ Our goal was therefore to help provide educational data science content that wou
 
 We hope that by using the story telling medium, we can bring people along the data science journey and showcase how these techniques can answer both fascinating and socially relevant questions. 
 
+### How to Read Stories
+
+Our stories are published online via fastpages. You can check them out [here](https://alan-turing-institute.github.io/TuringDataStories-fastpages/).
+
+Alternatively, click the binder badge at the top of this README to load an interactive version of our stories.
+
+Another option is to run the notebooks locally yourself. To do this, we recommend [installing](https://docs.conda.io/projects/conda/en/latest/user-guide/install/) conda, cloning this repository, and then [setting up an environment](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-from-an-environment-yml-file) usingn
+```
+git clone git@github.com:alan-turing-institute/TuringDataStories.git
+cd TuringDataStories
+conda env create -f binder/environment.yml
+```
+Any problems, open an issue!
+
 ### What is a Turing Data Story?
 
 The Turing Data Stories should be detailed and pedagogic Jupyter notebooks that document an interesting insight or result using real world data. The aim of the Turing Data Stories is to spark curiosity and motivate more people to play with data. 
