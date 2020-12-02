@@ -68,7 +68,8 @@ def load_data(state, timestamp=None):
 
     Returns a data frame holding all updates from a particular state,
     prior to the given timestamp. The "vote_differential" field is turned
-    into a signed margin that is positive for a Biden lead.
+    into a signed margin that is positive for a Biden lead. Also adds
+    columns for the number of votes for Biden and Trump.
     """
 
     if timestamp is None:
@@ -78,6 +79,18 @@ def load_data(state, timestamp=None):
 
     data.loc[data["leading_candidate_name"] == "Trump", "vote_differential"] \
         = -data.loc[data["leading_candidate_name"] == "Trump", "vote_differential"]
+
+    data["biden_votes"] = None
+    data.loc[data["leading_candidate_name"] == "Biden", "biden_votes"] \
+        = data.loc[data["leading_candidate_name"] == "Biden", "leading_candidate_votes"]
+    data.loc[data["trailing_candidate_name"] == "Biden", "biden_votes"] \
+        = data.loc[data["trailing_candidate_name"] == "Biden", "trailing_candidate_votes"]
+
+    data["trump_votes"] = None
+    data.loc[data["leading_candidate_name"] == "Trump", "trump_votes"] \
+        = data.loc[data["leading_candidate_name"] == "Trump", "leading_candidate_votes"]
+    data.loc[data["trailing_candidate_name"] == "Trump", "trump_votes"] \
+        = data.loc[data["trailing_candidate_name"] == "Trump", "trailing_candidate_votes"] 			           
 
     data = data[data["timestamp"] < timestamp]
 
@@ -104,7 +117,7 @@ to see the evolution of the race:
 ```
 import matplotlib.pyplot as plt
 
-def plot_data(state, timestamp):
+def plot_data(state, timestamp=None):
     "Plot the election data for a given state up through a given time"
 
     df = load_data(state, timestamp)
@@ -138,7 +151,7 @@ Arizona.)
 ```
 import numpy as np
 
-def linear_regression(state, timestamp):
+def linear_regression(state, timestamp=None):
     """
     Fit a linear regression model to the election updates
 
@@ -192,21 +205,138 @@ statisticians think of model parameters not as a single number, but rather
 probability distributions -- in this way, we can get a sense of the range
 of values that the model thinks are consistent with the data.
 
+### Model Structure
+
 As noted above, the regression model has two different parameters: the slope
 (related to the fraction of votes that are cast for Biden), and the intercept
 (which is essentially the prediction of the final margin). Note that while
 our linear regression fit these two things simultaneously, there is no reason
 why we had to let the final margin be a "free" parameter that we adjusted
 in the fitting: we could have instead just fit a single parameter for
-the slope, and force the line to pass through the most recent margin and
-votes remaining point. We can then "predict" the final margin by forecasting
-the remaining votes using our fitted slope applied to the known number of
-votes remaining. This is more akin to the way that the Bayesian analysis will
-work: we will use the vote updates that we have to estimate the fraction of
-votes for Biden, and then we will use that estimate to predict the outcome
-of the remaining votes. However, instead of there being a single estimate
-for the slope, we will treat the slope as a probability distribution to capture
-its uncertainty.
+the slope, and taken the votes remaining as a given from which we can
+extrapolate in order to forecast the final margin.
+
+Thus, in all of the models that follow, we will follow a procedure similar
+to this. We will use the previous vote returns to estimate the vote
+probability parameter, and then use the vote probability to predict the
+outcome based on the remaining votes. We will consider several variants of
+this structure to see how our modelling choices capture uncertainty.
+
+### Point Estimates
+
+We return to the regression model, but rather than fit it as was done
+above, we will do our two step procedure to first estimate the vote
+probability, and then forecast the remaining votes. To get an equivalent
+single point estimate of the vote probability (akin to fitting the slope
+above), we simply estimate the vote probability $\theta$ by taking the average
+probability of a vote for Biden based on all observed mail-in votes.
+
+```
+def estimate_theta_point(state, timestamp=None):
+    "computes the vote probability as a point estimate based on all returns"
+
+    df = load_data(state, timestamp)
+
+    return (df["biden_votes"].iloc[0] - df["biden_votes"].iloc[-1])/\
+            ((df["biden_votes"].iloc[0] - df["biden_votes"].iloc[-1]) +
+	     (df["trump_votes"].iloc[0] - df["trump_votes"].iloc[-1]))
+
+for (state, tstamp) in zip(["Pennsylvania", "Georgia", "Arizona"], ["2020-11-05"]*3):
+    print("Mean vote probability in {} as of {} is {}".format(
+              state, tstamp, estimate_theta_point(state, tstamp))
+	  )
+```
+
+Now based on these estimates, we can forecast the remaining votes. Note
+that if the vote probability is $\theta$ and there are $v$ votes remaining,
+then the final margin will change by $\thetav-(1-\theta)v = (2\theta-1)v$.
+
+```
+def predict_margin_point(theta, state, timestamp=None):
+    "Predict remaining votes from a single estimate of the vote probability"
+
+    assert theta >= 0.
+    assert theta <= 1.
+
+    df = load_data(state, timestamp)
+    return df["vote_differential"].iloc[0] + df["votes_remaining"].iloc[0]*(2*theta - 1.)
+
+for (state, tstamp) in zip(["Pennsylvania", "Georgia", "Arizona"], ["2020-11-05"]*3):
+    theta = estimate_theta_point(state, tstamp)
+    print("Predicted final margin in {} at {} is {}".format(state, tstamp,
+           predict_margin_point(theta, state, tstamp)))
+```
+
+These margins are consistent with the regression models above.
+
+### Uncertainty in the Predictions
+
+When you flip a fair coin, you will not always get an equal number of heads
+and tails. Similarly, even if we are very sure of the vote probability,
+we do not expect that we will always get the exact same number of votes
+that would be expected from the mean vote probability. As a first step
+in determining the uncertainty in the final outcome, we would like to
+capture this uncertainty.
+
+If we do a fixed number of Bernoulli trials (i.e. a coin flip with a
+known probability of producing heads or tails), we can quantify the expected
+range of outcomes using a binomial distribution. While we can exactly compute
+the probability mass function for a binomial distribution, in the following
+we will find it easier to just sample randomly from the distribution, so
+we will just draw samples here to help re-use some code, as we will eventually
+need to make predictions by drawing many samples of $theta$.
+
+```
+from scipy.stats import binom
+
+def predict_margin_samples(theta, state, timestamp=None):
+    "Draws samples for the final margin given a set of samples for theta"
+
+    theta = np.array(theta).flatten()
+    assert np.all(theta >= 0.)
+    assert np.all(theta <= 1.)
+
+    n_samples = len(theta)
+    n_samples_rvs = 100000 // n_samples
+
+    df = load_data(state, tstamp)
+
+    samples = []
+    
+    for tval in theta:
+    	samples.append(binom.rvs(size=n_samples_rvs, p=tval, n=df["votes_remaining"].iloc[0]))
+
+    samples = np.array(samples).flatten()
+
+    return df["vote_differential"].iloc[0] + 2*samples - df["votes_remaining"].iloc[0]
+
+for (state, tstamp) in zip(["Pennsylvania", "Georgia", "Arizona"], ["2020-11-05"]*3):
+
+    theta = estimate_theta_point(state, tstamp)
+
+    samples = predict_margin_samples(theta, state, tstamp)
+
+    plt.figure()
+    plt.hist(samples, bins=100)
+    plt.xlabel("Biden Margin")
+    plt.title("{} Predicted margin as of {}".format(state, tstamp))
+
+plt.show()
+```
+
+Now we can start to get an idea of the variability in our predictions. We
+see that even if we use a regression-type model to make a single point estimate
+of the vote probability, we still get a significant variation in the final
+margin. This is because of the large number of remaining votes, something
+that the base regression model cannot capture as easily.
+
+### Uncertainty in the Vote Probability
+
+To capture the uncertainty in the underlying vote probability and its effect
+on the predictions, we now need to develop a Bayesian model. This means
+that instead of the vote probability being a single value, it will instead
+be described by a probability distribution. Bayesian inference gives us a
+principled way to update this probability distribution as we see data.
 
 Before we look at our data, we might ask ourselves what reasonable values we
 would expect to see for the fraction of votes for Biden. This is known as
@@ -226,7 +356,7 @@ for this.
   number of voters across the idealogical spectrum.
 
 * Historically, mail in votes tend to skew heavily towards Democrats. This
-  may be even more pronounced in this, election, because Trump spent the
+  may be even more pronounced in this election, because Trump spent the
   better part of the campaign casting doubt on mail ballots and encouraging
   his supporters to vote in person (no doubt because he intended to contest
   the mail in ballots as fradulent in order to win the election in court).
@@ -243,6 +373,7 @@ a = 8.
 b = 4.
 
 plt.plot(xvals, beta.pdf(xvals, a=a, b=b))
+plt.xlabel("Biden vote probability")
 plt.title("PDF for the Beta distribution with a = {}, b = {}".format(a, b))
 plt.show()
 ```
@@ -256,7 +387,7 @@ rule:
 
 $$ p(\theta|y) = \frac{p(y|\theta)p(\theta)}{p(y)} $$
 
-Here, $p(\theta)$ is the prior distribution(described above), $p(y|\theta)$
+Here, $p(\theta)$ is the prior distribution (described above), $p(y|\theta)$
 is the *likelihood* (the probability that we would have gotten the data given
 a particular choice of $\theta$), and $p(y)$ is known as the *evidence*
 (the probability of getting that particular observation over all possible
@@ -268,6 +399,55 @@ can be done in closed form. This is because the Beta distribution is
 on the vote probability and a Binomial model to describe the outcome of
 polling (i.e. voting can be treated as a series of weighted coin flips),
 then the posterior for the vote probability is also a Beta
-distribution.
+distribution. The analytical solution for updating our prior with shape
+parameters $a$ and $b$ to the posterior if we have $n$ trials and $k$
+successes is
 
+$$ p(\theta|n, k) = \beta(a + k, b + n - k) $$
+
+Thus, we can draw samples from the posterior to see the variability of
+the vote probability:
+
+```
+def estimate_theta_bayes(state, timestamp=None):
+    "Draws samples from the posterior of the vote probability"
+
+    df = load_data(state, timestamp)
+
+    k = df["biden_votes"].iloc[0]-df["biden_votes"].iloc[-1]
+    n = k + df["trump_votes"].iloc[0]-df["trump_votes"].iloc[-1]
+
+    return beta.rvs(size=1000, a=a+k, b=b+n-k)
+
+for (state, tstamp) in zip(["Pennsylvania", "Georgia", "Arizona"], ["2020-11-05"]*3):
+
+    theta = estimate_theta_bayes(state, tstamp)
+
+    plt.figure()
+    plt.hist(theta, bins=100)
+    plt.xlabel("Biden Vote Probability")
+    plt.title("{} Vote Probability Posterior as of {}".format(state, tstamp))
+
+plt.show()
+```
+
+Clearly, the large number of votes means that the posterior distribution is
+very tightly clustered around the point estimates we obtained above. We can
+see that this doesn't influence the final predictions very much by making
+predictions as above:
+
+```
+for (state, tstamp) in zip(["Pennsylvania", "Georgia", "Arizona"], ["2020-11-05"]*3):
+
+    theta = estimate_theta_bayes(state, tstamp)
+
+    samples = predict_margin_samples(theta, state, tstamp)
+
+    plt.figure()
+    plt.hist(samples, bins=100)
+    plt.xlabel("Biden Margin")
+    plt.title("{} Predicted Final Margin as of {}".format(state, tstamp))
+
+plt.show()
+```
 
