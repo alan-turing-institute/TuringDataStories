@@ -99,7 +99,8 @@ def load_data(state, timestamp=None):
 
 Note that rather than specifying the leading and trailing candidates, I instead
 just convert the vote differential into a margin that is positive if Biden
-is leading and negative if Trump is leading.
+is leading and negative if Trump is leading. I also add columns for the total
+number of votes for Biden and Trump, which I will use later.
 
 For instance, if I would like to see the data for Georgia:
 
@@ -117,6 +118,10 @@ to see the evolution of the race:
 ```
 import matplotlib.pyplot as plt
 
+state_list = ["Pennsylvania", "Georgia", "Arizona"]
+timestamp_list = ["2020-11-05"]*3
+iter_vals = list(zip(state_list, timestamp_list))
+
 def plot_data(state, timestamp=None):
     "Plot the election data for a given state up through a given time"
 
@@ -128,9 +133,8 @@ def plot_data(state, timestamp=None):
     plt.ylabel("Biden margin")
     plt.title("{} Vote Updates through {}".format(state, timestamp))
 
-plot_data("Georgia", "2020-11-05")
-plot_data("Arizona", "2020-11-05")
-plot_data("Pennsylvania", "2020-11-05")
+for (state, tstamp) in iter_vals:
+    plot_data(state, tstamp)
 plt.show()
 ```
 
@@ -174,9 +178,9 @@ def linear_regression(state, timestamp=None):
 
     return coeffs
 
-coeffs = linear_regression("Pennsylvania", "2020-11-05")
-coeffs = linear_regression("Georgia", "2020-11-05")
-coeffs = linear_regression("Arizona", "2020-11-05")
+for (state, tstamp) in iter_vals:
+    coeffs = linear_regression(state, tstamp)
+
 plt.show()
 ```
 
@@ -186,7 +190,7 @@ while Arizona seems to have outlier points that muddles this analysis
 (which was first noted by Martin):
 
 ```
-for state in ["Pennsylvania", "Georgia", "Arizona"]:
+for state in state_list:
     df = load_data(state)
     print("Current margin in {}: {}".format(state, df["vote_differential"].iloc[0]))
 ```
@@ -241,7 +245,7 @@ def estimate_theta_point(state, timestamp=None):
             ((df["biden_votes"].iloc[0] - df["biden_votes"].iloc[-1]) +
 	     (df["trump_votes"].iloc[0] - df["trump_votes"].iloc[-1]))
 
-for (state, tstamp) in zip(["Pennsylvania", "Georgia", "Arizona"], ["2020-11-05"]*3):
+for (state, tstamp) in iter_vals:
     print("Mean vote probability in {} as of {} is {}".format(
               state, tstamp, estimate_theta_point(state, tstamp))
 	  )
@@ -249,7 +253,7 @@ for (state, tstamp) in zip(["Pennsylvania", "Georgia", "Arizona"], ["2020-11-05"
 
 Now based on these estimates, we can forecast the remaining votes. Note
 that if the vote probability is $\theta$ and there are $v$ votes remaining,
-then the final margin will change by $\thetav-(1-\theta)v = (2\theta-1)v$.
+then the final margin will change by $\theta v-(1-\theta)v = (2\theta-1)v$.
 
 ```
 def predict_margin_point(theta, state, timestamp=None):
@@ -261,7 +265,7 @@ def predict_margin_point(theta, state, timestamp=None):
     df = load_data(state, timestamp)
     return df["vote_differential"].iloc[0] + df["votes_remaining"].iloc[0]*(2*theta - 1.)
 
-for (state, tstamp) in zip(["Pennsylvania", "Georgia", "Arizona"], ["2020-11-05"]*3):
+for (state, tstamp) in iter_vals:
     theta = estimate_theta_point(state, tstamp)
     print("Predicted final margin in {} at {} is {}".format(state, tstamp,
            predict_margin_point(theta, state, tstamp)))
@@ -310,7 +314,7 @@ def predict_margin_samples(theta, state, timestamp=None):
 
     return df["vote_differential"].iloc[0] + 2*samples - df["votes_remaining"].iloc[0]
 
-for (state, tstamp) in zip(["Pennsylvania", "Georgia", "Arizona"], ["2020-11-05"]*3):
+for (state, tstamp) in iter_vals:
 
     theta = estimate_theta_point(state, tstamp)
 
@@ -319,7 +323,7 @@ for (state, tstamp) in zip(["Pennsylvania", "Georgia", "Arizona"], ["2020-11-05"
     plt.figure()
     plt.hist(samples, bins=100)
     plt.xlabel("Biden Margin")
-    plt.title("{} Predicted margin as of {}".format(state, tstamp))
+    plt.title("{} Predicted Margin (Point) as of {}".format(state, tstamp))
 
 plt.show()
 ```
@@ -380,6 +384,10 @@ plt.show()
 
 However, we will find that this choice of prior does not matter very much
 given the amount of data that is available to estimate the vote probabilities.
+Also, given that the votes in Arizona are more favorable for Trump, the
+third point above is probably not universally true. However, if you
+try other values for $a$ and $b$ in what follows, you are unlikely to see
+much difference given the large number of ballots that were cast.
 
 Once we have specified a prior, we can update our beliefs about the value
 for a parameter by computing the *posterior*. This involves applying Bayes'
@@ -419,14 +427,14 @@ def estimate_theta_bayes(state, timestamp=None):
 
     return beta.rvs(size=1000, a=a+k, b=b+n-k)
 
-for (state, tstamp) in zip(["Pennsylvania", "Georgia", "Arizona"], ["2020-11-05"]*3):
+for (state, tstamp) in iter_vals:
 
     theta = estimate_theta_bayes(state, tstamp)
 
     plt.figure()
     plt.hist(theta, bins=100)
     plt.xlabel("Biden Vote Probability")
-    plt.title("{} Vote Probability Posterior as of {}".format(state, tstamp))
+    plt.title("{} Vote Probability (Bayesian) as of {}".format(state, tstamp))
 
 plt.show()
 ```
@@ -437,7 +445,7 @@ see that this doesn't influence the final predictions very much by making
 predictions as above:
 
 ```
-for (state, tstamp) in zip(["Pennsylvania", "Georgia", "Arizona"], ["2020-11-05"]*3):
+for (state, tstamp) in iter_vals:
 
     theta = estimate_theta_bayes(state, tstamp)
 
@@ -446,8 +454,124 @@ for (state, tstamp) in zip(["Pennsylvania", "Georgia", "Arizona"], ["2020-11-05"
     plt.figure()
     plt.hist(samples, bins=100)
     plt.xlabel("Biden Margin")
-    plt.title("{} Predicted Final Margin as of {}".format(state, tstamp))
+    plt.title("{} Predicted Margin (Bayesian) as of {}".format(state, tstamp))
 
 plt.show()
 ```
 
+### Hierarchical Bayesian Model
+
+In the above, the vote probability is treated as a single, unchanging value.
+We may be uncertain about it, but the model assumes that every voter is
+identical. Given the political polarization in the US, this is probably not
+a very good assumption. Although the data seems to strongly suggest that the
+mail-in votes are consistently in favor of one candidate, this is not the
+same as saying all voters are identical. In the following, we adapt the
+model to relax this assumption and build what is known as a *hierarchical*
+Bayesian model.
+
+If the above model of assuming that every voter is identical is one extreme,
+then the other extreme is to assume that every voter is different and we would
+need to estimate hundreds of thousands to millions of parameters to fit our
+model. This is not exactly practical, so a hierarchical model posits a middle
+ground that the vote probability is itself drawn from a probability
+distribution. Note that this is different than saying that we specify a prior
+distribution for a single value -- in the model, each incremental update of
+votes has a single vote probability associated with it, but that probability is
+drawn from a probability distribution and thus can vary.
+
+In the following model, we specify the model by assuming that each vote
+update has a single vote probability associated with it, and that vote
+probability is drawn from a beta distribution. Since a beta distribution
+depends on the $a$ and $b$ shape parameters, we will then need to set
+prior distributions for those parameters, rather than for $\theta$ itself.
+Having multiple levels like this are why these models are known as
+*hierarchical* -- parameters are drawn from distributions whose parameters
+are also distributions themselves.
+
+Since $a$ and $b$ are positive, continuous variables, I will specify their
+priors using lognormal distributions. Since I expect the distribution
+from which $\theta$ is drawn to be roughly similar to the one I set for
+the prior on $\theta$ above, I will use this for the mean of my lognormal
+prior, and set unit variance for simplicity. The rest of the model is the
+same as above, except each individual vote update is treated separately.
+
+Adding this additional layer of complexity means that we unfortunately can
+no longer compute our results analytically. Instead, we resort to Markov
+Chain Monte Carlo sampling, which is a method of simultaneously drawing
+samples from the posterior distribution of all of the parameters of the
+model. MCMC sampling is frequently implemented in what is known as a
+probabilistic programming language, where the language explicitly treats
+all variables as probability distributions from which it must sample.
+There are a number of popular lanaguages for this -- here I use PyMC3
+to implement my model.
+
+```
+import pymc3
+
+def estimate_theta_hierarchical(state, timestamp=None):
+    "estimate theta for the vote probability distribution using a hierarchical model and MCMC sampling"
+
+    df = load_data(state, timestamp)
+
+    n = np.diff(-df["biden_votes"]) + np.diff(-df["trump_votes"])
+    k = np.diff(-df["biden_votes"])
+
+    keep = (n > 0)*(k >= 0)*(k <= n)
+    n = n[keep]
+    k = k[keep]
+
+    with pymc3.Model() as model:
+        a = pymc3.Lognormal("a", mu=np.log(8.), sd=1.)
+        b = pymc3.Lognormal("b", mu=np.log(4.), sd=1.)
+        theta = pymc3.Beta("theta", alpha=a, beta=b, shape=len(n)) 
+        obs = pymc3.Binomial("obs", p=theta, n=n, observed=k, shape=len(n))
+        trace = pymc3.sample(1000)
+
+    theta = []
+
+    for (aval, bval) in zip(trace["a"], trace["b"]):
+    	theta.append(beta.rvs(size=10, a=aval, b=bval)
+
+    return np.array(theta).flatten()
+
+for (state, tstamp) in iter_vals:
+
+    theta = estimate_theta_hierarchical(state, tstamp)
+
+    plt.figure()
+    plt.hist(theta, bins=100)
+    plt.xlabel("Biden vote probability")
+    plt.title("{} Vote Probability (Hierarchical) as of {}".format(state, tstamp))
+
+plt.show()
+```
+
+Looking at these plots, we see that the model is now much more varied in
+its estimates for the vote probability (note that this is the posterior for
+the *distribution* expected for the vote probability, rather than the explicit
+values of the vote probability itself). The mean is still where we expected
+it from the previous analysis, but it is much more tolerant of outlying values.
+This should considerably increase the spread of the predicted final margin,
+which we do below:
+
+```
+for (state, tstamp) in iter_vals:
+
+    theta = estimate_theta_hierarchical(state, tstamp)
+
+    samples = predict_margin_samples(theta, state, tstamp)
+
+    plt.figure()
+    plt.hist(samples, bins=100)
+    plt.xlabel("Biden Margin")
+    plt.title("{} Predicted Margin (Hierarchical) as of {}".format(state, tstamp))
+
+plt.show()
+```
+
+One limitation in this prediction method is that it overstates the variability
+in the final margin, because it uses a single value for forecasting all
+remaining votes. In reality, these votes will be divided up into smaller
+chunks, each of which will have a different vote probability. This will
+make extreme values less likely.
