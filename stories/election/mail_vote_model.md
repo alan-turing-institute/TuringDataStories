@@ -29,7 +29,8 @@ ballots cast), despite the fact that Al Gore easily won the popular vote.
 In 2020, a few states with very close races dominated the headlines for the
 week after the election, of which we will look at Pennsylvania, Arizona,
 and Georgia in this post. The final outcome of the election hung on the
-results from these states.
+results from these states, and the slow drip feed of additional ballots
+being released left audiences constantly checking the news for updates.
 
 In this Turing Data Story, I examine a few ways to analyze the data updates
 coming from each state to predict the final outcome. This originated from
@@ -48,6 +49,10 @@ to obtain the latest results which are updated every few minutes to ensure
 that they have the latest data. To load this data into a Python session
 for analysis, I can use Pandas to simply load from the CSV version of the
 data directly from the URL, and extract the state that I wish to examine:
+
+```
+%matplotlib inline
+```
 
 ```
 import pandas
@@ -135,7 +140,6 @@ def plot_data(state, timestamp=None):
 
 for (state, tstamp) in iter_vals:
     plot_data(state, tstamp)
-plt.show()
 ```
 
 Note that the trend shows that Biden is catching up as more votes are counted
@@ -180,14 +184,15 @@ def linear_regression(state, timestamp=None):
 
 for (state, tstamp) in iter_vals:
     coeffs = linear_regression(state, tstamp)
-
-plt.show()
 ```
 
-Note that Pennsylvania and Georgia appear fairly well behaved, and the
-margin that comes out of this is not too far off the eventual results,
-while Arizona seems to have outlier points that muddles this analysis
-(which was first noted by Martin):
+Note that at this point, the linear regression predicts a margin in
+Pennsylvania and Arizona that are quite different from the final margin.
+Georgia appears to be very close to the final margin. However, Arizona
+seems to have outlier points that muddles this analysis (which was first
+noted by Martin). Thus, while these models are useful starting points, they
+do not appear to be particularly robust and are somewhat dependent on when
+you choose to fit the data.
 
 ```
 for state in state_list:
@@ -202,7 +207,7 @@ favor of one candidate, which is why the media waited a few more days beyond
 this to call the states for Biden. How might we develop a model that
 explicitly captures this uncertainty?
 
-## Bayesian Inference
+## Modelling Uncertainty in the Votes
 
 To address this shortcoming, we turn to Bayesian Inference. Bayesian
 statisticians think of model parameters not as a single number, but rather
@@ -217,136 +222,34 @@ As noted above, the regression model has two different parameters: the slope
 our linear regression fit these two things simultaneously, there is no reason
 why we had to let the final margin be a "free" parameter that we adjusted
 in the fitting: we could have instead just fit a single parameter for
-the slope, and taken the votes remaining as a given from which we can
-extrapolate in order to forecast the final margin.
+the slope (for instance, simply using the fraction of mail ballots cast thus
+far), and then used that estimate to project the votes remaining in order to
+extrapolate and obtain our estimate of the final margin.
 
-Thus, in all of the models that follow, we will follow a procedure similar
-to this. We will use the previous vote returns to estimate the vote
-probability parameter, and then use the vote probability to predict the
-outcome based on the remaining votes. We will consider several variants of
-this structure to see how our modelling choices capture uncertainty.
+With this format in mind, we need to develop a way to account for the
+uncertainty in both of these steps. Our Bayesian model will treat both
+the probability that a vote goes for Biden as a probability distribution
+(rather than a single number), and then the final projected margin will
+also be a probability distribution. In practice, rather than determining
+the analytical form of these probability distributions, we will instead
+model the outcome by drawing samples from the distribution. This is a
+standard method within Bayesian Inference, and illustrates the power
+of this technique for quantifying uncertainty.
 
-### Point Estimates
+### Bayesian Model of the Vote Probability
 
-We return to the regression model, but rather than fit it as was done
-above, we will do our two step procedure to first estimate the vote
-probability, and then forecast the remaining votes. To get an equivalent
-single point estimate of the vote probability (akin to fitting the slope
-above), we simply estimate the vote probability $\theta$ by taking the average
-probability of a vote for Biden based on all observed mail-in votes.
+Bayesian Inference tends to think of probability distributions as reflecting
+statements about our beliefs. Formally, we need to state our initial beliefs
+before we see any data, and then we can use that data to update our knowledge.
+This previous belief is known as a *prior* in Bayesian inference, and the
+updated beliefs once we look at our data is known as the *posterior*.
 
-```
-def estimate_theta_point(state, timestamp=None):
-    "computes the vote probability as a point estimate based on all returns"
+### Prior Specification
 
-    df = load_data(state, timestamp)
-
-    return (df["biden_votes"].iloc[0] - df["biden_votes"].iloc[-1])/\
-            ((df["biden_votes"].iloc[0] - df["biden_votes"].iloc[-1]) +
-	     (df["trump_votes"].iloc[0] - df["trump_votes"].iloc[-1]))
-
-for (state, tstamp) in iter_vals:
-    print("Mean vote probability in {} as of {} is {}".format(
-              state, tstamp, estimate_theta_point(state, tstamp))
-	  )
-```
-
-Now based on these estimates, we can forecast the remaining votes. Note
-that if the vote probability is $\theta$ and there are $v$ votes remaining,
-then the final margin will change by $\theta v-(1-\theta)v = (2\theta-1)v$.
-
-```
-def predict_margin_point(theta, state, timestamp=None):
-    "Predict remaining votes from a single estimate of the vote probability"
-
-    assert theta >= 0.
-    assert theta <= 1.
-
-    df = load_data(state, timestamp)
-    return df["vote_differential"].iloc[0] + df["votes_remaining"].iloc[0]*(2*theta - 1.)
-
-for (state, tstamp) in iter_vals:
-    theta = estimate_theta_point(state, tstamp)
-    print("Predicted final margin in {} at {} is {}".format(state, tstamp,
-           predict_margin_point(theta, state, tstamp)))
-```
-
-These margins are consistent with the regression models above.
-
-### Uncertainty in the Predictions
-
-When you flip a fair coin, you will not always get an equal number of heads
-and tails. Similarly, even if we are very sure of the vote probability,
-we do not expect that we will always get the exact same number of votes
-that would be expected from the mean vote probability. As a first step
-in determining the uncertainty in the final outcome, we would like to
-capture this uncertainty.
-
-If we do a fixed number of Bernoulli trials (i.e. a coin flip with a
-known probability of producing heads or tails), we can quantify the expected
-range of outcomes using a binomial distribution. While we can exactly compute
-the probability mass function for a binomial distribution, in the following
-we will find it easier to just sample randomly from the distribution, so
-we will just draw samples here to help re-use some code, as we will eventually
-need to make predictions by drawing many samples of $theta$.
-
-```
-from scipy.stats import binom
-
-def predict_margin_samples(theta, state, timestamp=None):
-    "Draws samples for the final margin given a set of samples for theta"
-
-    theta = np.array(theta).flatten()
-    assert np.all(theta >= 0.)
-    assert np.all(theta <= 1.)
-
-    n_samples = len(theta)
-    n_samples_rvs = 100000 // n_samples
-
-    df = load_data(state, tstamp)
-
-    samples = []
-    
-    for tval in theta:
-    	samples.append(binom.rvs(size=n_samples_rvs, p=tval, n=df["votes_remaining"].iloc[0]))
-
-    samples = np.array(samples).flatten()
-
-    return df["vote_differential"].iloc[0] + 2*samples - df["votes_remaining"].iloc[0]
-
-for (state, tstamp) in iter_vals:
-
-    theta = estimate_theta_point(state, tstamp)
-
-    samples = predict_margin_samples(theta, state, tstamp)
-
-    plt.figure()
-    plt.hist(samples, bins=100)
-    plt.xlabel("Biden Margin")
-    plt.title("{} Predicted Margin (Point) as of {}".format(state, tstamp))
-
-plt.show()
-```
-
-Now we can start to get an idea of the variability in our predictions. We
-see that even if we use a regression-type model to make a single point estimate
-of the vote probability, we still get a significant variation in the final
-margin. This is because of the large number of remaining votes, something
-that the base regression model cannot capture as easily.
-
-### Uncertainty in the Vote Probability
-
-To capture the uncertainty in the underlying vote probability and its effect
-on the predictions, we now need to develop a Bayesian model. This means
-that instead of the vote probability being a single value, it will instead
-be described by a probability distribution. Bayesian inference gives us a
-principled way to update this probability distribution as we see data.
-
-Before we look at our data, we might ask ourselves what reasonable values we
-would expect to see for the fraction of votes for Biden. This is known as
-a *prior* in Bayesian inference, and since all fitting parameters in Bayesian
-inference must be a probability distribution, we need to specify a distribution
-for this.
+Before we look at our data, we thus need ask ourselves what we think
+reasonable values might be for the fraction of votes for Biden, which we will
+call $\theta$. We need to encode this in a probability distribution, so that
+we can update this using the data.
 
 * First, we know that this fraction must be between 0 and 1. A common family
   of probability distributions over this interval is what is known as the
@@ -379,15 +282,9 @@ b = 4.
 plt.plot(xvals, beta.pdf(xvals, a=a, b=b))
 plt.xlabel("Biden vote probability")
 plt.title("PDF for the Beta distribution with a = {}, b = {}".format(a, b))
-plt.show()
 ```
 
-However, we will find that this choice of prior does not matter very much
-given the amount of data that is available to estimate the vote probabilities.
-Also, given that the votes in Arizona are more favorable for Trump, the
-third point above is probably not universally true. However, if you
-try other values for $a$ and $b$ in what follows, you are unlikely to see
-much difference given the large number of ballots that were cast.
+### Updating the Posterior
 
 Once we have specified a prior, we can update our beliefs about the value
 for a parameter by computing the *posterior*. This involves applying Bayes'
@@ -401,84 +298,38 @@ a particular choice of $\theta$), and $p(y)$ is known as the *evidence*
 (the probability of getting that particular observation over all possible
 outcomes of the experiment). For many problems, it is straightforward to
 specify a prior and to compute the likelihood, while computing the evidence
-can be tricky. Fortunately for the case described below, computing the posterior
-can be done in closed form. This is because the Beta distribution is
-*conjugate* for a Binomial likelihood, meaning that if we use a Beta prior
-on the vote probability and a Binomial model to describe the outcome of
-polling (i.e. voting can be treated as a series of weighted coin flips),
-then the posterior for the vote probability is also a Beta
-distribution. The analytical solution for updating our prior with shape
-parameters $a$ and $b$ to the posterior if we have $n$ trials and $k$
-successes is
+can be tricky.
 
-$$ p(\theta|n, k) = \beta(a + k, b + n - k) $$
-
-Thus, we can draw samples from the posterior to see the variability of
-the vote probability:
-
-```
-def estimate_theta_bayes(state, timestamp=None):
-    "Draws samples from the posterior of the vote probability"
-
-    df = load_data(state, timestamp)
-
-    k = df["biden_votes"].iloc[0]-df["biden_votes"].iloc[-1]
-    n = k + df["trump_votes"].iloc[0]-df["trump_votes"].iloc[-1]
-
-    return beta.rvs(size=1000, a=a+k, b=b+n-k)
-
-for (state, tstamp) in iter_vals:
-
-    theta = estimate_theta_bayes(state, tstamp)
-
-    plt.figure()
-    plt.hist(theta, bins=100)
-    plt.xlabel("Biden Vote Probability")
-    plt.title("{} Vote Probability (Bayesian) as of {}".format(state, tstamp))
-
-plt.show()
-```
-
-Clearly, the large number of votes means that the posterior distribution is
-very tightly clustered around the point estimates we obtained above. We can
-see that this doesn't influence the final predictions very much by making
-predictions as above:
-
-```
-for (state, tstamp) in iter_vals:
-
-    theta = estimate_theta_bayes(state, tstamp)
-
-    samples = predict_margin_samples(theta, state, tstamp)
-
-    plt.figure()
-    plt.hist(samples, bins=100)
-    plt.xlabel("Biden Margin")
-    plt.title("{} Predicted Margin (Bayesian) as of {}".format(state, tstamp))
-
-plt.show()
-```
+In practice, for most models we cannot compute the evidence very easily,
+so instead of computing the posterior directly, we draw samples from it.
+A common technique for this is Markov Chain Monte Carlo (MCMC) sampling.
+A number of software libraries have been written in recent years to make
+carrying out this sampling straightforward using what are known as
+*probabilistic programming languages*. These languages formally treat
+variables as probability distributions with priors and then draw samples
+from the posterior to allow us to perform inference.
 
 ### Hierarchical Bayesian Model
 
-In the above, the vote probability is treated as a single, unchanging value.
-We may be uncertain about it, but the model assumes that every voter is
-identical. Given the political polarization in the US, this is probably not
-a very good assumption. Although the data seems to strongly suggest that the
-mail-in votes are consistently in favor of one candidate, this is not the
-same as saying all voters are identical. In the following, we adapt the
-model to relax this assumption and build what is known as a *hierarchical*
-Bayesian model.
+In our linear regression model, we effectively treated the vote probability
+as a single, unchanging value. This is the same as saying that every voter
+in our model is identical. Given the political polarization in the US, this
+is probably not a very good assumption. Although the data seems to strongly
+suggest that the mail-in votes are consistently in favor of one candidate,
+this is not the same as saying all voters are identical. In the following,
+we build a model to relax this assumption, using what is known as a
+*hierarchical* Bayesian model.
 
 If the above model of assuming that every voter is identical is one extreme,
 then the other extreme is to assume that every voter is different and we would
 need to estimate hundreds of thousands to millions of parameters to fit our
 model. This is not exactly practical, so a hierarchical model posits a middle
 ground that the vote probability is itself drawn from a probability
-distribution. Note that this is different than saying that we specify a prior
-distribution for a single value -- in the model, each incremental update of
-votes has a single vote probability associated with it, but that probability is
-drawn from a probability distribution and thus can vary.
+distribution. Note that this goes a step further than simply making the
+model Bayesian by treating the vote probability as a probability
+distribution -- in the model, each incremental update of votes has a single
+vote probability associated with it, but that probability is drawn from a
+probability distribution and thus can vary.
 
 In the following model, we specify the model by assuming that each vote
 update has a single vote probability associated with it, and that vote
@@ -494,44 +345,87 @@ priors using lognormal distributions. Since I expect the distribution
 from which $\theta$ is drawn to be roughly similar to the one I set for
 the prior on $\theta$ above, I will use this for the mean of my lognormal
 prior, and set unit variance for simplicity. The rest of the model is the
-same as above, except each individual vote update is treated separately.
+same as above, except each individual vote update is modelled and
+fit separately in order to estimate the *distribution* from which the
+vote probability is drawn, rather than the vote probability itself.
 
-Adding this additional layer of complexity means that we unfortunately can
-no longer compute our results analytically. Instead, we resort to Markov
-Chain Monte Carlo sampling, which is a method of simultaneously drawing
-samples from the posterior distribution of all of the parameters of the
-model. MCMC sampling is frequently implemented in what is known as a
-probabilistic programming language, where the language explicitly treats
-all variables as probability distributions from which it must sample.
-There are a number of popular lanaguages for this -- here I use PyMC3
-to implement my model.
+Finally, we need to explicitly model the likelihood. When you flip a fair
+coin a number of times, the distribution of outcomes follows a binomial
+distribution. Thus, we can use a binomial likelihood to model the
+range of vote probabilites that might be consistent with the votes that
+were cast. This can be computed analytically, and most probabilistic
+programming languages have built-in capacity for computing likelihoods
+of this type. This is done by setting this particular variable to have a
+known value, which indicates that this variable is used to compute the
+likelihood. In our particular case, this likelihood will be a vector
+of a series of trials, each with a different value of the vote probability.
+
+Thus, we can now write down a model in a probabilistic programming language
+in order to draw samples from the posterior. There are a number of popular
+lanaguages for this -- here I use PyMC3 to implement my model. PyMC3
+can easily handle all of the features we specified above (hierarchical
+structure, and a vector representation of the binomial likelihood), which
+is written out in the function below:
 
 ```
 import pymc3
 
-def estimate_theta_hierarchical(state, timestamp=None):
-    "estimate theta for the vote probability distribution using a hierarchical model and MCMC sampling"
+import logging
+logger = logging.getLogger("pymc3")
+logger.propagate = False
+logger.setLevel(logging.ERROR)
+
+def extract_n_k_trials(state, timestamp=None):
+    """
+    Convert vote data into a series of bernoulli trials. If no
+    data is valid, then return a list of a single zero for each.
+
+    Returns two lists of positive integers for the total number
+    of votes (n) and the votes for Biden (k)
+    """
 
     df = load_data(state, timestamp)
+
+    # convert raw vote counts into a series of trials (n, k),
+    # where n is the total number of votes and k is the number
+    # of votes for Biden
 
     n = np.diff(-df["biden_votes"]) + np.diff(-df["trump_votes"])
     k = np.diff(-df["biden_votes"])
 
+    # throw out sets that don't make any sense; if none remain then use (0,0)
+
     keep = (n > 0)*(k >= 0)*(k <= n)
     n = n[keep]
     k = k[keep]
+
+    if len(n) == 0:
+       n = [0]
+       k = [0]
+
+    return n, k
+
+def estimate_theta_hierarchical(state, timestamp=None):
+    "estimate theta for the vote probability distribution using a hierarchical model and MCMC sampling"
+
+    n, k = extract_n_k_trials(state, timestamp)
+
+    # build model and draw MCMC samples
 
     with pymc3.Model() as model:
         a = pymc3.Lognormal("a", mu=np.log(8.), sd=1.)
         b = pymc3.Lognormal("b", mu=np.log(4.), sd=1.)
         theta = pymc3.Beta("theta", alpha=a, beta=b, shape=len(n)) 
         obs = pymc3.Binomial("obs", p=theta, n=n, observed=k, shape=len(n))
-        trace = pymc3.sample(1000)
+        trace = pymc3.sample(1000, progressbar=False)
+
+    # convert posterior samples of a and b into samples from the
+    # vote probability
 
     theta = []
 
     for (aval, bval) in zip(trace["a"], trace["b"]):
-    	theta.append(beta.rvs(size=10, a=aval, b=bval)
+        theta.append(beta.rvs(size=10, a=aval, b=bval))
 
     return np.array(theta).flatten()
 
@@ -543,35 +437,320 @@ for (state, tstamp) in iter_vals:
     plt.hist(theta, bins=100)
     plt.xlabel("Biden vote probability")
     plt.title("{} Vote Probability (Hierarchical) as of {}".format(state, tstamp))
-
-plt.show()
 ```
+
+Once I draw MCMC samples for $a$ and $b$, I convert those samples into samples
+of $\theta$ as this is what is needed out of the model to make predictions.
 
 Looking at these plots, we see that the model is now much more varied in
 its estimates for the vote probability (note that this is the posterior for
 the *distribution* expected for the vote probability, rather than the explicit
 values of the vote probability itself). The mean is still where we expected
-it from the previous analysis, but it is much more tolerant of outlying values.
-This should considerably increase the spread of the predicted final margin,
-which we do below:
+it from the linear regression analysis, but the distribution is much wider
+due the fact that occasionally votes come in from places that are not as
+heavily in favor of Biden. This should considerably increase the spread of
+the predicted final margin and assure that it is not overconfident in the
+final result.
+
+### Predicting the Final Margin
+
+Once we have samples from the vote probability, we need to simulate the
+remaining votes to predict the final outcome. This is known as estimating the
+*posterior predictive distribution* in Bayesian inference, as we use our
+updated knowledge about one of our model parameters to predict some of the
+data that it was fit on.
+
+What is a reasonable way to simulate the remaining votes? As we see from the
+data, the votes come in a steady drip feed as ballots are counted. Thus,
+we can simulate this by sampling randomly, with replacement, from the data
+for the number of ballots cast in each update until we get to the number of
+votes remaining. We can then draw from the posterior of the vote probability
+distribution for each set of ballots, and project those using a binomial
+distribution. By repeating this many times using our posterior samples, we
+will have a reasonable estimate of the range expected in the final outcome.
 
 ```
+from scipy.stats import binom
+
+def predict_final_margin(theta, state, timestamp):
+    """
+    Use posterior samples of the vote probability to predict the remaining
+    votes.
+
+    The remaining votes are split into batches by sampling from
+    the previous votes until enough are accumulated. Then each batch is
+    forecast by drawing from the posterior of the vote probability, and
+    the total is summed.
+
+    Returns a numpy array of samples of the final margin
+    """
+
+    assert np.all(theta >= 0.)
+    assert np.all(theta <= 1.)
+
+    df = load_data(state, timestamp)
+
+    n_remain = df["votes_remaining"].iloc[0]
+
+    n, k = extract_n_k_trials(state, timestamp)
+
+    # simulate remaining votes
+
+    predicted_margin = []
+
+    for i in range(10000):
+
+        trials_remain = []
+
+        while np.sum(trials_remain) <= n_remain:
+            trials_remain.append(np.random.choice(n))
+
+        trials_remain[-1] = n_remain - np.sum(trials_remain[:-1])
+        assert np.sum(trials_remain) == n_remain
+
+        sim_votes = []
+
+        for t in trials_remain:
+            sim_votes.append(binom.rvs(size=1, n=t, p=np.random.choice(theta)))
+
+        predicted_margin.append(df["vote_differential"].iloc[0] +
+                                2*np.sum(sim_votes) - n_remain)
+
+    return predicted_margin
+
 for (state, tstamp) in iter_vals:
 
     theta = estimate_theta_hierarchical(state, tstamp)
-
-    samples = predict_margin_samples(theta, state, tstamp)
+    predicted_margin = predict_final_margin(theta, state, tstamp)
 
     plt.figure()
-    plt.hist(samples, bins=100)
+    plt.hist(predicted_margin, bins=100)
     plt.xlabel("Biden Margin")
-    plt.title("{} Predicted Margin (Hierarchical) as of {}".format(state, tstamp))
-
-plt.show()
+    plt.title("{} final predicted margin as of {}".format(state, tstamp))
 ```
 
-One limitation in this prediction method is that it overstates the variability
-in the final margin, because it uses a single value for forecasting all
-remaining votes. In reality, these votes will be divided up into smaller
-chunks, each of which will have a different vote probability. This will
-make extreme values less likely.
+As we can see from this, the model has fairly wide intervals surrounding the
+predicted final margin based on the original linear regression model.
+Interestingly, when we fit Georgia in this way, it looks much more likely that
+Trump would win through this point than the linear regression model would
+suggest, though the final margin is well within the error bounds suggested
+from the predictions. Arizona looks likely to fall to Trump, but Pennsylvania
+is much more firmly leaning towards Biden. We can look at the results again
+a day later to see how the race evolved:
+
+```
+for (state, tstamp) in zip(state_list, ["2020-11-06"]*3):
+
+    theta = estimate_theta_hierarchical(state, tstamp)
+    predicted_margin = predict_final_margin(theta, state, tstamp)
+
+    plt.figure()
+    plt.hist(predicted_margin, bins=100)
+    plt.xlabel("Biden Margin")
+    plt.title("{} final predicted margin as of {}".format(state, tstamp))
+```
+
+Clearly, Georgia has swung in Biden's favor over the course of the day.
+The mean final margin in Pennsylvania has not moved much, though the
+uncertainty has tightened up and made the result more likely for Biden.
+Arizona has moved slightly towards Biden, but is still more likely to go
+for Trump. 
+
+## Animating the Updates
+
+Now that we have built a model, we can build an animation that shows the
+evolution of the predicted results as a function of time. This will show
+how the uncertainty shrinks over time as fewer votes remain.
+
+**Note:** Because new MCMC samples need to be drawn for each new update,
+creating this animation ends up being fairly expensive to run (this took
+several hours on my laptop). I speed things up by saving the current
+prediction each time the MCMC samples are drawn, so that if the previous
+iteration is the same we do not need to re-run the model. However, this
+is still fairly expensive, so don't try and run this unless you are willing
+to wait!
+
+```
+import matplotlib.path as path
+import matplotlib.patches as patches
+import matplotlib.text as text
+import matplotlib.animation as animation
+
+from IPython.display import HTML
+
+def fit_model(state, timestamp=None):
+    """
+    Fit a model to predict the final margin for the given date/time.
+    Each iteration is saved as a numpy file, and the next step
+    checks for a model that matches the existing vote count before
+    doing the expensive MCMC fitting
+
+    Returns the simulated final margin samples at the given time
+    """
+
+    try:
+        model = np.load("model.npz")
+        n_prev = model["n"]
+        k_prev = model["k"]
+        n_predict_prev = model["n_predict"]
+        preds_prev = model["preds"]
+        state_prev = model["state"]
+    except (KeyError, IOError):
+        n_prev = None
+        k_prev = None
+        n_predict_prev = None
+        preds_prev = None
+
+    n, k = extract_n_k_trials(state, timestamp)
+
+    df = load_data(state, timestamp)
+    n_predict = df["votes_remaining"].iloc[0]
+
+    if (np.all(n_prev == n) and np.all(k_prev == k) and
+        n_predict_prev == n_predict):
+        return preds_prev
+    else:
+        theta = estimate_theta_hierarchical(state, timestamp)
+        preds =  predict_final_margin(theta, state, timestamp)
+        np.savez("model.npz", n=n, k=k, preds=preds, n_predict=n_predict)
+        return preds
+
+def initialize_bins(counts, bins):
+    "initialize the patch corners for the animation"
+
+    # get the corners of the rectangles for the histogram
+    left = bins[:-1]
+    right = bins[1:]
+    bottom = np.zeros(len(left))
+    top = bottom + counts
+    nrects = len(left)
+
+    nverts = nrects * (1 + 3 + 1)
+    verts = np.zeros((nverts, 2))
+    codes = np.full(nverts, path.Path.LINETO)
+    codes[0::5] = path.Path.MOVETO
+    codes[4::5] = path.Path.CLOSEPOLY
+    verts[0::5, 0] = left
+    verts[0::5, 1] = bottom
+    verts[1::5, 0] = left
+    verts[1::5, 1] = top
+    verts[2::5, 0] = right
+    verts[2::5, 1] = top
+    verts[3::5, 0] = right
+    verts[3::5, 1] = bottom
+
+    return verts, codes, bottom
+
+def create_animation(state):
+    "Create an animation of the vote updates for the given state"
+
+    start_time = "2020-11-04T00:00:00"
+    
+    preds = fit_model(state, start_time)
+
+    xlim = 100000
+    ylim = 20000
+    nbins = 200
+
+    bins_b = np.linspace(0, xlim, xlim//nbins, dtype=np.int64)
+    counts_b, bins_b = np.histogram(preds[preds > 0], bins_b)
+
+    bins_t = np.linspace(-xlim, 0, xlim//nbins, dtype=np.int64)
+    counts_t, bins_t = np.histogram(preds[preds < 0], bins_t)
+    
+    verts_t, codes_t, bottom_t = initialize_bins(counts_t, bins_t)
+    verts_b, codes_b, bottom_b = initialize_bins(counts_b, bins_b)
+
+    patch_t = None
+    patch_b = None
+
+    def animate(i, state, bins_t, bins_b, bottom_t, bottom_b, start_time):
+        # simulate new data coming in
+
+        timestamp = ((datetime.datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S") +
+                      datetime.timedelta(hours=i)).strftime("%Y-%m-%dT%H:%M:%S"))
+
+        print(timestamp)
+
+        df = load_data(state, timestamp)
+        votes = df["votes_remaining"].iloc[0]
+
+        preds = fit_model(state, timestamp)
+
+        n_t, bins_t = np.histogram(preds, bins_t)
+        top_t = bottom_t + n_t
+        verts_t[1::5, 1] = top_t
+        verts_t[2::5, 1] = top_t
+
+        n_b, bins_b = np.histogram(preds, bins_b)
+        top_b = bottom_b + n_b
+        verts_b[1::5, 1] = top_b
+        verts_b[2::5, 1] = top_b
+
+        date_text.set_text(timestamp)
+        vote_text.set_text("{} Votes Remaining".format(str(votes)))
+
+        mean_text.set_text("Margin = {:>8} $\pm$ {:>7}".format(int(np.mean(preds)),
+                                                        int(2.*np.std(preds))))
+        prob_text.set_text("Biden win prob = {:.2f}".format(np.sum(preds > 0)/len(preds)))
+        
+        return [patch_t, patch_b, date_text, vote_text, mean_text, prob_text]
+
+    fig, ax = plt.subplots()
+    barpath_t = path.Path(verts_t, codes_t)
+    patch_t = patches.PathPatch(barpath_t, facecolor='C3',
+                              edgecolor='C3', alpha=0.5)
+    ax.add_patch(patch_t)
+    barpath_b = path.Path(verts_b, codes_b)
+    patch_b = patches.PathPatch(barpath_b, facecolor='C0',
+                              edgecolor='C0', alpha=0.5)
+    ax.add_patch(patch_b)
+
+    date_text = text.Text(-9xlim//10, 9*ylim//10, start_time)
+    ax.add_artist(date_text)
+
+    df = load_data(state, start_time)
+    votes = df["votes_remaining"].iloc[0]
+
+    vote_text = text.Text(-9*xlim//10, 8*ylim//10,
+                          "{} Votes Remaining".format(str(votes)))
+    ax.add_artist(vote_text)
+
+    prob_text = text.Text(9*xlim//10, 9*ylim//10,
+                          "Biden win prob = {:.2f}".format(np.sum(preds > 0)/len(preds)),
+                          align=right)
+    ax.add_artist(prob_text)
+
+    mean_text = text.Text(9*xlim//10, 8*ylim//10,
+                          "Margin = {:>8} $\pm$ {:>7}".format(int(np.mean(preds)),
+                                                        int(2.*np.std(preds))),
+                          align=right)
+    ax.add_artist(mean_text)
+
+    ax.set_xlim(-xlim, xlim)
+    ax.set_ylim(0, ylim)
+    ax.set_xlabel("Biden margin")
+    ax.set_title("{} Final Margin Prediction".format(state))
+
+    ani = animation.FuncAnimation(fig, animate, frames=3,
+                                  fargs=(state, bins_t, bins_b, bottom_t, bottom_b, start_time),
+                                  repeat=False, blit=True)
+
+    HTML(ani.to_jshtml())
+
+for state in ["Georgia"]:
+    create_animation(state)
+```
+
+## Summary
+
+In this Data Story, we examined a hierarchical Bayesian model for the mail
+votes from the 2020 election. This is a method to forecast the remaining
+votes while capturing the uncertainty inherent in predicting the final
+result. The final model showed...
+
+One limitation of the predictions is that it does not account for the
+uncertainty in the estimates of the remaining vote. This can be added
+by explicitly adding some fixed uncertainty to the remaining vote, though
+it is difficult to estimate this in a rigorous empirical fashion and
+instead can only really be added as a fudge factor in the model.
