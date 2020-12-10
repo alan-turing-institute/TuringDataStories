@@ -174,8 +174,6 @@ def linear_regression(state, timestamp=None):
 
     coeffs = np.polyfit(df["votes_remaining"], df["vote_differential"], 1)
 
-    print("Predicted margin for {} as of {}: {}".format(state, timestamp, coeffs[1]))
-
     plotvals = np.linspace(0, df["votes_remaining"].iloc[-1])
 
     plt.plot(plotvals, coeffs[0]*plotvals + coeffs[1])
@@ -184,6 +182,7 @@ def linear_regression(state, timestamp=None):
 
 for (state, tstamp) in iter_vals:
     coeffs = linear_regression(state, tstamp)
+    print("Predicted margin for {} as of {}: {}".format(state, tstamp, coeffs[1]))
 ```
 
 Note that at this point, the linear regression predicts a margin in
@@ -274,14 +273,16 @@ the following:
 ```
 from scipy.stats import beta
 
-xvals = np.linspace(0, 1)
+def plot_prior(a, b):
+    "plot the beta distribution for shape paramters (a, b)"
+    
+    xvals = np.linspace(0, 1)
 
-a = 8.
-b = 4.
-
-plt.plot(xvals, beta.pdf(xvals, a=a, b=b))
-plt.xlabel("Biden vote probability")
-plt.title("PDF for the Beta distribution with a = {}, b = {}".format(a, b))
+    plt.plot(xvals, beta.pdf(xvals, a=a, b=b))
+    plt.xlabel("Biden vote probability")
+    plt.title("PDF for the Beta distribution with a = {}, b = {}".format(a, b))
+    
+plot_prior(8., 4.)
 ```
 
 ### Updating the Posterior
@@ -370,11 +371,6 @@ is written out in the function below:
 ```
 import pymc3
 
-import logging
-logger = logging.getLogger("pymc3")
-logger.propagate = False
-logger.setLevel(logging.ERROR)
-
 def extract_n_k_trials(state, timestamp=None):
     """
     Convert vote data into a series of bernoulli trials. If no
@@ -417,7 +413,7 @@ def estimate_theta_hierarchical(state, timestamp=None):
         b = pymc3.Lognormal("b", mu=np.log(4.), sd=1.)
         theta = pymc3.Beta("theta", alpha=a, beta=b, shape=len(n)) 
         obs = pymc3.Binomial("obs", p=theta, n=n, observed=k, shape=len(n))
-        trace = pymc3.sample(1000, progressbar=False)
+        trace = pymc3.sample(1000)
 
     # convert posterior samples of a and b into samples from the
     # vote probability
@@ -429,14 +425,18 @@ def estimate_theta_hierarchical(state, timestamp=None):
 
     return np.array(theta).flatten()
 
-for (state, tstamp) in iter_vals:
+def plot_posterior(state, timestamp):
+    "plot the posterior distribution of the vote probability"
 
-    theta = estimate_theta_hierarchical(state, tstamp)
+    theta = estimate_theta_hierarchical(state, timestamp)
 
     plt.figure()
     plt.hist(theta, bins=100)
     plt.xlabel("Biden vote probability")
-    plt.title("{} Vote Probability (Hierarchical) as of {}".format(state, tstamp))
+    plt.title("{} Vote Probability (Hierarchical) as of {}".format(state, timestamp))
+    
+for (state, tstamp) in iter_vals:
+    plot_posterior(state, tstamp)
 ```
 
 Once I draw MCMC samples for $a$ and $b$, I convert those samples into samples
@@ -484,7 +484,7 @@ def predict_final_margin(theta, state, timestamp):
 
     Returns a numpy array of samples of the final margin
     """
-
+    
     assert np.all(theta >= 0.)
     assert np.all(theta <= 1.)
 
@@ -516,17 +516,21 @@ def predict_final_margin(theta, state, timestamp):
         predicted_margin.append(df["vote_differential"].iloc[0] +
                                 2*np.sum(sim_votes) - n_remain)
 
-    return predicted_margin
+    return np.array(predicted_margin)
 
-for (state, tstamp) in iter_vals:
+def plot_predictions(state, timestamp):
+    "plot the posterior predictive distribution for the given state and time"
 
-    theta = estimate_theta_hierarchical(state, tstamp)
-    predicted_margin = predict_final_margin(theta, state, tstamp)
+    theta = estimate_theta_hierarchical(state, timestamp)
+    predicted_margin = predict_final_margin(theta, state, timestamp)
 
     plt.figure()
     plt.hist(predicted_margin, bins=100)
     plt.xlabel("Biden Margin")
-    plt.title("{} final predicted margin as of {}".format(state, tstamp))
+    plt.title("{} final predicted margin as of {}".format(state, timestamp))
+    
+for (state, tstamp) in iter_vals:
+    plot_predictions(state, tstamp)
 ```
 
 As we can see from this, the model has fairly wide intervals surrounding the
@@ -540,14 +544,7 @@ a day later to see how the race evolved:
 
 ```
 for (state, tstamp) in zip(state_list, ["2020-11-06"]*3):
-
-    theta = estimate_theta_hierarchical(state, tstamp)
-    predicted_margin = predict_final_margin(theta, state, tstamp)
-
-    plt.figure()
-    plt.hist(predicted_margin, bins=100)
-    plt.xlabel("Biden Margin")
-    plt.title("{} final predicted margin as of {}".format(state, tstamp))
+    plot_predictions(state, tstamp)
 ```
 
 Clearly, Georgia has swung in Biden's favor over the course of the day.
@@ -589,12 +586,11 @@ def fit_model(state, timestamp=None):
     """
 
     try:
-        model = np.load("model.npz")
+        model = np.load("model.npz", allow_pickle=True)
         n_prev = model["n"]
         k_prev = model["k"]
         n_predict_prev = model["n_predict"]
         preds_prev = model["preds"]
-        state_prev = model["state"]
     except (KeyError, IOError):
         n_prev = None
         k_prev = None
@@ -706,7 +702,7 @@ def create_animation(state):
                               edgecolor='C0', alpha=0.5)
     ax.add_patch(patch_b)
 
-    date_text = text.Text(-9xlim//10, 9*ylim//10, start_time)
+    date_text = text.Text(-9*xlim//10, 9*ylim//10, start_time)
     ax.add_artist(date_text)
 
     df = load_data(state, start_time)
@@ -718,13 +714,13 @@ def create_animation(state):
 
     prob_text = text.Text(9*xlim//10, 9*ylim//10,
                           "Biden win prob = {:.2f}".format(np.sum(preds > 0)/len(preds)),
-                          align=right)
+                          ha='right')
     ax.add_artist(prob_text)
 
     mean_text = text.Text(9*xlim//10, 8*ylim//10,
                           "Margin = {:>8} $\pm$ {:>7}".format(int(np.mean(preds)),
                                                         int(2.*np.std(preds))),
-                          align=right)
+                          ha='right')
     ax.add_artist(mean_text)
 
     ax.set_xlim(-xlim, xlim)
