@@ -97,7 +97,8 @@ def load_data(state, timestamp=None):
     data.loc[data["trailing_candidate_name"] == "Trump", "trump_votes"] \
         = data.loc[data["trailing_candidate_name"] == "Trump", "trailing_candidate_votes"] 			           
 
-    data = data[data["timestamp"] < timestamp]
+    data["timestamp"] = pandas.to_datetime(data["timestamp"])
+    data = data[data["timestamp"] < pandas.to_datetime(timestamp)]
 
     return data[data["state"].str.contains(state)]
 ```
@@ -124,7 +125,7 @@ to see the evolution of the race:
 import matplotlib.pyplot as plt
 
 state_list = ["Pennsylvania", "Georgia", "Arizona"]
-timestamp_list = ["2020-11-05"]*3
+timestamp_list = ["2020-11-05T00:00:00"]*3
 iter_vals = list(zip(state_list, timestamp_list))
 
 def plot_data(state, timestamp=None):
@@ -194,9 +195,15 @@ do not appear to be particularly robust and are somewhat dependent on when
 you choose to fit the data.
 
 ```
+def get_margin(state, timestamp=None):
+    "Extract margin for a state at a given time"
+    
+    df = load_data(state, timestamp)
+    
+    return df["vote_differential"].iloc[0]
+
 for state in state_list:
-    df = load_data(state)
-    print("Current margin in {}: {}".format(state, df["vote_differential"].iloc[0]))
+    print("Current margin in {}: {}".format(state, get_margin(state)))
 ```
 
 However, one thing to note about this is that even though the trends point
@@ -243,63 +250,24 @@ before we see any data, and then we can use that data to update our knowledge.
 This previous belief is known as a *prior* in Bayesian inference, and the
 updated beliefs once we look at our data is known as the *posterior*.
 
-### Prior Specification
+#### Bayesian Inference
 
-Before we look at our data, we thus need ask ourselves what we think
-reasonable values might be for the fraction of votes for Biden, which we will
-call $\theta$. We need to encode this in a probability distribution, so that
-we can update this using the data.
-
-* First, we know that this fraction must be between 0 and 1. A common family
-  of probability distributions over this interval is what is known as the
-  Beta distribution. This family of distributions has two shape parameters.
-  Much like how normal distributions are specified by a mean and variance,
-  the shape parameters for a Beta distribution determine the location
-  and width of the highest probability regions.
-
-* We know that very extreme values such as 0 or 1 are probably unlikely. Even
-  in the most liberal or conservative regions of the US, there are a fair
-  number of voters across the idealogical spectrum.
-
-* Historically, mail in votes tend to skew heavily towards Democrats. This
-  may be even more pronounced in this election, because Trump spent the
-  better part of the campaign casting doubt on mail ballots and encouraging
-  his supporters to vote in person (no doubt because he intended to contest
-  the mail in ballots as fradulent in order to win the election in court).
-
-Based on this, a reasonable prior for the vote probability might be
-the following:
-
-```
-from scipy.stats import beta
-
-def plot_prior(a, b):
-    "plot the beta distribution for shape paramters (a, b)"
-    
-    xvals = np.linspace(0, 1)
-
-    plt.plot(xvals, beta.pdf(xvals, a=a, b=b))
-    plt.xlabel("Biden vote probability")
-    plt.title("PDF for the Beta distribution with a = {}, b = {}".format(a, b))
-    
-plot_prior(8., 4.)
-```
-
-### Updating the Posterior
-
-Once we have specified a prior, we can update our beliefs about the value
-for a parameter by computing the *posterior*. This involves applying Bayes'
+Bayesian Inference involves taking our previous beliefs about a system,
+described by a probability distribution of reasonable values we expect
+a particular parameter to take, and then using the data that we have to
+update our beliefs about the distribution that we expect that parameter
+to take by computing the *posterior*. This involves applying Bayes'
 rule:
 
 $$ p(\theta|y) = \frac{p(y|\theta)p(\theta)}{p(y)} $$
 
-Here, $p(\theta)$ is the prior distribution (described above), $p(y|\theta)$
-is the *likelihood* (the probability that we would have gotten the data given
-a particular choice of $\theta$), and $p(y)$ is known as the *evidence*
-(the probability of getting that particular observation over all possible
-outcomes of the experiment). For many problems, it is straightforward to
-specify a prior and to compute the likelihood, while computing the evidence
-can be tricky.
+Here, $p(\theta)$ is the prior distribution (which we will specify before
+we look at the data), $p(y|\theta)$ is the *likelihood* (the probability
+that we would have gotten the data given a particular choice of $\theta$),
+and $p(y)$ is known as the *evidence* (the probability of getting that
+particular observation over all possible outcomes of the experiment).
+For many problems, it is straightforward to specify a prior and to compute
+the likelihood, while computing the evidence can be tricky.
 
 In practice, for most models we cannot compute the evidence very easily,
 so instead of computing the posterior directly, we draw samples from it.
@@ -310,7 +278,7 @@ carrying out this sampling straightforward using what are known as
 variables as probability distributions with priors and then draw samples
 from the posterior to allow us to perform inference.
 
-### Hierarchical Bayesian Model
+#### A Hierarchical Bayesian Model For Voting
 
 In our linear regression model, we effectively treated the vote probability
 as a single, unchanging value. This is the same as saying that every voter
@@ -330,25 +298,126 @@ distribution. Note that this goes a step further than simply making the
 model Bayesian by treating the vote probability as a probability
 distribution -- in the model, each incremental update of votes has a single
 vote probability associated with it, but that probability is drawn from a
-probability distribution and thus can vary.
+probability distribution and thus can vary. By quantifying this variability
+we will be able to estimate the uncertainty in the final outcome.
 
-In the following model, we specify the model by assuming that each vote
+In the following, we model the vote probability by assuming that each vote
 update has a single vote probability associated with it, and that vote
-probability is drawn from a beta distribution. Since a beta distribution
-depends on the $a$ and $b$ shape parameters, we will then need to set
-prior distributions for those parameters, rather than for $\theta$ itself.
-Having multiple levels like this are why these models are known as
+probability is drawn from a beta distribution. A beta distribution is
+a distribution defined over the interval $[0,1]$ with two shape parameters
+$a$ and $b$ that lets us flexibly specify a wide range of outcomes. If
+$a$ and $b$ are less than 1, then the distribution is biased towards
+the extreme values of 0 or 1, while if they are greater than 1 then the
+distribution is biased towards 0.5. If $a > b$, then the model is more
+biased towards 1, while if $b > a$ then the model is biased towards 0.
+Thus we can specify a range of distributions with just two parameters.
+
+```
+from scipy.stats import beta
+
+def plot_beta(a, b):
+    "plot the beta distribution for shape paramters (a, b)"
+    
+    xvals = np.linspace(0, 1)
+
+    plt.plot(xvals, beta.pdf(xvals, a=a, b=b))
+    plt.xlabel("Biden vote probability")
+    plt.title("PDF for the Beta distribution with a = {}, b = {}".format(a, b))
+    
+plot_beta(8., 4.)
+```
+
+Thus, instead of estimating the vote probability, we instead need to
+estimate $a$ and $b$, which will tell us what we expect the distribution
+of the vote probability to be. Once we have estimates for those
+parameters, we can forecast the remaining votes by repeatedly drawing
+the vote probability from the appropriate beta distributions. Having
+multiple levels like this are why these models are known as
 *hierarchical* -- parameters are drawn from distributions whose parameters
 are also distributions themselves.
 
-Since $a$ and $b$ are positive, continuous variables, I will specify their
-priors using lognormal distributions. Since I expect the distribution
-from which $\theta$ is drawn to be roughly similar to the one I set for
-the prior on $\theta$ above, I will use this for the mean of my lognormal
-prior, and set unit variance for simplicity. The rest of the model is the
-same as above, except each individual vote update is modelled and
-fit separately in order to estimate the *distribution* from which the
-vote probability is drawn, rather than the vote probability itself.
+Since all parameters in a Bayesian model must have priors, our task
+is now to encode our prior beliefs about the vote probability by setting
+prior distributions for $a$ and $b$.
+
+##### Prior
+
+Often, in Bayesian inference we don't have strong feelings about what
+values we might expect for a parameter. In those cases, we often try to use
+something simple, what is known as an *uninformative* prior. These might be
+expressed as a statement like "every value is equally probable". Or in this
+case we might assume that our prior for the vote probability should be
+peaked close to 0.5, and then taper off towards 0 and 1, with the argument
+that US presidential elections are usually decided by a few percentage points
+difference in the national popular vote. This might seem very reasonable
+on the surface, as America is pretty evenly divided between Democrats and
+Republicans.
+
+However, mail in votes in practice can be extremely biased towards
+one party. Historically, a large majority of mail in ballots are
+Democratic, for a variety of reasons. Trump also spent much of the
+campaign sowing doubt about mail-in ballots (telegraphing his post-election
+strategy of trying to throw them out in court), so his supporters may be
+much less likely to vote in this manner. However, there could also be a
+situation where the mail-in ballots fall heavily towards a Republican candidate
+(as we have seen already, more of the Arizona ballots tend to be in favor
+of Trump). Thus, based on this I would argue that what we actually want is a
+prior that is reasonably likely to include some extremes in the vote
+probability to ensure that our estimate of the final outcome prior to
+looking at the data doesn't exclude a significant swing.
+
+This issue illustrates a challenge with Bayesian Hierarchical models --
+when the parameter that we have some knowledge about is itself described by
+a distribution, the priors for the distribution parameters can be more
+difficult to specify. For this reason, modellers often go one level
+further and specify prior distributions on the parameters used to specify
+the priors on the model parameters, which are known as *hyperpriors*, and
+see how varying the priors changes the outcome of inference. We will not
+explore this level of Bayesian modelling, but it should suffice to say that
+I tried a number of different choices for the priors before arriving at
+something that I thought accurately reflected my prior beliefs about the
+outcome.
+
+In the priors that I finally settled on, I use a Lognormal distribution
+for my prior on $a$ and $b$. I choose the parameters of the lognormal
+distributions for $a$ and $b$ to be slightly different such that more likely
+to give a democratically-leaning distribution, but still have a decent chance
+of producing extremes for Trump. I also choose the parameters such that
+we get a mix of values more biased towards the extremes as well as those
+biased towards values closer to 0.5. This should accurately reflect our
+prior uncertainty in the outcome, as we think there is a decent chance
+based on historical data that the mail votes are heavily in favor of one
+candidate. Here are some histograms showing single samples of the vote
+probability drawn from this prior, and an aggregate histogram of 100 samples:
+
+```
+from pymc3 import Lognormal
+
+def plot_prior_samples(n_samples):
+    "plot a random draw of the vote probability from the prior"
+
+    a = Lognormal.dist(mu=0.4, sd=0.5).random(size=n_samples)
+    b = Lognormal.dist(mu=0.2, sd=0.5).random(size=n_samples)
+
+    x = np.linspace(0., 1.)
+    
+    plt.figure()
+    plt.hist(beta.rvs(size=(1000, n_samples), a=a, b=b).flatten(), bins=100)
+    plt.xlabel("Biden vote probability")
+    plt.title("Prior Vote Probability Distribution using {} samples".format(i))
+
+for i in [1, 1, 1, 100]:
+    plot_prior_samples(i)
+```
+
+From these individual samples, as well as the aggregated histogram,
+we see that we get a range of outcomes, with a slight bias
+towards those that favor democrats. As we acquire enough data to reliably
+estimate the underlying distribution of the vote probabilites, we should
+see better estimates of the true distribution, which will eliminate
+more of the extremes and reduce the uncertainty in the final outcome.
+
+##### Likelihood
 
 Finally, we need to explicitly model the likelihood. When you flip a fair
 coin a number of times, the distribution of outcomes follows a binomial
@@ -357,9 +426,12 @@ range of vote probabilites that might be consistent with the votes that
 were cast. This can be computed analytically, and most probabilistic
 programming languages have built-in capacity for computing likelihoods
 of this type. This is done by setting this particular variable to have a
-known value, which indicates that this variable is used to compute the
-likelihood. In our particular case, this likelihood will be a vector
-of a series of trials, each with a different value of the vote probability.
+known value, which indicates to the probabilistic programming language
+that this variable is used to compute the likelihood. In our particular
+case, this likelihood will be a vector of a series of trials, each with a
+different value of the vote probability.
+
+##### PyMC3 Implementation
 
 Thus, we can now write down a model in a probabilistic programming language
 in order to draw samples from the posterior. There are a number of popular
@@ -370,6 +442,11 @@ is written out in the function below:
 
 ```
 import pymc3
+
+import logging
+logger = logging.getLogger("pymc3")
+logger.propagate = False
+logger.setLevel(logging.ERROR)
 
 def extract_n_k_trials(state, timestamp=None):
     """
@@ -399,48 +476,45 @@ def extract_n_k_trials(state, timestamp=None):
        n = [0]
        k = [0]
 
-    return n, k
+    return np.array(n, dtype=np.int64), np.array(k, dtype=np.int64)
 
 def estimate_theta_hierarchical(state, timestamp=None):
-    "estimate theta for the vote probability distribution using a hierarchical model and MCMC sampling"
+    "estimate the vote probability distribution using a hierarchical model and MCMC sampling"
 
     n, k = extract_n_k_trials(state, timestamp)
 
     # build model and draw MCMC samples
 
     with pymc3.Model() as model:
-        a = pymc3.Lognormal("a", mu=np.log(8.), sd=1.)
-        b = pymc3.Lognormal("b", mu=np.log(4.), sd=1.)
+        a = pymc3.Lognormal("a", mu=0.4, sd=0.5)
+        b = pymc3.Lognormal("b", mu=0.2, sd=0.5)
         theta = pymc3.Beta("theta", alpha=a, beta=b, shape=len(n)) 
         obs = pymc3.Binomial("obs", p=theta, n=n, observed=k, shape=len(n))
-        trace = pymc3.sample(1000)
+        trace = pymc3.sample(1000, progressbar=False)
 
-    # convert posterior samples of a and b into samples from the
-    # vote probability
-
-    theta = []
-
-    for (aval, bval) in zip(trace["a"], trace["b"]):
-        theta.append(beta.rvs(size=10, a=aval, b=bval))
-
-    return np.array(theta).flatten()
+    return trace
 
 def plot_posterior(state, timestamp):
     "plot the posterior distribution of the vote probability"
 
-    theta = estimate_theta_hierarchical(state, timestamp)
+    trace = estimate_theta_hierarchical(state, timestamp)
 
+    rvs_size = (100, len(trace["a"]))
+    
     plt.figure()
-    plt.hist(theta, bins=100)
+    plt.hist(beta.rvs(size=rvs_size,
+                      a=np.broadcast_to(trace["a"], rvs_size),
+                      b=np.broadcast_to(trace["b"], rvs_size)).flatten(),
+                      bins=100)
     plt.xlabel("Biden vote probability")
-    plt.title("{} Vote Probability (Hierarchical) as of {}".format(state, timestamp))
+    plt.title("{} Vote Probability Posterior as of {}".format(state, timestamp))
     
 for (state, tstamp) in iter_vals:
     plot_posterior(state, tstamp)
 ```
 
 Once I draw MCMC samples for $a$ and $b$, I convert those samples into samples
-of $\theta$ as this is what is needed out of the model to make predictions.
+of $\theta$ to see our posterior estimate of the vote probability.
 
 Looking at these plots, we see that the model is now much more varied in
 its estimates for the vote probability (note that this is the posterior for
@@ -448,9 +522,9 @@ the *distribution* expected for the vote probability, rather than the explicit
 values of the vote probability itself). The mean is still where we expected
 it from the linear regression analysis, but the distribution is much wider
 due the fact that occasionally votes come in from places that are not as
-heavily in favor of Biden. This should considerably increase the spread of
-the predicted final margin and assure that it is not overconfident in the
-final result.
+heavily in favor of Biden (or Trump in the case of Arizona). This should
+considerably increase the spread of the predicted final margin and assure
+that it is not overconfident in the final result.
 
 ### Predicting the Final Margin
 
@@ -464,66 +538,82 @@ What is a reasonable way to simulate the remaining votes? As we see from the
 data, the votes come in a steady drip feed as ballots are counted. Thus,
 we can simulate this by sampling randomly, with replacement, from the data
 for the number of ballots cast in each update until we get to the number of
-votes remaining. We can then draw from the posterior of the vote probability
-distribution for each set of ballots, and project those using a binomial
-distribution. By repeating this many times using our posterior samples, we
-will have a reasonable estimate of the range expected in the final outcome.
+votes remaining. We can then use our posterior samples of $a$ and $b$ to
+generate the distribution of vote probabilities, and then draw from the
+vote probabilites to forecast the outcome of each batch of votes using a
+binomial distribution. We repeat this process 10 times to ensure that the
+result isn't dependent on the particular realization of the drip feed
+simulation, and aggregate those samples to get the final estimate of the
+posterior predictive distribution. This should give a reasonable estimate of
+the final outcome based on our model.
 
 ```
 from scipy.stats import binom
 
-def predict_final_margin(theta, state, timestamp):
+def get_votes_remaining(state, timestamp=None):
+    "Extract remaining votes for a state at a given timestamp"
+    
+    df = load_data(state, timestamp)
+
+    return df["votes_remaining"].iloc[0]
+
+def predict_final_margin(trace, state, timestamp=None):
     """
     Use posterior samples of the vote probability to predict the remaining
     votes.
 
     The remaining votes are split into batches by sampling from
     the previous votes until enough are accumulated. Then each batch is
-    forecast by drawing from the posterior of the vote probability, and
-    the total is summed.
+    forecast using the posterior samples, and the total is summed.
 
     Returns a numpy array of samples of the final margin
     """
+
+    assert np.all(trace["a"] >= 0.)
+    assert np.all(trace["b"] >= 0.)
+
+    n_remain = get_votes_remaining(state, timestamp)
     
-    assert np.all(theta >= 0.)
-    assert np.all(theta <= 1.)
-
-    df = load_data(state, timestamp)
-
-    n_remain = df["votes_remaining"].iloc[0]
+    margin = get_margin(state, timestamp)
 
     n, k = extract_n_k_trials(state, timestamp)
-
+    
+    if np.all(n == 0):
+        n = np.array([1000], dtype=np.int64)
+    
     # simulate remaining votes
 
-    predicted_margin = []
+    n_trials = 10
 
-    for i in range(10000):
+    predicted_margin = np.zeros((n_trials, len(trace["a"])))
 
+    for i in range(n_trials):
         trials_remain = []
-
+        
         while np.sum(trials_remain) <= n_remain:
             trials_remain.append(np.random.choice(n))
-
+            
         trials_remain[-1] = n_remain - np.sum(trials_remain[:-1])
         assert np.sum(trials_remain) == n_remain
+    
+        trials_remain = np.array(trials_remain, dtype=np.int64)
+    
+        rvs_size = (len(trace["a"]), len(trials_remain))
+    
+        predicted_margin[i] = np.sum(binom.rvs(size=rvs_size,
+                                               p=beta.rvs(size=rvs_size,
+                                                          a=np.broadcast_to(trace["a"][:, np.newaxis], rvs_size),
+                                                          b=np.broadcast_to(trace["b"][:, np.newaxis], rvs_size)),
+                                               n=np.broadcast_to(trials_remain, rvs_size)), axis=-1)
 
-        sim_votes = []
-
-        for t in trials_remain:
-            sim_votes.append(binom.rvs(size=1, n=t, p=np.random.choice(theta)))
-
-        predicted_margin.append(df["vote_differential"].iloc[0] +
-                                2*np.sum(sim_votes) - n_remain)
-
-    return np.array(predicted_margin)
+    return margin - n_remain + 2*predicted_margin.flatten()
 
 def plot_predictions(state, timestamp):
     "plot the posterior predictive distribution for the given state and time"
 
-    theta = estimate_theta_hierarchical(state, timestamp)
-    predicted_margin = predict_final_margin(theta, state, timestamp)
-
+    trace = estimate_theta_hierarchical(state, timestamp)
+    predicted_margin = predict_final_margin(trace, state, timestamp)
+    
     plt.figure()
     plt.hist(predicted_margin, bins=100)
     plt.xlabel("Biden Margin")
@@ -537,27 +627,31 @@ As we can see from this, the model has fairly wide intervals surrounding the
 predicted final margin based on the original linear regression model.
 Interestingly, when we fit Georgia in this way, it looks much more likely that
 Trump would win through this point than the linear regression model would
-suggest, though the final margin is well within the error bounds suggested
-from the predictions. Arizona looks likely to fall to Trump, but Pennsylvania
-is much more firmly leaning towards Biden. We can look at the results again
-a day later to see how the race evolved:
+suggest, though the final margin found by the regression analysis is well
+within the error bounds suggested from the predictions. Arizona looks up for
+grabs, indicating that the outlier points were definitely biasing the
+regression analysis. Pennsylvania is much more firmly leaning towards Biden.
+We can look at the results again a day later to see how the race evolved:
 
 ```
-for (state, tstamp) in zip(state_list, ["2020-11-06"]*3):
+for (state, tstamp) in zip(state_list, ["2020-11-06T00:00:00"]*3):
     plot_predictions(state, tstamp)
 ```
 
 Clearly, Georgia has swung in Biden's favor over the course of the day.
 The mean final margin in Pennsylvania has not moved much, though the
 uncertainty has tightened up and made the result more likely for Biden.
-Arizona has moved slightly towards Biden, but is still more likely to go
-for Trump. 
+Arizona could still go either way.
 
 ## Animating the Updates
 
 Now that we have built a model, we can build an animation that shows the
 evolution of the predicted results as a function of time. This will show
-how the uncertainty shrinks over time as fewer votes remain.
+how the uncertainty shrinks over time as fewer votes remain. I check
+for results every 15 minutes for the 12 days from 4 November onward,
+and update the model when new ballots are found. I also compute
+a Biden win probability and show the mean margin $\pm$ 2 standard deviations
+to give an idea of the equivalent regression result and its uncertainty.
 
 **Note:** Because new MCMC samples need to be drawn for each new update,
 creating this animation ends up being fairly expensive to run (this took
@@ -568,14 +662,14 @@ is still fairly expensive, so don't try and run this unless you are willing
 to wait!
 
 ```
+%%capture
+
 import matplotlib.path as path
 import matplotlib.patches as patches
 import matplotlib.text as text
 import matplotlib.animation as animation
 
-from IPython.display import HTML
-
-def fit_model(state, timestamp=None):
+def fit_model(state, timestamp=None, initialize=False):
     """
     Fit a model to predict the final margin for the given date/time.
     Each iteration is saved as a numpy file, and the next step
@@ -585,24 +679,29 @@ def fit_model(state, timestamp=None):
     Returns the simulated final margin samples at the given time
     """
 
-    try:
-        model = np.load("model.npz", allow_pickle=True)
-        n_prev = model["n"]
-        k_prev = model["k"]
-        n_predict_prev = model["n_predict"]
-        preds_prev = model["preds"]
-    except (KeyError, IOError):
-        n_prev = None
-        k_prev = None
-        n_predict_prev = None
-        preds_prev = None
+    n_prev = None
+    k_prev = None
+    n_predict_prev = None
+    preds_prev = None
+    
+    if not initialize:
+        try:
+            model = np.load("model.npz")
+            n_prev = model["n"]
+            k_prev = model["k"]
+            n_predict_prev = int(model["n_predict"])
+            preds_prev = model["preds"]
+        except (KeyError, IOError):
+            n_prev = None
+            k_prev = None
+            n_predict_prev = None
+            preds_prev = None
 
     n, k = extract_n_k_trials(state, timestamp)
 
-    df = load_data(state, timestamp)
-    n_predict = df["votes_remaining"].iloc[0]
-
-    if (np.all(n_prev == n) and np.all(k_prev == k) and
+    n_predict = get_votes_remaining(state, timestamp)
+    
+    if (np.array_equal(n_prev, n) and np.array_equal(k_prev, k) and
         n_predict_prev == n_predict):
         return preds_prev
     else:
@@ -640,12 +739,12 @@ def initialize_bins(counts, bins):
 def create_animation(state):
     "Create an animation of the vote updates for the given state"
 
-    start_time = "2020-11-04T00:00:00"
+    start_time = "2020-11-04T14:00:00"
     
-    preds = fit_model(state, start_time)
-
+    preds = fit_model(state, start_time, initialize=True)
+    
     xlim = 100000
-    ylim = 20000
+    ylim = 500
     nbins = 200
 
     bins_b = np.linspace(0, xlim, xlim//nbins, dtype=np.int64)
@@ -662,14 +761,14 @@ def create_animation(state):
 
     def animate(i, state, bins_t, bins_b, bottom_t, bottom_b, start_time):
         # simulate new data coming in
-
+        
+        hours = i//4
+        minutes = 15*i % 60
+        
         timestamp = ((datetime.datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S") +
-                      datetime.timedelta(hours=i)).strftime("%Y-%m-%dT%H:%M:%S"))
+                      datetime.timedelta(hours=hours, minutes=minutes)).strftime("%Y-%m-%dT%H:%M:%S"))
 
-        print(timestamp)
-
-        df = load_data(state, timestamp)
-        votes = df["votes_remaining"].iloc[0]
+        n_remain = get_votes_remaining(state, timestamp)
 
         preds = fit_model(state, timestamp)
 
@@ -683,8 +782,8 @@ def create_animation(state):
         verts_b[1::5, 1] = top_b
         verts_b[2::5, 1] = top_b
 
-        date_text.set_text(timestamp)
-        vote_text.set_text("{} Votes Remaining".format(str(votes)))
+        date_text.set_text(datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S").strftime("%Y-%m-%d %H:%M"))
+        vote_text.set_text("{} Votes Remaining".format(str(n_remain)))
 
         mean_text.set_text("Margin = {:>8} $\pm$ {:>7}".format(int(np.mean(preds)),
                                                         int(2.*np.std(preds))))
@@ -702,14 +801,13 @@ def create_animation(state):
                               edgecolor='C0', alpha=0.5)
     ax.add_patch(patch_b)
 
-    date_text = text.Text(-9*xlim//10, 9*ylim//10, start_time)
+    date_text = text.Text(-9*xlim//10, 9*ylim//10,
+                          datetime.datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S").strftime("%Y-%m-%d %H:%M"))
     ax.add_artist(date_text)
 
-    df = load_data(state, start_time)
-    votes = df["votes_remaining"].iloc[0]
-
+    n_remain = get_votes_remaining(state, start_time)
     vote_text = text.Text(-9*xlim//10, 8*ylim//10,
-                          "{} Votes Remaining".format(str(votes)))
+                          "{} Votes Remaining".format(str(n_remain)))
     ax.add_artist(vote_text)
 
     prob_text = text.Text(9*xlim//10, 9*ylim//10,
@@ -727,26 +825,48 @@ def create_animation(state):
     ax.set_ylim(0, ylim)
     ax.set_xlabel("Biden margin")
     ax.set_title("{} Final Margin Prediction".format(state))
-
-    ani = animation.FuncAnimation(fig, animate, frames=3,
+    
+    ani = animation.FuncAnimation(fig, animate, frames=4*24*12, interval=100,
                                   fargs=(state, bins_t, bins_b, bottom_t, bottom_b, start_time),
                                   repeat=False, blit=True)
+    
+    return ani
 
-    HTML(ani.to_jshtml())
-
-for state in ["Georgia"]:
-    create_animation(state)
+ani_pa = create_animation("Pennsylvania")
+ani_ga = create_animation("Georgia")
+ani_az = create_animation("Arizona")
 ```
 
-## Summary
+Displaying these, we can see how the race evolves over time.
 
-In this Data Story, we examined a hierarchical Bayesian model for the mail
-votes from the 2020 election. This is a method to forecast the remaining
-votes while capturing the uncertainty inherent in predicting the final
-result. The final model showed...
+```
+from IPython.display import HTML
 
-One limitation of the predictions is that it does not account for the
-uncertainty in the estimates of the remaining vote. This can be added
-by explicitly adding some fixed uncertainty to the remaining vote, though
-it is difficult to estimate this in a rigorous empirical fashion and
-instead can only really be added as a fudge factor in the model.
+HTML(ani_pa.to_jshtml())
+```
+
+```
+HTML(ani_ga.to_jshtml())
+```
+
+```
+HTML(ani_az.to_jshtml())
+```
+
+Based on this model, we can see that Pennsylvania was very clearly going
+in Biden's direction from early on, despite Trump's substantial lead at the
+end of Election Day. This was reflected by comments made by other election
+data journalists (for instance Nate Silver), all of whom were fairly
+confident that the numbers were good news for Biden even as early as Election
+Day or the day after.
+
+Georgia, on the other hand, was not a sure thing. For much of the early data,
+our model favored Trump, though the uncertainties were wide enough that
+Biden's eventual victory was still not an unreasonable outcome. As the
+ballots shifted towards Biden, we can see a clear change around.
+
+Arizona, despite being the first state among these that many news outlets
+called, showed the largest uncertainties for much of the time period we
+have data. Trump looked likely to overcome his deficit for some time,
+but was never able to definitively overcome Biden's lead as the uncertainties
+never shrunk too much in his favor.
