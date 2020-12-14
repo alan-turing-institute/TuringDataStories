@@ -2,12 +2,12 @@
 
 ## Author
 
-* **Eric Daub**, Alan Turing Institute, Github: @edaub
+* **Eric Daub**, Alan Turing Institute, GitHub: [@edaub](https://github.com/edaub).
 
 ## Other Contributors
 
-* **Camila Rangel Smith**, Alan Turing Institute
-* **Martin O'Reilly**, Alan Turing Institute
+* **Camila Rangel Smith**, Alan Turing Institute, GitHub: [@crangelsmith](https://github.com/crangelsmith). Twitter: [@CamilaRangelS](https://twitter.com/CamilaRangelS).
+* **Martin O'Reilly**, Alan Turing Institute, Github: [@martintoreilly](https://github.com/martintoreilly).
 
 ## Reviewers
 
@@ -35,11 +35,11 @@ being released left audiences constantly checking the news for updates.
 In this Turing Data Story, I examine a few ways to analyze the data updates
 coming from each state to predict the final outcome. This originated from
 some Slack discussions with Camila Rangel Smith and Martin O'Reilly, whom
-I list above as contributors. In particular, our initial discussions centered
-around uncertainties in the analysis done by Camila and Martin, which I have
-carried out using Bayesian inference to quantify uncertainty and determine
-when we might have reasonably called each state for the eventual winner
-based on the updated data.
+I list above as contributors for this reason. In particular, our initial
+interest in this question centered around uncertainties in the analysis done
+by Camila and Martin, which I have carried out using Bayesian inference to
+quantify uncertainty and determine when we might have reasonably called each
+state for the eventual winner based on the updated data.
 
 ## Data
 
@@ -651,7 +651,7 @@ Arizona could still go either way.
 Now that we have built a model, we can build an animation that shows the
 evolution of the predicted results as a function of time. This will show
 how the uncertainty shrinks over time as fewer votes remain. I check
-for results every 15 minutes for the 12 days from 4 November onward,
+for results every 30 minutes for the 12 days from 4 November onward,
 and update the model when new ballots are found. I also compute
 a Biden win probability and show the mean margin $\pm$ 2 standard deviations
 to give an idea of the equivalent regression result and its uncertainty.
@@ -765,8 +765,8 @@ def create_animation(state):
     def animate(i, state, bins_t, bins_b, bottom_t, bottom_b, start_time):
         # simulate new data coming in
         
-        hours = i//4
-        minutes = 15*i % 60
+        hours = i//2
+        minutes = 30*i % 60
         
         timestamp = ((datetime.datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S") +
                       datetime.timedelta(hours=hours, minutes=minutes)).strftime("%Y-%m-%dT%H:%M:%S"))
@@ -829,7 +829,7 @@ def create_animation(state):
     ax.set_xlabel("Biden margin")
     ax.set_title("{} Final Margin Prediction".format(state))
     
-    ani = animation.FuncAnimation(fig, animate, frames=4*24*12, interval=100,
+    ani = animation.FuncAnimation(fig, animate, frames=2*24*12, interval=200,
                                   fargs=(state, bins_t, bins_b, bottom_t, bottom_b, start_time),
                                   repeat=False, blit=True)
     
