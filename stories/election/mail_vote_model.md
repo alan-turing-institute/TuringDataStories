@@ -80,7 +80,10 @@ def load_data(state, timestamp=None):
     if timestamp is None:
        timestamp = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
 
-    data = pandas.read_csv("https://alex.github.io/nyt-2020-election-scraper/battleground-state-changes.csv")
+    try:
+        data = pandas.read_csv("https://alex.github.io/nyt-2020-election-scraper/battleground-state-changes.csv")
+    except:
+        data = pandas.read_csv("battleground-state-changes.csv")
 
     data.loc[data["leading_candidate_name"] == "Trump", "vote_differential"] \
         = -data.loc[data["leading_candidate_name"] == "Trump", "vote_differential"]
@@ -870,3 +873,18 @@ called, showed the largest uncertainties for much of the time period we
 have data. Trump looked likely to overcome his deficit for some time,
 but was never able to definitively overcome Biden's lead as the uncertainties
 never shrunk too much in his favor.
+
+## Conclusion
+
+This Data Story examined how we could build a simple Bayesian hierarchical
+model for the US election data and use it to forecast the final outcome.
+The model showed how the outcome in three key battleground states evolved
+over the week following the election as mail ballots were counted, tipping
+the election in favor of Biden. Because the model includes uncertainties
+and prior beliefs about voting behavior, this gave a richer picture of how
+to forecast the final result than simply extrapolating using early returns
+(with considerable more thought and effort required, however!). Because
+of the time scales over which the election played out, we could imagine
+having put this in place to make prospective predictions (stay tuned for
+2024!) in real time to see how this simple model aligns with more experienced
+election forecasters.
