@@ -212,9 +212,13 @@ for state in state_list:
 However, one thing to note about this is that even though the trends point
 clearly in favor of Biden in this analysis, we do not have a good idea of
 the uncertainties. Without this, one cannot comfortably call a state in
-favor of one candidate, which is why the media waited a few more days beyond
-this to call the states for Biden. How might we develop a model that
-explicitly captures this uncertainty?
+favor of one candidate, which is why the media waited several days beyond
+the election to call the states for Biden, as the only way to be sure in
+this case is to wait for the margin to surpass the number of remaining
+votes. How might we develop a model that explicitly captures this
+uncertainty? And given such a model, when can we be confident in the
+result, and how does it align with the narrative from the news media?
+The following describes one approach for doing so.
 
 ## Modelling Uncertainty in the Votes
 
@@ -859,20 +863,34 @@ HTML(ani_az.to_jshtml())
 Based on this model, we can see that Pennsylvania was very clearly going
 in Biden's direction from early on, despite Trump's substantial lead at the
 end of Election Day. This was reflected by comments made by other election
-data journalists (for instance Nate Silver), all of whom were fairly
-confident that the numbers were good news for Biden even as early as Election
-Day or the day after.
+data journalists, all of whom were fairly confident that the numbers were
+good news for Biden even as early as 4 November. Biden's win probability
+steadily increased, surpassing 99% on 6 November. The media called
+the state, and the election, for Biden on 7 November.
 
 Georgia, on the other hand, was not a sure thing. For much of the early data,
-our model favored Trump, though the uncertainties were wide enough that
+our model favored Trump, who had a win probability of 82% on the evening of
+4 November. However, the uncertainties were wide enough at that point that
 Biden's eventual victory was still not an unreasonable outcome. As the
-ballots shifted towards Biden, we can see a clear change around.
+ballots shifted towards Biden, we can see a clear change on 5 November,
+and by that evening Biden's win probability was 70%. Biden's chances
+steadily increased and surpassed 99% on the evening of 7 November. However,
+since the final margin was still fairly small in absolute terms, the media
+did not call Georgia until 12 or 13 November.
 
 Arizona, despite being the first state among these that many news outlets
 called, showed the largest uncertainties for much of the time period we
-have data. Trump looked likely to overcome his deficit for some time,
-but was never able to definitively overcome Biden's lead as the uncertainties
-never shrunk too much in his favor.
+have data, with no candidate having a clear advantage until 9 November when
+Biden took a slight lead in the model predictions. From there, Biden inched
+ahead as the remaining ballots came in, and the outcome shifted clearly in
+his favor on 12 November with his win probability exceeding 99% that evening.
+The remaining media outlets called Arizona for Biden on 13 November.
+
+As we can see, our model is able to call the outcome of these states slightly
+before the media does so (possibly due to some level of conservatism).
+Seeing the range of uncertainties shrink is helpful to know what range of
+outcomes could still be reasonably expected, and can be a much more interesting
+way to visualize the results (particularly when animated as above).
 
 ## Conclusion
 
