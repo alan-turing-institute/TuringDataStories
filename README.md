@@ -48,7 +48,7 @@ This repository is always a work in progress and **everyone** is encouraged to h
 - **Story ideas:** Have an idea for an interesting story that could be told if you had the data, or knew how to analyse it? We can help.
 - **Data:** Stumbled across an interesting dataset, or perhaps mashed together several sources of data yourself? We want to hear about it.
 - **Code:** Are you an expert in Bayesian analysis? Do you have sick matplotlib skills? Put that knowledge to work!
-- **Peer Review:** Know a bit about data analysis? Good at communicating that knowledge? Interested in learning about it can be applied to understanding society? We need reviews to make our stories are the best they can be.
+- **Peer Review:** Know a bit about data analysis? Good at communicating that knowledge? Interested in learning about it can be applied to understanding society? We need reviews to make sure our stories are the best they can be.
 - **Communication**: Are you an amazing writer? Help us with the story telling side of our stories.
 - **Community:** Don't fit in any of the above categories, but still want to hang out and be involved? We've got you, drop us a line.
 
