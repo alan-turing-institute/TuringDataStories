@@ -8,6 +8,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
+Looking for how to get involved? [Click here.](https://github.com/alan-turing-institute/TuringDataStories#contributing)
 
 ### Our vision
 
@@ -23,19 +24,6 @@ Our goal was therefore to help provide educational data science content that wou
 
 We hope that by using the story telling medium, we can bring people along the data science journey and showcase how these techniques can answer both fascinating and socially relevant questions. 
 
-### How to Read Stories
-
-Our stories are published online via fastpages. You can check them out [here](https://alan-turing-institute.github.io/TuringDataStories-fastpages/).
-
-Alternatively, click the binder badge at the top of this README to load an interactive version of our stories.
-
-Another option is to run the notebooks locally yourself. To do this, we recommend [installing](https://docs.conda.io/projects/conda/en/latest/user-guide/install/) conda, cloning this repository, and then [setting up an environment](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-from-an-environment-yml-file) usingn
-```
-git clone git@github.com:alan-turing-institute/TuringDataStories.git
-cd TuringDataStories
-conda env create -f binder/environment.yml
-```
-Any problems, open an issue!
 
 ### What is a Turing Data Story?
 
@@ -52,6 +40,36 @@ done to create the data story results. Turing Data Stories should follow these p
 
 We don't expect sophisticated analyses, just insteresting stories told with data. If you have an idea of a Turing Data Story you want to develop please follow our [contributing guidelines](CONTRIBUTING.md) to make sure your contributions can be easily integrated in the project. 
 
+### Contributing
+
+This repository is always a work in progress and **everyone** is encouraged to help us build something that will be useful to the many.
+
+**How can I get involved?**
+- **Story ideas:** Have an idea for an interesting story that could be told if you had the data, or knew how to analyse it? We can help.
+- **Data:** Stumbled across an interesting dataset, or perhaps mashed together several sources of data yourself? We want to hear about it.
+- **Code:** Are you an expert in Bayesian analysis? Do you have sick matplotlib skills? Put that knowledge to work!
+- **Peer Review:** Know a bit about data analysis? Good at communicating that knowledge? Interested in learning about it can be applied to understanding society? We need reviews to make our stories are the best they can be.
+- **Communication**: Are you an amazing writer? Help us with the story telling side of our stories.
+- **Community:** Don't fit in any of the above categories, but still want to hang out and be involved? We've got you, drop us a line.
+
+
+All contributors are asked to follow our [code of conduct](CODE_OF_CONDUCT.md) and to checkout our [contributing guidelines](CONTRIBUTING.md) for more information on how to get started.
+
+### How to Read Stories
+
+Our stories are published online via fastpages. You can check them out [here](https://alan-turing-institute.github.io/TuringDataStories-fastpages/).
+
+Alternatively, click the binder badge at the top of this README to load an interactive version of our stories.
+
+Another option is to run the notebooks locally yourself. To do this, we recommend [installing](https://docs.conda.io/projects/conda/en/latest/user-guide/install/) conda, cloning this repository, and then [setting up an environment](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-from-an-environment-yml-file) usingn
+```
+git clone git@github.com:alan-turing-institute/TuringDataStories.git
+cd TuringDataStories
+conda env create -f binder/environment.yml
+```
+Any problems, open an issue!
+
+
 ### The team
 
 The team is currently composed of four members:
@@ -64,11 +82,7 @@ The team is currently composed of four members:
 
 We currently meet every Wednesday afternoon
 
-### Contributing
 
-This repository is always a work in progress and **everyone** is encouraged to help us build something that will be useful to the many.
-
-All contributors are asked to follow our [code of conduct](CODE_OF_CONDUCT.md) and to checkout our [contributing guidelines](CONTRIBUTING.md) for more information on how to get started.
 
 ### Citing _TuringDataStories_
 
