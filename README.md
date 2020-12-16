@@ -118,9 +118,8 @@ We virtually meet on Wednesday afternoons to work collaboratively.
     <td align="center"><a href="http://yo-yehudi.com"><img src="https://avatars0.githubusercontent.com/u/9271438?v=4" width="100px;" alt=""/><br /><sub><b>Yo Yehudi</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=yochannah" title="Documentation">📖</a> <a href="#ideas-yochannah" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://github.com/LouiseABowler"><img src="https://avatars1.githubusercontent.com/u/25640708?v=4" width="100px;" alt=""/><br /><sub><b>Louise Bowler</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3ALouiseABowler" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://github.com/nbarlowATI"><img src="https://avatars3.githubusercontent.com/u/33832774?v=4" width="100px;" alt=""/><br /><sub><b>nbarlowATI</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3AnbarlowATI" title="Reviewed Pull Requests">👀</a></td>
-  </tr>
-  <tr>
     <td align="center"><a href="https://github.com/martintoreilly"><img src="https://avatars3.githubusercontent.com/u/21147592?v=4" width="100px;" alt=""/><br /><sub><b>Martin O'Reilly</b></sub></a><br /><a href="#ideas-martintoreilly" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://github.com/edaub"><img src="https://avatars0.githubusercontent.com/u/45598892?v=4" width="100px;" alt=""/><br /><sub><b>Eric Daub</b></sub></a><br /><a href="#blog-edaub" title="Blogposts">📝</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=edaub" title="Code">💻</a> <a href="#ideas-edaub" title="Ideas, Planning, & Feedback">🤔</a> <a href="#content-edaub" title="Content">🖋</a></td>
   </tr>
 </table>
 
