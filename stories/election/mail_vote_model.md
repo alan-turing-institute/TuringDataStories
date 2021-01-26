@@ -19,18 +19,23 @@ ballots, plus rules that prevented some states from counting these ballots
 before election day, the result of the election remained uncertain for
 a week, with periodic updates coming as ballots were tabulated and reported.
 
-In particular, several states had very close races that had the potential
-to tip the election in favor of either candidate. Because of the Electoral
-College system, where states almost universally employ a "winner-take-all"
-model for allocating their Electoral Votes, a few states can have a large
-effect on the outcome of the election. For example, in 2000 the election
-came down to around a 500 vote margin in Florida (out of 10 million
-ballots cast), despite the fact that Al Gore easily won the popular vote.
-In 2020, a few states with very close races dominated the headlines for the
-week after the election, of which we will look at Pennsylvania, Arizona,
-and Georgia in this post. The final outcome of the election hung on the
-results from these states, and the slow drip feed of additional ballots
-being released left audiences constantly checking the news for updates.
+In particular, several states had very close races that had the
+potential to tip the election in favor of either candidate. The US
+elects the president using the Electoral College system, where every
+state has a fixed number of electoral votes depending on its
+population. These electoral votes determine the outcome, not the
+national popular vote.  The states almost universally employ a
+"winner-take-all" model for allocating their electoral votes. Because
+of this, each year a few "swing states" have a large effect on the
+outcome of the election. For example, in 2000 the election came down
+to around a 500 vote margin in Florida (out of over 6 million ballots
+cast), despite the fact that Al Gore easily won the national popular
+vote.  In 2020, a few states with very close races dominated the
+headlines for the week after the election, of which we will look at
+Pennsylvania, Arizona, and Georgia in this post. The final outcome of
+the election hung on the results from these states, and the slow drip
+feed of additional ballots being released left audiences constantly
+checking the news for updates.
 
 In this Turing Data Story, I examine a few ways to analyze the data updates
 coming from each state to predict the final outcome. This originated from
@@ -44,11 +49,22 @@ state for the eventual winner based on the updated data.
 ## Data
 
 To create the models in the post, I use the
-[NYT Election Data Scraper](https://alex.github.io/nyt-2020-election-scraper)
-to obtain the latest results which are updated every few minutes to ensure
-that they have the latest data. To load this data into a Python session
-for analysis, I can use Pandas to simply load from the CSV version of the
-data directly from the URL, and extract the state that I wish to examine:
+[NYT Election Data Scraper](https://alex.github.io/nyt-2020-election-scraper),
+which is an open source repository that collected data from the New York Times
+website every few minutes over the months following the election. We can
+use this data to explore how the results evolved over time following
+election day, and compare our results with how the news media reported these
+changes over time.
+
+In particular, the data includes an estimate of the number of votes remaining,
+which is a crucial figure that we need in order to mathematically forecast
+the outcome. The New York Times bases their model for the votes remaining
+using turnout estimates from Edison Research, which is mentioned
+[here](https://www.nytimes.com/interactive/2020/11/03/us/elections/forecast-uncounted-votes-president.html).
+
+To load this data into a Python session for analysis, I can use Pandas
+to simply load from the CSV version of the data directly from the URL,
+and extract the state that I wish to examine:
 
 ```
 %matplotlib inline
@@ -118,11 +134,18 @@ df = load_data("Georgia")
 df.head()
 ```
 
-The data contains a timestamp, the number of votes for each candidate, the
-margin, and an estimate of the number of votes remaining. This allows us to
-see how the vote margin evolves over time as new ballots are counted. For
-example, we can look at the data for all states up to midnight on 5 November
-to see the evolution of the race:
+The data contains a timestamp, the number of votes for each candidate,
+the margin, and an estimate of the number of votes remaining. Note
+that because the number of votes remaining is just an estimate, it can
+eventually become negative if the eventual number of ballots exceeds
+the estimate used to forecast the number of remaining votes. We can
+also have situations where the number of votes is corrected downwards,
+so we will need to take care that these do not trip up our model.
+
+When the data is captured in this way, we can see how the vote margin
+evolves over time as new ballots are counted. For example, we can look
+at the data for all states up to midnight on 5 November to see the
+evolution of the race:
 
 ```
 import matplotlib.pyplot as plt
@@ -153,11 +176,12 @@ regression to estimate the final margin.
 
 ## Linear Regression Analysis
 
-We can do a simple analysis based on this. A linear regression model will
-have two parameters that are fit: the slope will be related to the fraction
-of the outstanding votes that are for Biden, and the intercept, which
-will indicate the final margin when there are no votes remaining. (This is
-the initial analysis that was done by Camila for Pennsylvania and Martin for
+As a first pass at building a model, I can do a simple regression
+analysis. A linear regression model will have two parameters that are
+fit: the slope will be related to the fraction of the outstanding
+votes that are for Biden, and the intercept, which will indicate the
+final margin when there are no votes remaining. (This is the initial
+analysis that was done by Camila for Pennsylvania and Martin for
 Arizona.)
 
 ```
@@ -211,20 +235,17 @@ for state in state_list:
 
 However, one thing to note about this is that even though the trends point
 clearly in favor of Biden in this analysis, we do not have a good idea of
-the uncertainties. Without this, one cannot comfortably call a state in
-favor of one candidate, which is why the media waited several days beyond
-the election to call the states for Biden, as the only way to be sure in
-this case is to wait for the margin to surpass the number of remaining
-votes. How might we develop a model that explicitly captures this
+the uncertainties.
+How might we develop a model that explicitly captures this
 uncertainty? And given such a model, when can we be confident in the
 result, and how does it align with the narrative from the news media?
 The following describes one approach for doing so.
 
 ## Modelling Uncertainty in the Votes
 
-To address this shortcoming, we turn to Bayesian Inference. Bayesian
+To address this shortcoming, I turn to Bayesian Inference. Bayesian
 statisticians think of model parameters not as a single number, but rather
-probability distributions -- in this way, we can get a sense of the range
+probability distributions -- in this way, I can get a sense of the range
 of values that the model thinks are consistent with the data.
 
 ### Model Structure
@@ -232,72 +253,101 @@ of values that the model thinks are consistent with the data.
 As noted above, the regression model has two different parameters: the slope
 (related to the fraction of votes that are cast for Biden), and the intercept
 (which is essentially the prediction of the final margin). Note that while
-our linear regression fit these two things simultaneously, there is no reason
-why we had to let the final margin be a "free" parameter that we adjusted
-in the fitting: we could have instead just fit a single parameter for
+the linear regression fit these two things simultaneously, there is no reason
+why I had to let the final margin be a "free" parameter that was adjusted
+in the fitting: I could have instead just fit a single parameter for
 the slope (for instance, simply using the fraction of mail ballots cast thus
-far), and then used that estimate to project the votes remaining in order to
-extrapolate and obtain our estimate of the final margin.
+far for one of the candidates), and then used that estimate to project the
+votes remaining in order to extrapolate and obtain an estimate of the final
+margin.
 
-With this format in mind, we need to develop a way to account for the
-uncertainty in both of these steps. Our Bayesian model will treat both
-the probability that a vote goes for Biden as a probability distribution
-(rather than a single number), and then the final projected margin will
-also be a probability distribution. In practice, rather than determining
-the analytical form of these probability distributions, we will instead
-model the outcome by drawing samples from the distribution. This is a
-standard method within Bayesian Inference, and illustrates the power
-of this technique for quantifying uncertainty.
+I thus need to account for uncertainty in both of these pieces of the
+model. The main source of uncertainty in the vote probability is
+related to the fact that not all voters are identical -- the
+regression model assumes that this is the case, and the main challenge
+in building a more complex model is to relax this constraint while
+still ensuring that the model is simple enough that I can still
+reliably fit it with the available data. For this, I will propose
+what is known as a *hierarchical* model, which is a common way of
+adding more complexity to a model in Bayesian inference. However, this
+is not the only way to do this, and there are certainly other methods
+based on Bayesian inference that would be able to account for this
+type of uncertainty.
+
+There is also some uncertainty to account for in projecting the
+remaining votes, but it turns out that this is much smaller than the
+uncertainty in the vote probability. The way that I handle this type
+of uncertainty is a fairly standard problem in Bayesian inference, so
+I will focus most of my attention here on how to make a model that
+does not treat all voters identically, as this is the principal source
+of uncertainty. The following sections outline how to build such a
+model, fit its parameters, and then project the election outcome once
+it has been fit.
 
 ### Bayesian Model of the Vote Probability
 
-Bayesian Inference tends to think of probability distributions as reflecting
-statements about our beliefs. Formally, we need to state our initial beliefs
-before we see any data, and then we can use that data to update our knowledge.
+Bayesian inference tends to think of probability distributions as reflecting
+statements about our beliefs. Formally, I need to state my initial beliefs
+before I see any data, and then I can use that data to update my knowledge.
 This previous belief is known as a *prior* in Bayesian inference, and the
-updated beliefs once we look at our data is known as the *posterior*.
+updated beliefs once I look at the data is known as the *posterior*.
 
 #### Bayesian Inference
 
-Bayesian Inference involves taking our previous beliefs about a system,
+Bayesian inference involves taking our previous beliefs about a system,
 described by a probability distribution of reasonable values we expect
-a particular parameter to take, and then using the data that we have to
-update our beliefs about the distribution that we expect that parameter
-to take by computing the *posterior*. This involves applying Bayes'
-rule:
+a particular parameter to take, and then using the data to
+update those beliefs about the distribution that we expect that parameter
+to take by computing the *posterior*. A key concept in Bayesian statistics
+is the idea of a conditional probability, written $p(A|B)$, which means the
+probability of $A$ given that we already know $B$ (or *conditioned on* $B$).
+Inference allows us to update our beliefs (or in other words condition them
+on something we have observed) by applying Bayes' rule:
 
 $$ p(\theta|y) = \frac{p(y|\theta)p(\theta)}{p(y)} $$
 
-Here, $p(\theta)$ is the prior distribution (which we will specify before
-we look at the data), $p(y|\theta)$ is the *likelihood* (the probability
-that we would have gotten the data given a particular choice of $\theta$),
-and $p(y)$ is known as the *evidence* (the probability of getting that
-particular observation over all possible outcomes of the experiment).
-For many problems, it is straightforward to specify a prior and to compute
-the likelihood, while computing the evidence can be tricky.
+Here, $p(\theta)$ is the prior distribution (which we will specify
+before looking at the data), $p(y|\theta)$ is the *likelihood* (the
+probability that we would have gotten the data conditioned on a
+particular value of $\theta$), and $p(y)$ is known as the *evidence*
+(the probability of getting that particular observation over all
+possible outcomes of the experiment).  Note that we have two standard
+probability distributions (the prior and the evidence), and two
+conditional probabilities here (the likelihood and the posterior)
+here. The one we really care about is the posterior (our belief in the
+model parameters conditioned on the data), but in practice it is much
+easier to compute the likelihood; Bayes' rule tells us how these two
+are connected.
 
-In practice, for most models we cannot compute the evidence very easily,
-so instead of computing the posterior directly, we draw samples from it.
+In practice, for most models one cannot compute the evidence very easily,
+so instead of computing the posterior directly, one draws samples from it.
 A common technique for this is Markov Chain Monte Carlo (MCMC) sampling.
 A number of software libraries have been written in recent years to make
 carrying out this sampling straightforward using what are known as
 *probabilistic programming languages*. These languages formally treat
 variables as probability distributions with priors and then draw samples
-from the posterior to allow us to perform inference.
+from the posterior to allow the user to more easily perform inference.
+
+Note that because I will ultimately draw samples from the posterior,
+rather than compute the probability density function itself, most of the
+plots in this story will not have meaningful vertical axis scales, as the
+scale will depend on the number of samples that were drawn. Thus in most
+cases I simply omit labels on the vertical axes, as these are implicitly
+the number of samples in each case.
 
 #### A Hierarchical Bayesian Model For Voting
 
-In our linear regression model, we effectively treated the vote probability
+In the linear regression model, I effectively treated the vote probability
 as a single, unchanging value. This is the same as saying that every voter
 in our model is identical. Given the political polarization in the US, this
 is probably not a very good assumption. Although the data seems to strongly
 suggest that the mail-in votes are consistently in favor of one candidate,
 this is not the same as saying all voters are identical. In the following,
-we build a model to relax this assumption, using what is known as a
-*hierarchical* Bayesian model.
+I build a model to relax this assumption, using what is known as a
+hierarchical Bayesian model.
 
 If the above model of assuming that every voter is identical is one extreme,
-then the other extreme is to assume that every voter is different and we would
+then the other extreme is to assume that every voter is different and I would
 need to estimate hundreds of thousands to millions of parameters to fit our
 model. This is not exactly practical, so a hierarchical model posits a middle
 ground that the vote probability is itself drawn from a probability
@@ -306,9 +356,9 @@ model Bayesian by treating the vote probability as a probability
 distribution -- in the model, each incremental update of votes has a single
 vote probability associated with it, but that probability is drawn from a
 probability distribution and thus can vary. By quantifying this variability
-we will be able to estimate the uncertainty in the final outcome.
+I will be able to estimate the uncertainty in the final outcome.
 
-In the following, we model the vote probability by assuming that each vote
+In the following, I model the vote probability by assuming that each vote
 update has a single vote probability associated with it, and that vote
 probability is drawn from a beta distribution. A beta distribution is
 a distribution defined over the interval $[0,1]$ with two shape parameters
@@ -317,7 +367,7 @@ $a$ and $b$ are less than 1, then the distribution is biased towards
 the extreme values of 0 or 1, while if they are greater than 1 then the
 distribution is biased towards 0.5. If $a > b$, then the model is more
 biased towards 1, while if $b > a$ then the model is biased towards 0.
-Thus we can specify a range of distributions with just two parameters.
+Thus I can specify a range of distributions with just two parameters.
 
 ```
 from scipy.stats import beta
@@ -334,14 +384,20 @@ def plot_beta(a, b):
 plot_beta(8., 4.)
 ```
 
-Thus, instead of estimating the vote probability, we instead need to
-estimate $a$ and $b$, which will tell us what we expect the distribution
-of the vote probability to be. Once we have estimates for those
-parameters, we can forecast the remaining votes by repeatedly drawing
-the vote probability from the appropriate beta distributions. Having
-multiple levels like this are why these models are known as
-*hierarchical* -- parameters are drawn from distributions whose parameters
-are also distributions themselves.
+Thus, instead of estimating the vote probability, I instead need to
+estimate $a$ and $b$, which will tell us what I expect the
+distribution of the vote probability to be. Having multiple levels
+like this are what give hierarchical models their name -- parameters
+are drawn from distributions whose parameters are also distributions
+themselves.  Adding this level lets us construct a model that better
+captures the variation in voters that we would expect. Additionally,
+this type of model structure offers some practical advantages: models
+that are specified in non-hierarchical ways tend to have difficulty
+fitting complex data with few parameters, but simultaneously overfit
+data for more complicated model structures if the exact form of the
+model is inappropriate for the data. Hierarchical models avoid this
+tradeoff as they are able to naturally capture complex structure in
+data with relatively few parameters, and are not prone to overfitting.
 
 Since all parameters in a Bayesian model must have priors, our task
 is now to encode our prior beliefs about the vote probability by setting
@@ -349,53 +405,75 @@ prior distributions for $a$ and $b$.
 
 ##### Prior
 
-Often, in Bayesian inference we don't have strong feelings about what
-values we might expect for a parameter. In those cases, we often try to use
-something simple, what is known as an *uninformative* prior. These might be
-expressed as a statement like "every value is equally probable". Or in this
-case we might assume that our prior for the vote probability should be
-peaked close to 0.5, and then taper off towards 0 and 1, with the argument
-that US presidential elections are usually decided by a few percentage points
-difference in the national popular vote. This might seem very reasonable
-on the surface, as America is pretty evenly divided between Democrats and
-Republicans.
+The prior represents our previous beliefs about the value of the model
+parameters before we see any data, or in other words what we expect to
+be reasonable. If you are observing outcomes from flipping a coin, you
+might reasonably expect the probability of getting heads to be close
+to 0.5 in the absence of any data, and you might be unwilling to
+accept the idea of this probability of being 0 or 1. This is encoded
+in a probability distribution function, usually by using a particular
+distribution that is convenient given the constraints of the
+particular problem (for instance, the beta distribution described
+above is one that is often used to model priors where the parameter in
+question is a probability).
 
-However, mail in votes in practice can be extremely biased towards
-one party. Historically, a large majority of mail in ballots are
+Often, in Bayesian inference one does not have strong feelings about
+what values they might expect for a parameter. In those cases, we
+might prefer to use something simple, what is known as an
+*uninformative* prior. These might be expressed as a statement like
+"every value is equally probable". Or in this case we might assume
+that the prior for the vote probability should be peaked close to 0.5,
+and then taper off towards 0 and 1, with the argument that US
+presidential elections are usually decided by a few percentage points
+difference in the national popular vote. This might seem very
+reasonable on the surface, as America is pretty evenly divided between
+Democrats and Republicans.
+
+However, mail in votes in practice can be extremely biased towards one
+party. Historically, a large majority of mail in ballots are
 Democratic, for a variety of reasons. Trump also spent much of the
-campaign sowing doubt about mail-in ballots (telegraphing his post-election
-strategy of trying to throw them out in court), so his supporters may be
-much less likely to vote in this manner. However, there could also be a
-situation where the mail-in ballots fall heavily towards a Republican candidate
-(as we have seen already, more of the Arizona ballots tend to be in favor
-of Trump). Thus, based on this I would argue that what we actually want is a
-prior that is reasonably likely to include some extremes in the vote
-probability to ensure that our estimate of the final outcome prior to
-looking at the data doesn't exclude a significant swing.
+campaign sowing doubt about mail-in ballots (telegraphing his
+post-election strategy of trying to throw them out in court), so his
+supporters may be much less likely to vote in this manner. However,
+there could also be a situation where the mail-in ballots fall heavily
+towards a Republican candidate (as we have seen already, more of the
+Arizona ballots tend to be in favor of Trump, which is due to late
+arriving ballots being from Republicans that registered to vote just
+before the election). Thus, based on this I would argue that what we
+actually want is a prior that is reasonably likely to include some
+extremes in the vote probability to ensure that our estimate of the
+final outcome prior to looking at the data doesn't exclude a
+significant swing.
 
 This issue illustrates a challenge with Bayesian Hierarchical models --
-when the parameter that we have some knowledge about is itself described by
+when the parameter that I have some knowledge about is itself described by
 a distribution, the priors for the distribution parameters can be more
 difficult to specify. For this reason, modellers often go one level
 further and specify prior distributions on the parameters used to specify
 the priors on the model parameters, which are known as *hyperpriors*, and
-see how varying the priors changes the outcome of inference. We will not
+see how varying the priors changes the outcome of inference. I will not
 explore this level of Bayesian modelling, but it should suffice to say that
 I tried a number of different choices for the priors before arriving at
 something that I thought accurately reflected my prior beliefs about the
 outcome.
 
-In the priors that I finally settled on, I use a Lognormal distribution
-for my prior on $a$ and $b$. I choose the parameters of the lognormal
-distributions for $a$ and $b$ to be slightly different such that more likely
-to give a democratically-leaning distribution, but still have a decent chance
-of producing extremes for Trump. I also choose the parameters such that
-we get a mix of values more biased towards the extremes as well as those
-biased towards values closer to 0.5. This should accurately reflect our
-prior uncertainty in the outcome, as we think there is a decent chance
-based on historical data that the mail votes are heavily in favor of one
-candidate. Here are some histograms showing single samples of the vote
-probability drawn from this prior, and an aggregate histogram of 100 samples:
+In the priors that I finally settled on, I use a Lognormal
+distribution for my prior on $a$ and $b$. Lognormal distributions are
+frequently used as an alternative to a normal distribution in
+situations when the parameter in question must be positive
+(effectively, lognormal distributions can thought of as having the
+logarithm of the random variable in question following a normal
+distribution).  I choose the parameters of the lognormal distributions
+for $a$ and $b$ to be slightly different such that the resulting
+distributions are more likely to lean democratically, but still have a
+decent chance of producing extremes for Trump. I also choose the
+parameters such that I get a mix of values more biased towards the
+extremes as well as those biased towards values closer to 0.5. This
+should accurately reflect our prior uncertainty in the outcome, as I
+think there is a decent chance based on historical data that the mail
+votes are heavily in favor of one candidate. Here are some histograms
+showing single samples of the vote probability drawn from this prior,
+and an aggregate histogram of 100 samples:
 
 ```
 from pymc3 import Lognormal
@@ -426,26 +504,49 @@ more of the extremes and reduce the uncertainty in the final outcome.
 
 ##### Likelihood
 
-Finally, we need to explicitly model the likelihood. When you flip a fair
-coin a number of times, the distribution of outcomes follows a binomial
-distribution. Thus, we can use a binomial likelihood to model the
-range of vote probabilites that might be consistent with the votes that
-were cast. This can be computed analytically, and most probabilistic
-programming languages have built-in capacity for computing likelihoods
-of this type. This is done by setting this particular variable to have a
-known value, which indicates to the probabilistic programming language
-that this variable is used to compute the likelihood. In our particular
-case, this likelihood will be a vector of a series of trials, each with a
-different value of the vote probability.
+Finally, we need to explicitly model the likelihood. The likelihood
+is how Bayesian models connect the parameters to the data --
+the likelihood tells us how probable the data is conditioned on a particular
+choice of parameters. As discussed earlier, this is actually the opposite of what we want, as we are interested in the parameters conditioned on the data. However, Bayes' rule helps us compute the quantity we are interested in as long as we are able to to compute the likelihood.
+
+For this particular problem, we can fortunately compute the likelihood
+easily in closed form. When one flips a fair coin a number of times,
+the distribution of outcomes follows a binomial distribution. Thus, I
+can use a binomial likelihood to model the range of vote probabilites
+that might be consistent with the votes that were cast. This can be
+computed analytically, and most probabilistic programming languages
+have built-in capacity for computing likelihoods of this type (so that
+we don't have to worry about implementing and testing the code to do
+this ourselves!). This is done automatically when using a
+probabilistic programming language by setting this particular variable
+to have a known value, which indicates to the probabilistic
+programming language that this variable is used to compute the
+likelihood. This means that I can focus on describing the model,
+rather than how to do the computation, which is one of the strengths
+of this type of modelling.
 
 ##### PyMC3 Implementation
 
-Thus, we can now write down a model in a probabilistic programming language
+Thus, I can now write down a model in a probabilistic programming language
 in order to draw samples from the posterior. There are a number of popular
 lanaguages for this -- here I use PyMC3 to implement my model. PyMC3
-can easily handle all of the features we specified above (hierarchical
+can easily handle all of the features I specified above (hierarchical
 structure, and a vector representation of the binomial likelihood), which
-is written out in the function below:
+is written out in the function below.
+
+In coding up the model, I need to convert the election data into a
+series of "trials" consisting of a number of total votes cast and the
+corresponding number of votes for Biden. This is the actual data that
+the model needs to draw samples from the posterior. Earlier, I noted
+that the data sometimes contains some inconsistencies (i.e. there are
+more votes cast for one candidate than the total number in that
+batch), so to protect against this I perform some checks for
+consistency and throw out any data that doesn't make sense. I do this
+using a Numpy logical array in the `extract_vote_trials` function, as
+otherwise some inconsistent data can trip up the PyMC computations.
+
+Once we have the trials defined, we can specify our model using PyMC3,
+perform inference, and plot the results:
 
 ```
 import pymc3
@@ -455,10 +556,12 @@ logger = logging.getLogger("pymc3")
 logger.propagate = False
 logger.setLevel(logging.ERROR)
 
-def extract_n_k_trials(state, timestamp=None):
+def extract_vote_trials(state, timestamp=None):
     """
     Convert vote data into a series of bernoulli trials. If no
-    data is valid, then return a list of a single zero for each.
+    data is valid (i.e. check that all numbers are nonzero and
+    the number of total ballots cast is larger than the number
+    of votes for, then return a list of a single zero for each.
 
     Returns two lists of positive integers for the total number
     of votes (n) and the votes for Biden (k)
@@ -466,37 +569,40 @@ def extract_n_k_trials(state, timestamp=None):
 
     df = load_data(state, timestamp)
 
-    # convert raw vote counts into a series of trials (n, k),
-    # where n is the total number of votes and k is the number
-    # of votes for Biden
+    total_votes = np.diff(-df["biden_votes"]) + np.diff(-df["trump_votes"])
+    biden_votes = np.diff(-df["biden_votes"])
 
-    n = np.diff(-df["biden_votes"]) + np.diff(-df["trump_votes"])
-    k = np.diff(-df["biden_votes"])
+    # throw out combinations that don't make any sense using numpy
+    # logical arrays -- note that multiplication of logical arrays
+    # is equivalent to a logical "and";
+    # if none remain then just return (0,0)
 
-    # throw out sets that don't make any sense; if none remain then use (0,0)
+    trials_to_keep = ((total_votes > 0)*(biden_votes >= 0)*
+                      (biden_votes <= total_votes)
+    total_votes = total_votes[keep]
+    biden_votes = biden_votes[keep]
 
-    keep = (n > 0)*(k >= 0)*(k <= n)
-    n = n[keep]
-    k = k[keep]
+    if len(total_votes) == 0:
+       total_votes = [0]
+       biden_votes = [0]
 
-    if len(n) == 0:
-       n = [0]
-       k = [0]
-
-    return np.array(n, dtype=np.int64), np.array(k, dtype=np.int64)
+    return (np.array(total_votes, dtype=np.int64),
+            np.array(biden_votes, dtype=np.int64))
 
 def estimate_theta_hierarchical(state, timestamp=None):
     "estimate the vote probability distribution using a hierarchical model and MCMC sampling"
 
-    n, k = extract_n_k_trials(state, timestamp)
+    total_votes, biden_votes = extract_vote_trials(state, timestamp)
+    num_trials = len(total_votes)
 
     # build model and draw MCMC samples
 
     with pymc3.Model() as model:
         a = pymc3.Lognormal("a", mu=0.4, sd=0.5)
         b = pymc3.Lognormal("b", mu=0.2, sd=0.5)
-        theta = pymc3.Beta("theta", alpha=a, beta=b, shape=len(n)) 
-        obs = pymc3.Binomial("obs", p=theta, n=n, observed=k, shape=len(n))
+        theta = pymc3.Beta("theta", alpha=a, beta=b, shape=len(num_trials)) 
+        obs = pymc3.Binomial("obs", p=theta, n=total_votes,
+	                     observed=biden_votes, shape=len(num_trials))
         trace = pymc3.sample(1000, progressbar=False)
 
     return trace
@@ -520,39 +626,45 @@ for (state, tstamp) in iter_vals:
     plot_posterior(state, tstamp)
 ```
 
-Once I draw MCMC samples for $a$ and $b$, I convert those samples into samples
-of $\theta$ to see our posterior estimate of the vote probability.
+Once I draw MCMC samples for $a$ and $b$, I convert those samples into
+samples of $\theta$ to see our posterior estimate of the vote
+probability.
 
-Looking at these plots, we see that the model is now much more varied in
-its estimates for the vote probability (note that this is the posterior for
-the *distribution* expected for the vote probability, rather than the explicit
-values of the vote probability itself). The mean is still where we expected
-it from the linear regression analysis, but the distribution is much wider
-due the fact that occasionally votes come in from places that are not as
-heavily in favor of Biden (or Trump in the case of Arizona). This should
-considerably increase the spread of the predicted final margin and assure
-that it is not overconfident in the final result.
+Looking at these plots, I see that the model is now much more varied
+in its estimates for the vote probability (note that this is the
+posterior for the *distribution* expected for the vote probability,
+rather than the explicit values of the vote probability itself). The
+mean is still where I expect it based on the linear regression
+analysis, but the distribution is much wider due the fact that
+occasionally votes come in from places that are not as heavily in
+favor of Biden (or Trump in the case of Arizona). This wider
+distribution of the vote probability is how I quantify the larger
+uncertainty in the election outcome. Using this distribution to
+forecast the remaining votes should considerably increase the spread
+of the predicted final margin and assure that it is not overconfident
+in the final result.
 
 ### Predicting the Final Margin
 
-Once we have samples from the vote probability, we need to simulate the
+Once I have samples from the vote probability, I need to simulate the
 remaining votes to predict the final outcome. This is known as estimating the
-*posterior predictive distribution* in Bayesian inference, as we use our
-updated knowledge about one of our model parameters to predict some of the
-data that it was fit on.
+*posterior predictive distribution* in Bayesian inference, when one uses the
+updated knowledge about one of the model parameters to predict something
+that was not used to fit the data.
 
-What is a reasonable way to simulate the remaining votes? As we see from the
-data, the votes come in a steady drip feed as ballots are counted. Thus,
-we can simulate this by sampling randomly, with replacement, from the data
-for the number of ballots cast in each update until we get to the number of
-votes remaining. We can then use our posterior samples of $a$ and $b$ to
-generate the distribution of vote probabilities, and then draw from the
-vote probabilites to forecast the outcome of each batch of votes using a
-binomial distribution. We repeat this process 10 times to ensure that the
-result isn't dependent on the particular realization of the drip feed
-simulation, and aggregate those samples to get the final estimate of the
-posterior predictive distribution. This should give a reasonable estimate of
-the final outcome based on our model.
+What is a reasonable way to simulate the remaining votes? As one can
+see from the data, the votes come in a steady drip feed as ballots are
+counted. Thus, I can simulate this by sampling randomly, with
+replacement, from the data for the number of ballots cast in each
+update until I get to the number of votes remaining. I can then use
+the posterior samples of $a$ and $b$ to generate a distribution of
+vote probabilities, and then draw from the vote probabilites to
+forecast the outcome of each batch of votes using a binomial
+distribution. I repeat this process 10 times to ensure that the result
+isn't dependent on the particular realization of the drip feed
+simulation, and aggregate those samples to get the final estimate of
+the posterior predictive distribution. This should give a reasonable
+estimate of the final outcome based on the model.
 
 ```
 from scipy.stats import binom
@@ -630,15 +742,15 @@ for (state, tstamp) in iter_vals:
     plot_predictions(state, tstamp)
 ```
 
-As we can see from this, the model has fairly wide intervals surrounding the
+As one can see from this, the model has fairly wide intervals surrounding the
 predicted final margin based on the original linear regression model.
-Interestingly, when we fit Georgia in this way, it looks much more likely that
+Interestingly, when I fit Georgia in this way, it looks much more likely that
 Trump would win through this point than the linear regression model would
 suggest, though the final margin found by the regression analysis is well
 within the error bounds suggested from the predictions. Arizona looks up for
 grabs, indicating that the outlier points were definitely biasing the
 regression analysis. Pennsylvania is much more firmly leaning towards Biden.
-We can look at the results again a day later to see how the race evolved:
+One can look at the results again a day later to see how the race evolved:
 
 ```
 for (state, tstamp) in zip(state_list, ["2020-11-06T00:00:00"]*3):
@@ -652,7 +764,7 @@ Arizona could still go either way.
 
 ## Animating the Updates
 
-Now that we have built a model, we can build an animation that shows the
+Now that I have built a model, I can build an animation that shows the
 evolution of the predicted results as a function of time. This will show
 how the uncertainty shrinks over time as fewer votes remain. I check
 for results every 30 minutes for the 12 days from 4 November onward,
