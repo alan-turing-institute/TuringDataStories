@@ -17,10 +17,23 @@ Cite the dataset that are going to be used in this story (these of course can ch
 **Additional context**
 Add any other context or screenshots about the story here.
 
+
+# Ethical guideline 
+
+Ideally a Turing Data Story has these properties and follows the [5 safes framework](http://blog.ukdataservice.ac.uk/access-to-sensitive-data-for-research-the-5-safes/).
+
+- [ ] The analysis you produce is openly available and reproducible.
+- [ ] Any data used are [open](https://opendatahandbook.org/guide/en/what-is-open-data/) and have an explicit licence, provenance and attribution.
+- [ ] Any data used are not [personal data](https://ico.org.uk/for-organisations/guide-to-data-protection/guide-to-the-general-data-protection-regulation-gdpr/key-definitions/what-is-personal-data/) (i.e. the data is anonymous or anonymised).
+- [ ] Any linkage of datasets in your data story does not lead to an increased risk of the personal identification of individuals.
+- [ ] The Story must be truthful and clear about limitations of analysis (and potential biases in data).
+- [ ] The Story will not lead to negative social outcomes, such as increasing discrimination, injustice.
+
+
+
 # Current status
 
-This chapter is empty. If anyone would like to make a start they are more than welcome to do so.
-
+ - [ ] Scoping of the story
  - [ ] Write story outline
  - [ ] Add material to the story notebook
  - [ ] Combine materials into a readable story
