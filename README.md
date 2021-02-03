@@ -53,6 +53,7 @@ This repository is always a work in progress and **everyone** is encouraged to h
 - **Community:** Don't fit in any of the above categories, but still want to hang out and be involved? We've got you, drop us a line.
 
 
+The process or proposing a story and reviewing a story can be found in our [submission and review guidelines](SUBMISSION_REVIEW_GUIDELINE.md).
 All contributors are asked to follow our [code of conduct](CODE_OF_CONDUCT.md) and to checkout our [contributing guidelines](CONTRIBUTING.md) for more information on how to get started.
 
 ### How to Read Stories
