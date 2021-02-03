@@ -34,6 +34,13 @@ Examples of unacceptable behavior by participants include:
 - Other conduct which could reasonably be considered inappropriate in a
  professional setting
 
+We also strive to adhere to the [SUM values](https://www.gov.uk/guidance/understanding-artificial-intelligence-ethics-and-safety):
+- Respect the dignity of individuals.
+- Connect with each other sincerely, openly, and inclusively.
+- Care for the wellbeing of all.
+- Protect the priorities of social values, justice, and public interest.
+
+
 ## Our Responsibilities
 
 Project maintainers are responsible for clarifying the standards of acceptable
