@@ -41,7 +41,7 @@ Any questions, concerns or suggestions regarding the review process please let @
 #### General checks
 - [ ]  **Notebook:** Is the source code for this data story available as a notebook in the linked pull request?
 - [ ]  **Contribution and authorship:** Are the authors clearly listed? Does the author list seem appropriate and complete?
-- [ ] **Scope and eligibility:** Does the submission contain an original and complete analysis of open data? Is the story aligned with the Turing Data Stories [vision statment](https://github.com/alan-turing-institute/TuringDataStories#our-vision)?
+- [ ] **Scope and eligibility:** Does the submission contain an original and complete analysis of open data? Is the story aligned with the Turing Data Stories [vision statement](https://github.com/alan-turing-institute/TuringDataStories#our-vision)?
 
 
 #### Reproducibility
@@ -66,9 +66,9 @@ Any questions, concerns or suggestions regarding the review process please let @
 
 #### Ethical 
 
-- [ ] Is any linkage of datasets in story unlikely to lead to an increased risk of the personal identification of individuals?
-- [ ] Is the Story truthful and clear about limitations of the analysis (and potential biases in data)?
-- [ ] Is the Story unlikely to lead to negative social outcomes, such as increasing discrimination, injustice?
+- [ ] Is any linkage of datasets in the story unlikely to lead to an increased risk of the personal identification of individuals?
+- [ ] Is the Story truthful and clear about any limitations of the analysis (and potential biases in data)?
+- [ ] Is the Story unlikely to lead to negative social outcomes, such as (but not limited to) increasing discrimination or injustice?
 
 
 ## AOB
