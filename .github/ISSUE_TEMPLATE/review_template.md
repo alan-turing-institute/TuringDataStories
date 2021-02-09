@@ -41,14 +41,14 @@ Any questions, concerns or suggestions regarding the review process please let @
 #### General checks
 - [ ]  **Notebook:** Is the source code for this data story available as a notebook in the linked pull request?
 - [ ]  **Contribution and authorship:** Are the authors clearly listed? Does the author list seem appropriate and complete?
-- [ ] **Scope and eligibility:** Does the submission contain an original and complete analysis of open data? Is the story aligned with the Turing Data Stories [vision statment](https://github.com/alan-turing-institute/TuringDataStories#our-vision)?
+- [ ] **Scope and eligibility:** Does the submission contain an original and complete analysis of open data? Is the story aligned with the Turing Data Stories [vision statement](https://github.com/alan-turing-institute/TuringDataStories#our-vision)?
 
 
 #### Reproducibility
 - [ ] Does the notebook run in a local environment?
 - [ ] Does the notebook build and run in binder?
 - [ ] Are all data sources openly accessible and properly cited with a link?
-- [ ] Is the data provenance documented and transparent?
+- [ ] Are the data [open](https://opendatahandbook.org/guide/en/what-is-open-data/), and do they have an explicit licence, provenance and attribution?
 
 #### Pedagogy
 - [ ] Does the story demonstrate some specific data analysis or visualisation techniques?
@@ -63,6 +63,12 @@ Any questions, concerns or suggestions regarding the review process please let @
 #### Context
 - [ ] Does the story give an insight into some societal issue?
 - [ ] Is the context around this issue well referenced (newspaper articles, scientific papers, etc.)?
+
+#### Ethical 
+
+- [ ] Is any linkage of datasets in the story unlikely to lead to an increased risk of the personal identification of individuals?
+- [ ] Is the Story truthful and clear about any limitations of the analysis (and potential biases in data)?
+- [ ] Is the Story unlikely to lead to negative social outcomes, such as (but not limited to) increasing discrimination or injustice?
 
 
 ## AOB
