@@ -76,8 +76,8 @@ The checklist is the following:
 
 - [ ] Is any linkage of datasets in story unlikely to lead to an increased risk of the personal identification of individuals?
 - [ ] Is the Story truthful and clear about limitations of the analysis (and potential biases in data)?
-- [ ] Is the Story unlikely to lead to negative social outcomes, such as increasing discrimination, injustice?
- 
+- [ ] The Story will not lead to negative individual, societal or ecological outcomes, such as (but not limited to) increasing discrimination, injustice or providing a platform for damaging speech or views towards others. 
+
 ## Resolving Disputes
 
 We encourage open communication between story authors and reviewers. In the case of a difference of opinion between the 
