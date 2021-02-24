@@ -49,7 +49,7 @@ particular, our initial interest in this question centered around
 uncertainties in the analysis done by Camila and Martin, which I have
 carried out using Bayesian inference to quantify uncertainty and
 determine when we might have reasonably called each state for the
-eventual winner based on the data as it undergoes regular updates.
+eventual winner based on the data as it underwent regular updates.
 
 ## Data
 
@@ -122,7 +122,7 @@ def load_data(state, timestamp=None):
     data.loc[data["leading_candidate_name"] == "Trump", "trump_votes"] \
         = data.loc[data["leading_candidate_name"] == "Trump", "leading_candidate_votes"]
     data.loc[data["trailing_candidate_name"] == "Trump", "trump_votes"] \
-        = data.loc[data["trailing_candidate_name"] == "Trump", "trailing_candidate_votes"] 			           
+        = data.loc[data["trailing_candidate_name"] == "Trump", "trailing_candidate_votes"]
 
     data["timestamp"] = pandas.to_datetime(data["timestamp"])
     data = data[data["timestamp"] < pandas.to_datetime(timestamp)]
@@ -174,6 +174,7 @@ def plot_data(state, timestamp=None):
     plt.ylabel("Biden margin")
     plt.title("{} Vote Updates through {}".format(state, timestamp))
 
+
 for (state, tstamp) in iter_vals:
     plot_data(state, tstamp)
 ```
@@ -217,6 +218,7 @@ def linear_regression(state, timestamp=None):
 
     return coeffs
 
+
 for (state, tstamp) in iter_vals:
     coeffs = linear_regression(state, tstamp)
     print("Predicted margin for {} as of {}: {}".format(state, tstamp, coeffs[1]))
@@ -238,6 +240,7 @@ def get_margin(state, timestamp=None):
     df = load_data(state, timestamp)
     
     return df["vote_differential"].iloc[0]
+
 
 for state in state_list:
     print("Current margin in {}: {}".format(state, get_margin(state)))
@@ -399,14 +402,15 @@ range of distributions with just two parameters.
 from scipy.stats import beta
 
 def plot_beta(a, b):
-    "plot the beta distribution for shape paramters (a, b)"
+    "Plot the beta distribution for shape paramters (a, b)"
     
     xvals = np.linspace(0, 1)
 
     plt.plot(xvals, beta.pdf(xvals, a=a, b=b))
     plt.xlabel("Biden vote probability")
     plt.title("PDF for the Beta distribution with a = {}, b = {}".format(a, b))
-    
+
+
 plot_beta(8., 4.)
 ```
 
@@ -516,7 +520,7 @@ this prior, and an aggregate histogram of 100 samples:
 from pymc3 import Lognormal
 
 def plot_prior_samples(n_samples):
-    "plot a random draw of the vote probability from the prior"
+    "Plot a random draw of the vote probability from the prior"
 
     a = Lognormal.dist(mu=0.4, sd=0.5).random(size=n_samples)
     b = Lognormal.dist(mu=0.2, sd=0.5).random(size=n_samples)
@@ -527,6 +531,7 @@ def plot_prior_samples(n_samples):
     plt.hist(beta.rvs(size=(1000, n_samples), a=a, b=b).flatten(), bins=100)
     plt.xlabel("Biden vote probability")
     plt.title("Prior Vote Probability Distribution using {} samples".format(i))
+
 
 for i in [1, 1, 1, 100]:
     plot_prior_samples(i)
@@ -609,7 +614,7 @@ def extract_vote_trials(state, timestamp=None):
     of votes for, then return a list of a single zero for each.
 
     Returns two lists of positive integers for the total number
-    of votes (n) and the votes for Biden (k)
+    of votes and the votes for Biden
     """
 
     df = load_data(state, timestamp)
@@ -623,9 +628,9 @@ def extract_vote_trials(state, timestamp=None):
     # if none remain then just return (0,0)
 
     trials_to_keep = ((total_votes > 0)*(biden_votes >= 0)*
-                      (biden_votes <= total_votes)
-    total_votes = total_votes[keep]
-    biden_votes = biden_votes[keep]
+                      (biden_votes <= total_votes))
+    total_votes = total_votes[trials_to_keep]
+    biden_votes = biden_votes[trials_to_keep]
 
     if len(total_votes) == 0:
        total_votes = [0]
@@ -634,8 +639,9 @@ def extract_vote_trials(state, timestamp=None):
     return (np.array(total_votes, dtype=np.int64),
             np.array(biden_votes, dtype=np.int64))
 
+
 def estimate_theta_hierarchical(state, timestamp=None):
-    "estimate the vote probability distribution using a hierarchical model and MCMC sampling"
+    "Estimate the vote probability distribution using a hierarchical model and MCMC sampling"
 
     total_votes, biden_votes = extract_vote_trials(state, timestamp)
     num_trials = len(total_votes)
@@ -645,15 +651,17 @@ def estimate_theta_hierarchical(state, timestamp=None):
     with pymc3.Model() as model:
         a = pymc3.Lognormal("a", mu=0.4, sd=0.5)
         b = pymc3.Lognormal("b", mu=0.2, sd=0.5)
-        theta = pymc3.Beta("theta", alpha=a, beta=b, shape=len(num_trials)) 
+        theta = pymc3.Beta("theta", alpha=a, beta=b, shape=num_trials) 
         obs = pymc3.Binomial("obs", p=theta, n=total_votes,
-	                     observed=biden_votes, shape=len(num_trials))
-        trace = pymc3.sample(1000, progressbar=False)
+                             observed=biden_votes, shape=num_trials)
+        trace = pymc3.sample(1000, progressbar=False,
+                             return_inferencedata=False)
 
     return trace
 
+
 def plot_posterior(state, timestamp):
-    "plot the posterior distribution of the vote probability"
+    "Plot the posterior distribution of the vote probability"
 
     trace = estimate_theta_hierarchical(state, timestamp)
 
@@ -666,7 +674,8 @@ def plot_posterior(state, timestamp):
                       bins=100)
     plt.xlabel("Biden vote probability")
     plt.title("{} Vote Probability Posterior as of {}".format(state, timestamp))
-    
+
+
 for (state, tstamp) in iter_vals:
     plot_posterior(state, tstamp)
 ```
@@ -721,6 +730,40 @@ def get_votes_remaining(state, timestamp=None):
 
     return df["votes_remaining"].iloc[0]
 
+
+def draw_random_vote_updates(state, timestamp):
+    "Draw a random set of simulated vote updates for the remaining votes"
+
+    n_remain = get_votes_remaining(state, timestamp)
+
+    n, k = extract_vote_trials(state, timestamp)
+    
+    if np.all(n == 0):
+        n = np.array([1000], dtype=np.int64)
+
+    simulated_vote_updates = []
+        
+    while np.sum(simulated_vote_updates) <= n_remain:
+        simulated_vote_updates.append(np.random.choice(n))
+            
+    simulated_vote_updates[-1] = n_remain - np.sum(simulated_vote_updates[:-1])
+    assert np.sum(simulated_vote_updates) == n_remain
+    
+    return np.array(simulated_vote_updates, dtype=np.int64)
+
+
+def project_remaining_votes(trace, simulated_vote_updates):
+    "Project the remaining votes using MCMC samples of the vote probability distribution parameters"
+
+    rvs_size = (len(trace["a"]), len(simulated_vote_updates))
+    
+    return np.sum(binom.rvs(size=rvs_size,
+                            p=beta.rvs(size=rvs_size,
+                                       a=np.broadcast_to(trace["a"][:, np.newaxis], rvs_size),
+                                       b=np.broadcast_to(trace["b"][:, np.newaxis], rvs_size)),
+                            n=np.broadcast_to(simulated_vote_updates, rvs_size)), axis=-1)
+
+
 def predict_final_margin(trace, state, timestamp=None):
     """
     Use posterior samples of the vote probability to predict the remaining
@@ -736,15 +779,6 @@ def predict_final_margin(trace, state, timestamp=None):
     assert np.all(trace["a"] >= 0.)
     assert np.all(trace["b"] >= 0.)
 
-    n_remain = get_votes_remaining(state, timestamp)
-    
-    margin = get_margin(state, timestamp)
-
-    n, k = extract_vote_trials(state, timestamp)
-    
-    if np.all(n == 0):
-        n = np.array([1000], dtype=np.int64)
-    
     # simulate remaining votes
 
     n_trials = 10
@@ -752,28 +786,19 @@ def predict_final_margin(trace, state, timestamp=None):
     predicted_margin = np.zeros((n_trials, len(trace["a"])))
 
     for i in range(n_trials):
-        trials_remain = []
-        
-        while np.sum(trials_remain) <= n_remain:
-            trials_remain.append(np.random.choice(n))
-            
-        trials_remain[-1] = n_remain - np.sum(trials_remain[:-1])
-        assert np.sum(trials_remain) == n_remain
+
+        simulated_vote_updates = draw_random_vote_updates(state, timestamp)
     
-        trials_remain = np.array(trials_remain, dtype=np.int64)
-    
-        rvs_size = (len(trace["a"]), len(trials_remain))
-    
-        predicted_margin[i] = np.sum(binom.rvs(size=rvs_size,
-                                               p=beta.rvs(size=rvs_size,
-                                                          a=np.broadcast_to(trace["a"][:, np.newaxis], rvs_size),
-                                                          b=np.broadcast_to(trace["b"][:, np.newaxis], rvs_size)),
-                                               n=np.broadcast_to(trials_remain, rvs_size)), axis=-1)
+        predicted_margin[i] = project_remaining_votes(trace, simulated_vote_updates)
+
+    n_remain = get_votes_remaining(state, timestamp)
+    margin = get_margin(state, timestamp)
 
     return margin - n_remain + 2*predicted_margin.flatten()
 
+
 def plot_predictions(state, timestamp):
-    "plot the posterior predictive distribution for the given state and time"
+    "Plot the posterior predictive distribution for the given state and time"
 
     trace = estimate_theta_hierarchical(state, timestamp)
     predicted_margin = predict_final_margin(trace, state, timestamp)
@@ -787,7 +812,7 @@ for (state, tstamp) in iter_vals:
     plot_predictions(state, tstamp)
 ```
 
-As one can see from this, the model has fairly wide intervals
+As we can see from this, the model has fairly wide intervals
 surrounding the predicted final margin based on the original linear
 regression model.  Interestingly, when I fit Georgia in this way, it
 looks much more likely that Trump would win through this point than
@@ -841,6 +866,39 @@ import matplotlib.patches as patches
 import matplotlib.text as text
 import matplotlib.animation as animation
 
+def load_previous_model(filename, initialize=False):
+    """
+    Load the previous model from file
+
+    Load results from the previous simulation from disk,
+    including the total votes cast, votes for Biden,
+    number of votes remaining, and the previous set of
+    samples from the predictive distribution.
+    If the file cannot be loaded, or if we pass
+    `initialize=True`, returns `None` for all values.
+    """
+
+    total_votes = None
+    biden_votes = None
+    n_remain = None
+    preds = None
+    
+    if not initialize:
+        try:
+            model = np.load(filename)
+            total_votes = model["total_votes"]
+            biden_votes = model["biden_votes"]
+            n_remain = int(model["n_remain"])
+            preds = model["preds"]
+        except (KeyError, IOError):
+            total_votes = None
+            biden_votes = None
+            n_remain = None
+            preds = None
+
+    return total_votes, biden_votes, n_remain, preds
+
+
 def fit_model(state, timestamp=None, initialize=False):
     """
     Fit a model to predict the final margin for the given date/time.
@@ -851,45 +909,35 @@ def fit_model(state, timestamp=None, initialize=False):
     Returns the simulated final margin samples at the given time
     """
 
-    n_prev = None
-    k_prev = None
-    n_predict_prev = None
-    preds_prev = None
-    
-    if not initialize:
-        try:
-            model = np.load("model.npz")
-            n_prev = model["n"]
-            k_prev = model["k"]
-            n_predict_prev = int(model["n_predict"])
-            preds_prev = model["preds"]
-        except (KeyError, IOError):
-            n_prev = None
-            k_prev = None
-            n_predict_prev = None
-            preds_prev = None
+    filename = "model.npz"
 
-    n, k = extract_n_k_trials(state, timestamp)
+    total_votes_prev, biden_votes_prev, n_remain_prev, preds_prev = \
+        load_previous_model(filename, initialize)
 
-    n_predict = get_votes_remaining(state, timestamp)
+    total_votes, biden_votes = extract_vote_trials(state, timestamp)
+
+    n_remain = get_votes_remaining(state, timestamp)
     
-    if (np.array_equal(n_prev, n) and np.array_equal(k_prev, k) and
-        n_predict_prev == n_predict):
+    if (np.array_equal(total_votes_prev, total_votes) and
+        np.array_equal(biden_votes_prev, biden_votes) and
+        n_remain_prev == n_remain):
         return preds_prev
     else:
         theta = estimate_theta_hierarchical(state, timestamp)
         preds =  predict_final_margin(theta, state, timestamp)
-        np.savez("model.npz", n=n, k=k, preds=preds, n_predict=n_predict)
+        np.savez(filename,
+                 total_votes=total_votes, biden_votes=biden_votes,
+                 preds=preds, n_remain=n_remain)
         return preds
 
-def initialize_bins(counts, bins):
-    "initialize the patch corners for the animation"
+
+def initialize_verts(bins):
+    "Initialize the patch corners for the animation"
 
     # get the corners of the rectangles for the histogram
     left = bins[:-1]
     right = bins[1:]
-    bottom = np.zeros(len(left))
-    top = bottom + counts
+    vals = np.zeros(len(left))
     nrects = len(left)
 
     nverts = nrects * (1 + 3 + 1)
@@ -898,99 +946,102 @@ def initialize_bins(counts, bins):
     codes[0::5] = path.Path.MOVETO
     codes[4::5] = path.Path.CLOSEPOLY
     verts[0::5, 0] = left
-    verts[0::5, 1] = bottom
+    verts[0::5, 1] = vals
     verts[1::5, 0] = left
-    verts[1::5, 1] = top
+    verts[1::5, 1] = vals
     verts[2::5, 0] = right
-    verts[2::5, 1] = top
+    verts[2::5, 1] = vals
     verts[3::5, 0] = right
-    verts[3::5, 1] = bottom
+    verts[3::5, 1] = vals
 
-    return verts, codes, bottom
+    return verts, codes
+
+
+def update_verts(preds, bins, verts):
+    "Update the verticies on the histogram patches for animation"
+
+    n, bins = np.histogram(preds, bins)
+    verts[1::5, 1] = n
+    verts[2::5, 1] = n
+
+    return verts
+
+
+def animate(i, state, start_time, bins_t, verts_t, patch_t, bins_b, verts_b, patch_b,
+            date_text, vote_text, mean_text, prob_text):
+    "Updates the histogram patches and text to make the animated histogram plot"
+        
+    hours = i//2
+    minutes = 30*i % 60
+        
+    timestamp = ((datetime.datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S") +
+                  datetime.timedelta(hours=hours, minutes=minutes)).strftime("%Y-%m-%dT%H:%M:%S"))
+
+    if i == 0:
+        preds = fit_model(state, timestamp, initialize=True)
+    else:
+        preds = fit_model(state, timestamp)
+
+    verts_t = update_verts(preds, bins_t, verts_t)
+    verts_b = update_verts(preds, bins_b, verts_b)
+
+    date_text.set_text(datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S").strftime("%Y-%m-%d %H:%M"))
+
+    n_remain = get_votes_remaining(state, timestamp)
+    vote_text.set_text("{} Votes Remaining".format(str(n_remain)))
+
+    mean_text.set_text("Margin = {:>8} $\pm$ {:>7}".format(int(np.mean(preds)),
+                                                           int(2.*np.std(preds))))
+
+    prob_text.set_text("Biden win prob = {:.2f}".format(np.sum(preds > 0)/len(preds)))
+        
+    return [patch_t, patch_b, date_text, vote_text, mean_text, prob_text]
+
 
 def create_animation(state):
     "Create an animation of the vote updates for the given state"
 
     start_time = "2020-11-04T14:00:00"
     
-    preds = fit_model(state, start_time, initialize=True)
-    
     xlim = 100000
     ylim = 500
     nbins = 200
+    binsize = xlim//nbins
 
-    bins_b = np.linspace(0, xlim, xlim//nbins, dtype=np.int64)
-    counts_b, bins_b = np.histogram(preds[preds > 0], bins_b)
-
-    bins_t = np.linspace(-xlim, 0, xlim//nbins, dtype=np.int64)
-    counts_t, bins_t = np.histogram(preds[preds < 0], bins_t)
+    bins_b = np.linspace(0, xlim, binsize, dtype=np.int64)
+    bins_t = np.linspace(-xlim, 0, binsize, dtype=np.int64)
     
-    verts_t, codes_t, bottom_t = initialize_bins(counts_t, bins_t)
-    verts_b, codes_b, bottom_b = initialize_bins(counts_b, bins_b)
+    verts_t, codes_t = initialize_verts(bins_t)
+    verts_b, codes_b = initialize_verts(bins_b)
 
     patch_t = None
     patch_b = None
 
-    def animate(i, state, bins_t, bins_b, bottom_t, bottom_b, start_time):
-        # simulate new data coming in
-        
-        hours = i//2
-        minutes = 30*i % 60
-        
-        timestamp = ((datetime.datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S") +
-                      datetime.timedelta(hours=hours, minutes=minutes)).strftime("%Y-%m-%dT%H:%M:%S"))
-
-        n_remain = get_votes_remaining(state, timestamp)
-
-        preds = fit_model(state, timestamp)
-
-        n_t, bins_t = np.histogram(preds, bins_t)
-        top_t = bottom_t + n_t
-        verts_t[1::5, 1] = top_t
-        verts_t[2::5, 1] = top_t
-
-        n_b, bins_b = np.histogram(preds, bins_b)
-        top_b = bottom_b + n_b
-        verts_b[1::5, 1] = top_b
-        verts_b[2::5, 1] = top_b
-
-        date_text.set_text(datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S").strftime("%Y-%m-%d %H:%M"))
-        vote_text.set_text("{} Votes Remaining".format(str(n_remain)))
-
-        mean_text.set_text("Margin = {:>8} $\pm$ {:>7}".format(int(np.mean(preds)),
-                                                        int(2.*np.std(preds))))
-        prob_text.set_text("Biden win prob = {:.2f}".format(np.sum(preds > 0)/len(preds)))
-        
-        return [patch_t, patch_b, date_text, vote_text, mean_text, prob_text]
-
     fig, ax = plt.subplots()
     barpath_t = path.Path(verts_t, codes_t)
     patch_t = patches.PathPatch(barpath_t, facecolor='C3',
-                              edgecolor='C3', alpha=0.5)
+                                edgecolor='C3', alpha=0.5)
     ax.add_patch(patch_t)
     barpath_b = path.Path(verts_b, codes_b)
     patch_b = patches.PathPatch(barpath_b, facecolor='C0',
-                              edgecolor='C0', alpha=0.5)
+                                edgecolor='C0', alpha=0.5)
     ax.add_patch(patch_b)
 
-    date_text = text.Text(-9*xlim//10, 9*ylim//10,
-                          datetime.datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S").strftime("%Y-%m-%d %H:%M"))
+    lefttext = -9*xlim//10
+    righttext = 9*xlim//10
+    uppertext = 9*ylim//10
+    lowertext = 8*ylim//10
+
+    date_text = text.Text(lefttext, uppertext, "")
     ax.add_artist(date_text)
 
-    n_remain = get_votes_remaining(state, start_time)
-    vote_text = text.Text(-9*xlim//10, 8*ylim//10,
-                          "{} Votes Remaining".format(str(n_remain)))
+    vote_text = text.Text(lefttext, lowertext, "")
     ax.add_artist(vote_text)
 
-    prob_text = text.Text(9*xlim//10, 9*ylim//10,
-                          "Biden win prob = {:.2f}".format(np.sum(preds > 0)/len(preds)),
-                          ha='right')
+    prob_text = text.Text(righttext, uppertext, "", ha='right')
     ax.add_artist(prob_text)
 
-    mean_text = text.Text(9*xlim//10, 8*ylim//10,
-                          "Margin = {:>8} $\pm$ {:>7}".format(int(np.mean(preds)),
-                                                        int(2.*np.std(preds))),
-                          ha='right')
+    mean_text = text.Text(righttext, lowertext, "", ha='right')
     ax.add_artist(mean_text)
 
     ax.set_xlim(-xlim, xlim)
@@ -999,10 +1050,14 @@ def create_animation(state):
     ax.set_title("{} Final Margin Prediction".format(state))
     
     ani = animation.FuncAnimation(fig, animate, frames=2*24*12, interval=200,
-                                  fargs=(state, bins_t, bins_b, bottom_t, bottom_b, start_time),
+                                  fargs=(state, start_time,
+                                         bins_t, verts_t, patch_t,
+                                         bins_b, verts_b, patch_b,
+                                         date_text, vote_text, mean_text, prob_text),
                                   repeat=False, blit=True)
     
     return ani
+
 
 ani_pa = create_animation("Pennsylvania")
 ani_ga = create_animation("Georgia")
