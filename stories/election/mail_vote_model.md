@@ -497,13 +497,20 @@ hand, nearly every scientific study reflects some of the biases of the
 researchers that carry out the work. Subjective priors have the
 benefit of explicitly codifying the assumptions I made about what I
 expect to be reasonable outcomes, at the cost of some potential
-subjectivity in the final results.
+subjectivity in the final results. In this era of significant divides
+across party lines, exposing this part of the model as inherently
+subjective may also help ensure that the model parameters are not
+chosen in a way that explicitly favors one party over another.
 
 As we will see, using this prior allows for the possibility that there
 is a decent chance based on historical data that the mail votes are
-heavily in favor of one candidate. Here are some histograms showing
-single samples of the vote probability drawn from this prior, and an
-aggregate histogram of 100 samples:
+heavily in favor of one candidate. The parameters I choose give a
+slight edge to the candidate from the Democratic party, but the prior
+includes a very reasonable chance that the swings will be towards the
+Republican candidate, which should help ensure that the model is not
+perceived to be biased against either candidate. Here are some
+histograms showing single samples of the vote probability drawn from
+this prior, and an aggregate histogram of 100 samples:
 
 ```
 from pymc3 import Lognormal
