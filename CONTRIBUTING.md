@@ -116,6 +116,11 @@ GitHub has a [nice introduction][github-flow] to the pull request workflow, but 
 
 Make sure you data story has all the references included.
 
+### Retraction
+At any time, any author who wishes to remove their published story from the Turing Data Stories platform, can do so and we will comply with this as soon as possible, no later than 28 days. However, as an open source process, we cannot be responsible for any forks or derivatives works remaining accessible to the public.
+
+Turing Data Stories also reserves the right to retract any stories upon discovery of any new information that would have caused the story to fail the review process.
+
 ---
 
 _These Contributing Guidelines have been adapted from the [Contributing Guidelines](https://github.com/alan-turing-institute/the-turing-way/blob/master/CONTRIBUTING.md) of [The Turing Way project](https://github.com/alan-turing-institute/the-turing-way)  (License: CC-BY)_
