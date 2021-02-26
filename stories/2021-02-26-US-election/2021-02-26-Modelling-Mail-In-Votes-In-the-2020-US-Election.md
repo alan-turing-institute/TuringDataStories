@@ -14,6 +14,11 @@
 
 ## Reviewers
 
+* **Sam Van Stroud**, University College London,
+  GitHub: [@samvanstroud](https://github.com/samvanstroud)
+* **Kevin Xu**, Civil Service Fast Stream,
+  GitHub: [@kevinxufs](https://github.com/kevinxufs)
+
 ## Introduction
 
 The Covid-19 Pandemic led to record numbers of mail-in votes in the
@@ -417,9 +422,12 @@ plot_beta(8., 4.)
 Thus, instead of estimating the vote probability, I instead need to
 estimate $a$ and $b$, which will tell us what I expect the
 distribution of the vote probability to be. Having multiple levels
-like this are what give hierarchical models their name -- parameters
-are drawn from distributions whose parameters are also distributions
-themselves.
+of distributions described by distributions like this are what give
+hierarchical models their name -- parameters are drawn from
+distributions, and this distribution must be described by some
+parameters. But because all parameters in Bayesian inference are
+probability distributions, these parameters are also distributions
+themselves, hence the model is hierarchical.
 
 Since all parameters in a Bayesian model must have priors, our task is
 now to encode our prior beliefs about the vote probability
@@ -755,8 +763,11 @@ def draw_random_vote_updates(state, timestamp):
 def project_remaining_votes(trace, simulated_vote_updates):
     "Project the remaining votes using MCMC samples of the vote probability distribution parameters"
 
+    assert np.all(trace["a"] >= 0.)
+    assert np.all(trace["b"] >= 0.)
+
     rvs_size = (len(trace["a"]), len(simulated_vote_updates))
-    
+
     return np.sum(binom.rvs(size=rvs_size,
                             p=beta.rvs(size=rvs_size,
                                        a=np.broadcast_to(trace["a"][:, np.newaxis], rvs_size),
@@ -775,9 +786,6 @@ def predict_final_margin(trace, state, timestamp=None):
 
     Returns a numpy array of samples of the final margin
     """
-
-    assert np.all(trace["a"] >= 0.)
-    assert np.all(trace["b"] >= 0.)
 
     # simulate remaining votes
 
