@@ -1,4 +1,4 @@
-FILE=mail_vote_model
+FILE=2021-02-26-Modelling-Mail-In-Votes-In-the-2020-US-Election
 
 ${FILE}.ipynb: ${FILE}.md
 	notedown $< > $@
