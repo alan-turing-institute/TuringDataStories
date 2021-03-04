@@ -1,13 +1,14 @@
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/alan-turing-institute/TuringDataStories/master?filepath=stories%2FWho_was_protected_by_the_first_COVID-19_lockdown.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/alan-turing-institute/TuringDataStories/master?filepath=stories%2F)
 
 <p align="center">
 <img src="https://github.com/alan-turing-institute/TuringDataStories/blob/logos/logos/TDS-logo-thin.png" align="center" width="600" />
 </p>
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
+Looking for how to get involved? [Click here.](https://github.com/alan-turing-institute/TuringDataStories#contributing)
 
 ### Our vision
 
@@ -17,25 +18,12 @@ Our aim is to help people understand the data driven world around us. We want to
 
 This project was initially formed by a desire to contribute and advance to the analysis of government COVID-19 data.
 
-As part of this process we recognised that government reporting of COVID-19 data was not always in the most accessible format. We also recognised that especially during these times, many invididuals may be interested in developing their technical skills in an impactful way, but not know where to start.
+As part of this process we recognised that government reporting of COVID-19 data was not always in the most accessible format. We also recognised that especially during these times, many individuals may be interested in developing their technical skills in an impactful way, but not know where to start.
 
 Our goal was therefore to help provide educational data science content that would guide the user through the process of making the data accessible, to using the data for analysis.
 
 We hope that by using the story telling medium, we can bring people along the data science journey and showcase how these techniques can answer both fascinating and socially relevant questions. 
 
-### How to Read Stories
-
-Our stories are published online via fastpages. You can check them out [here](https://alan-turing-institute.github.io/TuringDataStories-fastpages/).
-
-Alternatively, click the binder badge at the top of this README to load an interactive version of our stories.
-
-Another option is to run the notebooks locally yourself. To do this, we recommend [installing](https://docs.conda.io/projects/conda/en/latest/user-guide/install/) conda, cloning this repository, and then [setting up an environment](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-from-an-environment-yml-file) usingn
-```
-git clone git@github.com:alan-turing-institute/TuringDataStories.git
-cd TuringDataStories
-conda env create -f binder/environment.yml
-```
-Any problems, open an issue!
 
 ### What is a Turing Data Story?
 
@@ -50,7 +38,38 @@ done to create the data story results. Turing Data Stories should follow these p
 * In order to maintain the quality of the results, the Turing Data Story should be peer-reviewed by other contributors before published.
 
 
-We don't expect sophisticated analyses, just insteresting stories told with data. If you have an idea of a Turing Data Story you want to develop please follow our [contributing guidelines](CONTRIBUTING.md) to make sure your contributions can be easily integrated in the project. 
+We don't expect sophisticated analyses, just interesting stories told with data. If you have an idea of a Turing Data Story you want to develop please follow our [contributing guidelines](CONTRIBUTING.md) to make sure your contributions can be easily integrated in the project. 
+
+### Contributing
+
+This repository is always a work in progress and **everyone** is encouraged to help us build something that will be useful to the many.
+
+**How can I get involved?**
+- **Story ideas:** Have an idea for an interesting story that could be told if you had the data, or knew how to analyse it? We can help.
+- **Data:** Stumbled across an interesting dataset, or perhaps mashed together several sources of data yourself? We want to hear about it.
+- **Code:** Are you an expert in Bayesian analysis? Do you have sick matplotlib skills? Put that knowledge to work!
+- **Peer Review:** Know a bit about data analysis? Good at communicating that knowledge? Interested in learning about it can be applied to understanding society? We need reviews to make sure our stories are the best they can be.
+- **Communication**: Are you an amazing writer? Help us with the story telling side of our stories.
+- **Community:** Don't fit in any of the above categories, but still want to hang out and be involved? We've got you, drop us a line.
+
+
+The process for proposing a story and reviewing a story can be found in our [submission and review guidelines](SUBMISSION_REVIEW_GUIDELINE.md).
+All contributors are asked to follow our [code of conduct](CODE_OF_CONDUCT.md) and to checkout our [contributing guidelines](CONTRIBUTING.md) for more information on how to get started.
+
+### How to Read Stories
+
+Our stories are published online via fastpages. You can check them out [here](https://alan-turing-institute.github.io/TuringDataStories-fastpages/).
+
+Alternatively, click the binder badge at the top of this README to load an interactive version of our stories.
+
+Another option is to run the notebooks locally yourself. To do this, we recommend [installing](https://docs.conda.io/projects/conda/en/latest/user-guide/install/) conda, cloning this repository, and then [setting up an environment](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-from-an-environment-yml-file) using
+```
+git clone git@github.com:alan-turing-institute/TuringDataStories.git
+cd TuringDataStories
+conda env create -f binder/environment.yml
+```
+Any problems, open an issue!
+
 
 ### The team
 
@@ -59,16 +78,12 @@ The team is currently composed of four members:
 * David Beavan - GitHub:[@DavidBeavan](https://github.com/DavidBeavan) Twitter:[@DavidBeavan](https://twitter.com/davidbeavan) Web:[https://www.turing.ac.uk/people/researchers/david-beavan](https://www.turing.ac.uk/people/researchers/david-beavan)
 * Camila Rangel Smith - GitHub:[@crangelsmith](https://github.com/crangelsmith). Twitter:[@CamilaRangelS](https://twitter.com/CamilaRangelS). Web:[https://www.turing.ac.uk/people/researchers/camila-rangel-smith](https://www.turing.ac.uk/people/researchers/camila-rangel-smith)
 
-* Sam Van Stroud - Github: [@samvanstround](https://github.com/samvanstroud). Web:[https://www.turing.ac.uk/people/enrichment-students/sam-van-stroud](https://www.turing.ac.uk/people/enrichment-students/sam-van-stroud)
+* Sam Van Stroud - Github: [@samvanstroud](https://github.com/samvanstroud). Web:[https://www.turing.ac.uk/people/enrichment-students/sam-van-stroud](https://www.turing.ac.uk/people/enrichment-students/sam-van-stroud)
 * Kevin Xu - Github: [@kevinxufs](https://github.com/kevinxufs)
 
 We currently meet every Wednesday afternoon
 
-### Contributing
 
-This repository is always a work in progress and **everyone** is encouraged to help us build something that will be useful to the many.
-
-All contributors are asked to follow our [code of conduct](CODE_OF_CONDUCT.md) and to checkout our [contributing guidelines](CONTRIBUTING.md) for more information on how to get started.
 
 ### Citing _TuringDataStories_
 
@@ -104,6 +119,8 @@ We virtually meet on Wednesday afternoons to work collaboratively.
     <td align="center"><a href="http://yo-yehudi.com"><img src="https://avatars0.githubusercontent.com/u/9271438?v=4" width="100px;" alt=""/><br /><sub><b>Yo Yehudi</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=yochannah" title="Documentation">📖</a> <a href="#ideas-yochannah" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://github.com/LouiseABowler"><img src="https://avatars1.githubusercontent.com/u/25640708?v=4" width="100px;" alt=""/><br /><sub><b>Louise Bowler</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3ALouiseABowler" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://github.com/nbarlowATI"><img src="https://avatars3.githubusercontent.com/u/33832774?v=4" width="100px;" alt=""/><br /><sub><b>nbarlowATI</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3AnbarlowATI" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/martintoreilly"><img src="https://avatars3.githubusercontent.com/u/21147592?v=4" width="100px;" alt=""/><br /><sub><b>Martin O'Reilly</b></sub></a><br /><a href="#ideas-martintoreilly" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://github.com/edaub"><img src="https://avatars0.githubusercontent.com/u/45598892?v=4" width="100px;" alt=""/><br /><sub><b>Eric Daub</b></sub></a><br /><a href="#blog-edaub" title="Blogposts">📝</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=edaub" title="Code">💻</a> <a href="#ideas-edaub" title="Ideas, Planning, & Feedback">🤔</a> <a href="#content-edaub" title="Content">🖋</a></td>
   </tr>
 </table>
 

@@ -11,7 +11,7 @@ dependencies:
   - scipy
   - matplotlib
   - seaborn
-  - xlrd
+  - openpyxl
   - jupyter
   - autopep8
   - conda-forge::jupyter_contrib_nbextensions
