@@ -5,7 +5,7 @@
 </p>
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Looking for how to get involved? [Click here.](https://github.com/alan-turing-institute/TuringDataStories#contributing)
@@ -124,6 +124,7 @@ We virtually meet on Wednesday afternoons to work collaboratively.
     <td align="center"><a href="https://github.com/martintoreilly"><img src="https://avatars3.githubusercontent.com/u/21147592?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Martin O'Reilly</b></sub></a><br /><a href="#ideas-martintoreilly" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://github.com/edaub"><img src="https://avatars0.githubusercontent.com/u/45598892?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Eric Daub</b></sub></a><br /><a href="#blog-edaub" title="Blogposts">📝</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=edaub" title="Code">💻</a> <a href="#ideas-edaub" title="Ideas, Planning, & Feedback">🤔</a> <a href="#content-edaub" title="Content">🖋</a></td>
     <td align="center"><a href="https://github.com/jack89roberts"><img src="https://avatars.githubusercontent.com/u/16308271?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jack Roberts</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3Ajack89roberts" title="Reviewed Pull Requests">👀</a> <a href="#blog-jack89roberts" title="Blogposts">📝</a> <a href="#ideas-jack89roberts" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://github.com/billfinnegan"><img src="https://avatars.githubusercontent.com/u/79983583?v=4?s=100" width="100px;" alt=""/><br /><sub><b>billfinnegan</b></sub></a><br /><a href="#ideas-billfinnegan" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3Abillfinnegan" title="Reviewed Pull Requests">👀</a></td>
   </tr>
 </table>
 

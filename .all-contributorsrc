@@ -120,6 +120,16 @@
         "blog",
         "ideas"
       ]
+    },
+    {
+      "login": "billfinnegan",
+      "name": "billfinnegan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/79983583?v=4",
+      "profile": "https://github.com/billfinnegan",
+      "contributions": [
+        "ideas",
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
