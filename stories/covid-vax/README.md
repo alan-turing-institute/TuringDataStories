@@ -21,3 +21,9 @@ to run the notebook in Binder, or to run it locally:
   ```
   jupyter-notebook covid_vax.ipynb
   ```
+
+If you get errors importing packages in the notebook it might be that the python virtual environment hasn't been correctly associated with the Jupyter kernel. In that case you can try explicitly adding the environment with the following command (after activating the environment):
+```
+python -m ipykernel install --user --name=covid-vax
+```
+then start the notebook as above and select the `covid-vax` kernel from the "Kernel" menu in the notebook. See [here](https://gdcoder.com/how-to-create-and-add-a-conda-environment-as-jupyter-kernel/) for more info.
