@@ -8,6 +8,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
+Our stories are published online via fastpages, you can check them out [here](https://alan-turing-institute.github.io/TuringDataStories-fastpages/).
 Looking for how to get involved? [Click here.](https://github.com/alan-turing-institute/TuringDataStories#contributing)
 
 ### Our vision
