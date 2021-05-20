@@ -1,6 +1,6 @@
 # covid-vax
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/alan-turing-institute/TuringDataStories/covid-vax-forecast?filepath=stories%2Fcovid-vax%2Fcovid_vax.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/alan-turing-institute/TuringDataStories/HEAD?filepath=stories%2Fcovid-vax%2Fcovid_vax.ipynb)
 
 Estimating when the UK will finish vaccinating the population. Use the link above
 to run the notebook in Binder, or to run it locally:
