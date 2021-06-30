@@ -18,7 +18,7 @@ Our aim is to help people understand the data driven world around us. We want to
 
 ### What is a Turing Data Story?
 
-A Turing Data Story is an interactive mix of narrative, code, and visuals that derives insight from real world open data. They are written as pedagogic Jupyter notebooks that aim of the Turing Data Stories is to spark curiosity and motivate more people to play with data.
+A Turing Data Story is an interactive mix of narrative, code, and visuals that derives insight from real world open data. They are written as pedagogic Jupyter notebooks that aim to spark curiosity and motivate more people to play with data.
 
 We expect that the notebook of a data story takes the reader through each step of the analysis
 done to create the data story results. Turing Data Stories should follow these principles:
