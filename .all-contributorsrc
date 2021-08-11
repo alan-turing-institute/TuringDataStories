@@ -157,6 +157,19 @@
         "review",
         "content"
       ]
+    },
+    {
+      "login": "lukehare",
+      "name": "lukehare",
+      "avatar_url": "https://avatars.githubusercontent.com/u/44277986?v=4",
+      "profile": "https://github.com/lukehare",
+      "contributions": [
+        "code",
+        "data",
+        "ideas",
+        "review",
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7,
