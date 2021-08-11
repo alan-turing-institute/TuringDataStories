@@ -144,6 +144,19 @@
         "review",
         "content"
       ]
+    },
+    {
+      "login": "ChristinaLast",
+      "name": "Christina Last",
+      "avatar_url": "https://avatars.githubusercontent.com/u/36204574?v=4",
+      "profile": "https://github.com/ChristinaLast",
+      "contributions": [
+        "code",
+        "data",
+        "ideas",
+        "review",
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7,
