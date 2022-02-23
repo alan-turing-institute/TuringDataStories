@@ -5,7 +5,7 @@
 </p>
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-15-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Our stories are published online via fastpages, you can check them out [here](https://alan-turing-institute.github.io/TuringDataStories-fastpages/).
@@ -130,6 +130,9 @@ We virtually meet on Wednesday afternoons to work collaboratively.
     <td align="center"><a href="https://github.com/helendduncan"><img src="https://avatars.githubusercontent.com/u/46891265?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Helen Duncan</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=helendduncan" title="Code">💻</a> <a href="#data-helendduncan" title="Data">🔣</a> <a href="#ideas-helendduncan" title="Ideas, Planning, & Feedback">🤔</a> <a href="#projectManagement-helendduncan" title="Project Management">📆</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3Ahelendduncan" title="Reviewed Pull Requests">👀</a> <a href="#content-helendduncan" title="Content">🖋</a></td>
     <td align="center"><a href="https://github.com/ChristinaLast"><img src="https://avatars.githubusercontent.com/u/36204574?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Christina Last</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=ChristinaLast" title="Code">💻</a> <a href="#data-ChristinaLast" title="Data">🔣</a> <a href="#ideas-ChristinaLast" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3AChristinaLast" title="Reviewed Pull Requests">👀</a> <a href="#content-ChristinaLast" title="Content">🖋</a></td>
     <td align="center"><a href="https://github.com/lukehare"><img src="https://avatars.githubusercontent.com/u/44277986?v=4?s=100" width="100px;" alt=""/><br /><sub><b>lukehare</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=lukehare" title="Code">💻</a> <a href="#data-lukehare" title="Data">🔣</a> <a href="#ideas-lukehare" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3Alukehare" title="Reviewed Pull Requests">👀</a> <a href="#content-lukehare" title="Content">🖋</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="http://edchalstrey.com/"><img src="https://avatars.githubusercontent.com/u/5486164?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ed Chalstrey</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3Aedwardchalstrey1" title="Reviewed Pull Requests">👀</a></td>
   </tr>
 </table>
 
