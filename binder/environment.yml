@@ -16,4 +16,4 @@ dependencies:
   - autopep8
   - conda-forge::jupyter_contrib_nbextensions
   - pymc3
-  - sklearn
+  - scikit-learn
