@@ -19,7 +19,7 @@ Alternatively users can run the stories run locally:
 
 - Start the notebook:
   ```
-  jupyter-notebook Desert_Island_Disks.ipynb
+  jupyter-notebook Desert-Island-Disks.ipynb
   ```
 
 If you get errors importing packages in the notebook it might be that the python virtual environment hasn't been correctly associated with the Jupyter kernel. In that case you can try explicitly adding the environment with the following command (after activating the environment):
