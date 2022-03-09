@@ -133,6 +133,7 @@ We virtually meet on Wednesday afternoons to work collaboratively.
   </tr>
   <tr>
     <td align="center"><a href="http://edchalstrey.com/"><img src="https://avatars.githubusercontent.com/u/5486164?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ed Chalstrey</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3Aedwardchalstrey1" title="Reviewed Pull Requests">👀</a> <a href="#ideas-edwardchalstrey1" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="http://mhauru.org"><img src="https://avatars.githubusercontent.com/u/5229876?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Markus Hauru</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3Amhauru" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=mhauru" title="Code">💻</a></td>
   </tr>
 </table>
 
