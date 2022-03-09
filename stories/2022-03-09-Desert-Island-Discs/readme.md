@@ -5,7 +5,7 @@ As the iconic BBC radio programme turns 80, we explore notable people and the mu
 Turing Data Stories are published via fastpages and can be checked out [here](https://alan-turing-institute.github.io/TuringDataStories-fastpages/).
 Alternatively users can run the stories run locally:
 
-- `cd` to the `TuringDataStories/stories/2021-09-08-Desert-Island-Disks` directory.
+- `cd` to the `TuringDataStories/stories/2022-03-09-Desert-Island-Discs` directory.
 
 - Create the `conda` virtual environment:
   ```
@@ -19,7 +19,7 @@ Alternatively users can run the stories run locally:
 
 - Start the notebook:
   ```
-  jupyter-notebook Desert-Island-Disks.ipynb
+  jupyter-notebook 2022-03-09-Desert-Island-Discs.ipynb
   ```
 
 If you get errors importing packages in the notebook it might be that the python virtual environment hasn't been correctly associated with the Jupyter kernel. In that case you can try explicitly adding the environment with the following command (after activating the environment):
