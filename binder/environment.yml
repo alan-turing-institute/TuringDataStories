@@ -17,3 +17,8 @@ dependencies:
   - conda-forge::jupyter_contrib_nbextensions
   - pymc3
   - scikit-learn
+  - pip:
+    - pycountry==22.1.10
+    - pycountry-convert==0.7.2
+    - openpyxl==3.0.9
+    - networkx==2.6.3
