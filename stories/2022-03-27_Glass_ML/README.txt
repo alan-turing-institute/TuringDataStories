@@ -6,7 +6,7 @@ Nikumaroro in 2010, and possibly belonging to Amelia Earhart, and a jar of simil
 in the same size and shape (but not color), found on eBay, can be identified as a contain-
 er by an ML model fitted to a 1987 glass database.
 
-The notebook, DatasetPlayground_interactive_SMOTE.ipynb, can be viewed in NBViewer here:
+The notebook, ML_20th_Century.ipynb, can be viewed in NBViewer here:
 https://nbviewer.org/github/joecerniglia/Glass_ML2/blob/b49fa50a2defef9e1c7ae8dc2e3d9f97a9259520/ML_20th_Century.ipynb
 
 The link will bring you to the mybinder website. The project may take a minute or so
