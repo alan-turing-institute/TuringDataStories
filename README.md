@@ -133,7 +133,7 @@ We virtually meet on Wednesday afternoons to work collaboratively.
   </tr>
   <tr>
     <td align="center"><a href="http://mhauru.org"><img src="https://avatars.githubusercontent.com/u/5229876?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Markus Hauru</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3Amhauru" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=mhauru" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/radka-j"><img src="https://avatars.githubusercontent.com/u/29207091?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Radka Jersakova</b></sub></a><br /><a href="#projectManagement-radka-j" title="Project Management">📆</a></td>
+    <td align="center"><a href="https://github.com/radka-j"><img src="https://avatars.githubusercontent.com/u/29207091?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Radka Jersakova</b></sub></a><br /><a href="#projectManagement-radka-j" title="Project Management">📆</a> <a href="#ideas-radka-j" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=radka-j" title="Documentation">📖</a> <a href="#infra-radka-j" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
   </tr>
 </table>
 

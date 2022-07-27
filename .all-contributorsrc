@@ -187,7 +187,11 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/29207091?v=4",
       "profile": "https://github.com/radka-j",
       "contributions": [
-        "projectManagement"
+       "projectManagement",
+       "ideas",
+       "doc",
+       "infra"
+
       ]
     }
   ],
