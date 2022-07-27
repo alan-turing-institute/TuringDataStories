@@ -1,0 +1,11 @@
+name: covid-vax
+  
+dependencies:
+  - python=3.9  
+  - jupyter=1.0.0
+  - matplotlib=3.3.4
+  - pandas=1.2.3
+  - numpy=1.20.1
+  - requests=2.25.1
+  - seaborn=0.11.1
+

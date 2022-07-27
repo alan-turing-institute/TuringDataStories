@@ -5,29 +5,20 @@
 </p>
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-18-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
+Our stories are published online via fastpages, you can check them out [here](https://alan-turing-institute.github.io/TuringDataStories-fastpages/).
 Looking for how to get involved? [Click here.](https://github.com/alan-turing-institute/TuringDataStories#contributing)
 
 ### Our vision
 
 Our aim is to help people understand the data driven world around us. We want to inspire an open community around a central platform. One that encourages us all to harness the potential of open data by creating 'data stories'. These 'data stories' will mix computer code, narrative, visuals and real world data to document an insightful result. They should relate to society in a way that people care about, and be educational. They must maintain a high standard of openness and reproducibility and be approved by the community in a peer review process. The stories will develop data literacy and critical thinking in the general readership.
 
-### About the project
-
-This project was initially formed by a desire to contribute and advance to the analysis of government COVID-19 data.
-
-As part of this process we recognised that government reporting of COVID-19 data was not always in the most accessible format. We also recognised that especially during these times, many individuals may be interested in developing their technical skills in an impactful way, but not know where to start.
-
-Our goal was therefore to help provide educational data science content that would guide the user through the process of making the data accessible, to using the data for analysis.
-
-We hope that by using the story telling medium, we can bring people along the data science journey and showcase how these techniques can answer both fascinating and socially relevant questions. 
-
 
 ### What is a Turing Data Story?
 
-The Turing Data Stories should be detailed and pedagogic Jupyter notebooks that document an interesting insight or result using real world data. The aim of the Turing Data Stories is to spark curiosity and motivate more people to play with data. 
+A Turing Data Story is an interactive mix of narrative, code, and visuals that derives insight from real world open data. They are written as pedagogic Jupyter notebooks that aim to spark curiosity and motivate more people to play with data.
 
 We expect that the notebook of a data story takes the reader through each step of the analysis
 done to create the data story results. Turing Data Stories should follow these principles:
@@ -69,6 +60,17 @@ cd TuringDataStories
 conda env create -f binder/environment.yml
 ```
 Any problems, open an issue!
+
+
+### About the project
+
+This project was initially formed by a desire to contribute and advance to the analysis of government COVID-19 data.
+
+As part of this process we recognised that government reporting of COVID-19 data was not always in the most accessible format. We also recognised that especially during these times, many individuals may be interested in developing their technical skills in an impactful way, but not know where to start.
+
+Our goal was therefore to help provide educational data science content that would guide the user through the process of making the data accessible, to using the data for analysis.
+
+We hope that by using the story telling medium, we can bring people along the data science journey and showcase how these techniques can answer both fascinating and socially relevant questions. 
 
 
 ### The team
@@ -123,8 +125,17 @@ We virtually meet on Wednesday afternoons to work collaboratively.
   <tr>
     <td align="center"><a href="https://github.com/martintoreilly"><img src="https://avatars3.githubusercontent.com/u/21147592?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Martin O'Reilly</b></sub></a><br /><a href="#ideas-martintoreilly" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://github.com/edaub"><img src="https://avatars0.githubusercontent.com/u/45598892?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Eric Daub</b></sub></a><br /><a href="#blog-edaub" title="Blogposts">📝</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=edaub" title="Code">💻</a> <a href="#ideas-edaub" title="Ideas, Planning, & Feedback">🤔</a> <a href="#content-edaub" title="Content">🖋</a></td>
-    <td align="center"><a href="https://github.com/jack89roberts"><img src="https://avatars.githubusercontent.com/u/16308271?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jack Roberts</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3Ajack89roberts" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/jack89roberts"><img src="https://avatars.githubusercontent.com/u/16308271?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jack Roberts</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3Ajack89roberts" title="Reviewed Pull Requests">👀</a> <a href="#blog-jack89roberts" title="Blogposts">📝</a> <a href="#ideas-jack89roberts" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://github.com/billfinnegan"><img src="https://avatars.githubusercontent.com/u/79983583?v=4?s=100" width="100px;" alt=""/><br /><sub><b>billfinnegan</b></sub></a><br /><a href="#ideas-billfinnegan" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3Abillfinnegan" title="Reviewed Pull Requests">👀</a> <a href="#content-billfinnegan" title="Content">🖋</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=billfinnegan" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/helendduncan"><img src="https://avatars.githubusercontent.com/u/46891265?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Helen Duncan</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=helendduncan" title="Code">💻</a> <a href="#data-helendduncan" title="Data">🔣</a> <a href="#ideas-helendduncan" title="Ideas, Planning, & Feedback">🤔</a> <a href="#projectManagement-helendduncan" title="Project Management">📆</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3Ahelendduncan" title="Reviewed Pull Requests">👀</a> <a href="#content-helendduncan" title="Content">🖋</a></td>
+    <td align="center"><a href="https://github.com/ChristinaLast"><img src="https://avatars.githubusercontent.com/u/36204574?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Christina Last</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=ChristinaLast" title="Code">💻</a> <a href="#data-ChristinaLast" title="Data">🔣</a> <a href="#ideas-ChristinaLast" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3AChristinaLast" title="Reviewed Pull Requests">👀</a> <a href="#content-ChristinaLast" title="Content">🖋</a></td>
+    <td align="center"><a href="https://github.com/lukehare"><img src="https://avatars.githubusercontent.com/u/44277986?v=4?s=100" width="100px;" alt=""/><br /><sub><b>lukehare</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=lukehare" title="Code">💻</a> <a href="#data-lukehare" title="Data">🔣</a> <a href="#ideas-lukehare" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3Alukehare" title="Reviewed Pull Requests">👀</a> <a href="#content-lukehare" title="Content">🖋</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="http://mhauru.org"><img src="https://avatars.githubusercontent.com/u/5229876?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Markus Hauru</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3Amhauru" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=mhauru" title="Code">💻</a> <a href="#projectManagement-mhauru" title="Project Management">📆</a> <a href="#content-mhauru" title="Content">🖋</a> <a href="#ideas-mhauru" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://github.com/radka-j"><img src="https://avatars.githubusercontent.com/u/29207091?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Radka Jersakova</b></sub></a><br /><a href="#projectManagement-radka-j" title="Project Management">📆</a> <a href="#ideas-radka-j" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=radka-j" title="Documentation">📖</a> <a href="#infra-radka-j" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="http://edchalstrey.com/"><img src="https://avatars.githubusercontent.com/u/5486164?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ed Chalstrey</b></sub></a><br /><a href="#ideas-edwardchalstrey1" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3Aedwardchalstrey1" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/joecerniglia"><img src="https://avatars.githubusercontent.com/u/97735240?v=4?s=100" width="100px;" alt=""/><br /><sub><b>joecerniglia</b></sub></a><br /><a href="#ideas-joecerniglia" title="Ideas, Planning, & Feedback">🤔</a> <a href="#content-joecerniglia" title="Content">🖋</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=joecerniglia" title="Code">💻</a></td>
   </tr>
 </table>
 

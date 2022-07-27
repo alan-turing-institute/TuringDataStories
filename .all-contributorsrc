@@ -116,7 +116,9 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/16308271?v=4",
       "profile": "https://github.com/jack89roberts",
       "contributions": [
-        "review"
+        "review",
+        "blog",
+        "ideas"
       ]
     },
     {
@@ -127,6 +129,92 @@
       "contributions": [
         "ideas",
         "review",
+        "content",
+        "code"
+      ]
+    },
+    {
+      "login": "helendduncan",
+      "name": "Helen Duncan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/46891265?v=4",
+      "profile": "https://github.com/helendduncan",
+      "contributions": [
+        "code",
+        "data",
+        "ideas",
+        "projectManagement",
+        "review",
+        "content"
+      ]
+    },
+    {
+      "login": "ChristinaLast",
+      "name": "Christina Last",
+      "avatar_url": "https://avatars.githubusercontent.com/u/36204574?v=4",
+      "profile": "https://github.com/ChristinaLast",
+      "contributions": [
+        "code",
+        "data",
+        "ideas",
+        "review",
+        "content"
+      ]
+    },
+    {
+      "login": "lukehare",
+      "name": "lukehare",
+      "avatar_url": "https://avatars.githubusercontent.com/u/44277986?v=4",
+      "profile": "https://github.com/lukehare",
+      "contributions": [
+        "code",
+        "data",
+        "ideas",
+        "review",
+        "content"
+      ]
+    },
+    {
+      "login": "mhauru",
+      "name": "Markus Hauru",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5229876?v=4",
+      "profile": "http://mhauru.org",
+      "contributions": [
+        "review",
+        "code",
+        "projectManagement",
+        "content",
+        "ideas"
+      ]
+    },
+    {
+      "login": "radka-j",
+      "name": "Radka Jersakova",
+      "avatar_url": "https://avatars.githubusercontent.com/u/29207091?v=4",
+      "profile": "https://github.com/radka-j",
+      "contributions": [
+        "projectManagement",
+        "ideas",
+        "doc",
+        "infra"
+      ]
+    },
+    {
+      "login": "edwardchalstrey1",
+      "name": "Ed Chalstrey",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5486164?v=4",
+      "profile": "http://edchalstrey.com/",
+      "contributions": [
+        "ideas",
+        "review"
+      ]
+    },
+    {
+      "login": "joecerniglia",
+      "name": "joecerniglia",
+      "avatar_url": "https://avatars.githubusercontent.com/u/97735240?v=4",
+      "profile": "https://github.com/joecerniglia",
+      "contributions": [
+        "ideas",
         "content",
         "code"
       ]
