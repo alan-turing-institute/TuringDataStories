@@ -5,7 +5,7 @@
 </p>
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-17-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-18-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Our stories are published online via fastpages, you can check them out [here](https://alan-turing-institute.github.io/TuringDataStories-fastpages/).
@@ -135,6 +135,7 @@ We virtually meet on Wednesday afternoons to work collaboratively.
     <td align="center"><a href="http://mhauru.org"><img src="https://avatars.githubusercontent.com/u/5229876?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Markus Hauru</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3Amhauru" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=mhauru" title="Code">💻</a> <a href="#projectManagement-mhauru" title="Project Management">📆</a> <a href="#content-mhauru" title="Content">🖋</a> <a href="#ideas-mhauru" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://github.com/radka-j"><img src="https://avatars.githubusercontent.com/u/29207091?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Radka Jersakova</b></sub></a><br /><a href="#projectManagement-radka-j" title="Project Management">📆</a> <a href="#ideas-radka-j" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=radka-j" title="Documentation">📖</a> <a href="#infra-radka-j" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
     <td align="center"><a href="http://edchalstrey.com/"><img src="https://avatars.githubusercontent.com/u/5486164?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ed Chalstrey</b></sub></a><br /><a href="#ideas-edwardchalstrey1" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3Aedwardchalstrey1" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/joecerniglia"><img src="https://avatars.githubusercontent.com/u/97735240?v=4?s=100" width="100px;" alt=""/><br /><sub><b>joecerniglia</b></sub></a><br /><a href="#ideas-joecerniglia" title="Ideas, Planning, & Feedback">🤔</a> <a href="#content-joecerniglia" title="Content">🖋</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=joecerniglia" title="Code">💻</a></td>
   </tr>
 </table>
 
