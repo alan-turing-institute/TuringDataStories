@@ -179,7 +179,9 @@
       "contributions": [
         "review",
         "code",
-        "projectManagement"
+        "projectManagement",
+        "content",
+        "ideas"
       ]
     },
     {
@@ -188,11 +190,10 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/29207091?v=4",
       "profile": "https://github.com/radka-j",
       "contributions": [
-       "projectManagement",
-       "ideas",
-       "doc",
-       "infra"
-
+        "projectManagement",
+        "ideas",
+        "doc",
+        "infra"
       ]
     }
   ],
