@@ -1,201 +1,191 @@
 {
-  "files": [
-    "README.md"
-  ],
-  "imageSize": 100,
-  "commit": false,
-  "contributors": [
-    {
-      "login": "kevinxufs",
-      "name": "kevinxufs",
-      "avatar_url": "https://avatars2.githubusercontent.com/u/48526846?v=4",
-      "profile": "https://github.com/kevinxufs",
-      "contributions": [
-        "ideas",
-        "test",
-        "content",
-        "code",
-        "doc",
-        "projectManagement"
-      ]
-    },
-    {
-      "login": "crangelsmith",
-      "name": "Camila Rangel Smith",
-      "avatar_url": "https://avatars2.githubusercontent.com/u/11162074?v=4",
-      "profile": "https://github.com/crangelsmith",
-      "contributions": [
-        "ideas",
-        "test",
-        "content",
-        "code",
-        "doc",
-        "projectManagement"
-      ]
-    },
-    {
-      "login": "DavidBeavan",
-      "name": "David Beavan",
-      "avatar_url": "https://avatars3.githubusercontent.com/u/6524799?v=4",
-      "profile": "https://github.com/DavidBeavan",
-      "contributions": [
-        "ideas",
-        "test",
-        "content",
-        "code",
-        "doc",
-        "projectManagement"
-      ]
-    },
-    {
-      "login": "samvanstroud",
-      "name": "Sam Vs",
-      "avatar_url": "https://avatars0.githubusercontent.com/u/16232199?v=4",
-      "profile": "https://github.com/samvanstroud",
-      "contributions": [
-        "ideas",
-        "test",
-        "content",
-        "code",
-        "doc",
-        "projectManagement"
-      ]
-    },
-    {
-      "login": "yochannah",
-      "name": "Yo Yehudi",
-      "avatar_url": "https://avatars0.githubusercontent.com/u/9271438?v=4",
-      "profile": "http://yo-yehudi.com",
-      "contributions": [
-        "doc",
-        "ideas"
-      ]
-    },
-    {
-      "login": "LouiseABowler",
-      "name": "Louise Bowler",
-      "avatar_url": "https://avatars1.githubusercontent.com/u/25640708?v=4",
-      "profile": "https://github.com/LouiseABowler",
-      "contributions": [
-        "review"
-      ]
-    },
-    {
-      "login": "nbarlowATI",
-      "name": "nbarlowATI",
-      "avatar_url": "https://avatars3.githubusercontent.com/u/33832774?v=4",
-      "profile": "https://github.com/nbarlowATI",
-      "contributions": [
-        "review"
-      ]
-    },
-    {
-      "login": "martintoreilly",
-      "name": "Martin O'Reilly",
-      "avatar_url": "https://avatars3.githubusercontent.com/u/21147592?v=4",
-      "profile": "https://github.com/martintoreilly",
-      "contributions": [
-        "ideas"
-      ]
-    },
-    {
-      "login": "edaub",
-      "name": "Eric Daub",
-      "avatar_url": "https://avatars0.githubusercontent.com/u/45598892?v=4",
-      "profile": "https://github.com/edaub",
-      "contributions": [
-        "blog",
-        "code",
-        "ideas",
-        "content"
-      ]
-    },
-    {
-      "login": "jack89roberts",
-      "name": "Jack Roberts",
-      "avatar_url": "https://avatars.githubusercontent.com/u/16308271?v=4",
-      "profile": "https://github.com/jack89roberts",
-      "contributions": [
-        "review",
-        "blog",
-        "ideas"
-      ]
-    },
-    {
-      "login": "billfinnegan",
-      "name": "billfinnegan",
-      "avatar_url": "https://avatars.githubusercontent.com/u/79983583?v=4",
-      "profile": "https://github.com/billfinnegan",
-      "contributions": [
-        "ideas",
-        "review"
-      ]
-    },
-    {
-      "login": "helendduncan",
-      "name": "Helen Duncan",
-      "avatar_url": "https://avatars.githubusercontent.com/u/46891265?v=4",
-      "profile": "https://github.com/helendduncan",
-      "contributions": [
-        "code",
-        "data",
-        "ideas",
-        "projectManagement",
-        "review",
-        "content"
-      ]
-    },
-    {
-      "login": "ChristinaLast",
-      "name": "Christina Last",
-      "avatar_url": "https://avatars.githubusercontent.com/u/36204574?v=4",
-      "profile": "https://github.com/ChristinaLast",
-      "contributions": [
-        "code",
-        "data",
-        "ideas",
-        "review",
-        "content"
-      ]
-    },
-    {
-      "login": "lukehare",
-      "name": "lukehare",
-      "avatar_url": "https://avatars.githubusercontent.com/u/44277986?v=4",
-      "profile": "https://github.com/lukehare",
-      "contributions": [
-        "code",
-        "data",
-        "ideas",
-        "review",
-        "content"
-      ]
-    },
-    {
-      "login": "mhauru",
-      "name": "Markus Hauru",
-      "avatar_url": "https://avatars.githubusercontent.com/u/5229876?v=4",
-      "profile": "http://mhauru.org",
-      "contributions": [
-        "review",
-        "code"
-      ]
-    },
-    {
-      "login": "edwardchalstrey1",
-      "name": "Ed Chalstrey",
-      "avatar_url": "https://avatars.githubusercontent.com/u/5486164?v=4",
-      "profile": "http://edchalstrey.com/",
-      "contributions": [
-        "review",
-        "ideas"
-      ]
-    }
-  ],
-  "contributorsPerLine": 7,
-  "projectName": "TuringDataStories",
-  "projectOwner": "alan-turing-institute",
-  "repoType": "github",
-  "repoHost": "https://github.com",
-  "skipCi": true
+"files": [
+"README.md"
+],
+"imageSize": 100,
+"commit": false,
+"contributors": [
+{
+"login": "kevinxufs",
+"name": "kevinxufs",
+"avatar_url": "https://avatars2.githubusercontent.com/u/48526846?v=4",
+"profile": "https://github.com/kevinxufs",
+"contributions": [
+"ideas",
+"test",
+"content",
+"code",
+"doc",
+"projectManagement"
+]
+},
+{
+"login": "crangelsmith",
+"name": "Camila Rangel Smith",
+"avatar_url": "https://avatars2.githubusercontent.com/u/11162074?v=4",
+"profile": "https://github.com/crangelsmith",
+"contributions": [
+"ideas",
+"test",
+"content",
+"code",
+"doc",
+"projectManagement"
+]
+},
+{
+"login": "DavidBeavan",
+"name": "David Beavan",
+"avatar_url": "https://avatars3.githubusercontent.com/u/6524799?v=4",
+"profile": "https://github.com/DavidBeavan",
+"contributions": [
+"ideas",
+"test",
+"content",
+"code",
+"doc",
+"projectManagement"
+]
+},
+{
+"login": "samvanstroud",
+"name": "Sam Vs",
+"avatar_url": "https://avatars0.githubusercontent.com/u/16232199?v=4",
+"profile": "https://github.com/samvanstroud",
+"contributions": [
+"ideas",
+"test",
+"content",
+"code",
+"doc",
+"projectManagement"
+]
+},
+{
+"login": "yochannah",
+"name": "Yo Yehudi",
+"avatar_url": "https://avatars0.githubusercontent.com/u/9271438?v=4",
+"profile": "http://yo-yehudi.com",
+"contributions": [
+"doc",
+"ideas"
+]
+},
+{
+"login": "LouiseABowler",
+"name": "Louise Bowler",
+"avatar_url": "https://avatars1.githubusercontent.com/u/25640708?v=4",
+"profile": "https://github.com/LouiseABowler",
+"contributions": [
+"review"
+]
+},
+{
+"login": "nbarlowATI",
+"name": "nbarlowATI",
+"avatar_url": "https://avatars3.githubusercontent.com/u/33832774?v=4",
+"profile": "https://github.com/nbarlowATI",
+"contributions": [
+"review"
+]
+},
+{
+"login": "martintoreilly",
+"name": "Martin O'Reilly",
+"avatar_url": "https://avatars3.githubusercontent.com/u/21147592?v=4",
+"profile": "https://github.com/martintoreilly",
+"contributions": [
+"ideas"
+]
+},
+{
+"login": "edaub",
+"name": "Eric Daub",
+"avatar_url": "https://avatars0.githubusercontent.com/u/45598892?v=4",
+"profile": "https://github.com/edaub",
+"contributions": [
+"blog",
+"code",
+"ideas",
+"content"
+]
+},
+{
+"login": "jack89roberts",
+"name": "Jack Roberts",
+"avatar_url": "https://avatars.githubusercontent.com/u/16308271?v=4",
+"profile": "https://github.com/jack89roberts",
+"contributions": [
+"review",
+"blog",
+"ideas"
+]
+},
+{
+"login": "billfinnegan",
+"name": "billfinnegan",
+"avatar_url": "https://avatars.githubusercontent.com/u/79983583?v=4",
+"profile": "https://github.com/billfinnegan",
+"contributions": [
+"ideas",
+"review"
+]
+},
+{
+"login": "helendduncan",
+"name": "Helen Duncan",
+"avatar_url": "https://avatars.githubusercontent.com/u/46891265?v=4",
+"profile": "https://github.com/helendduncan",
+"contributions": [
+"code",
+"data",
+"ideas",
+"projectManagement",
+"review",
+"content"
+]
+},
+{
+"login": "ChristinaLast",
+"name": "Christina Last",
+"avatar_url": "https://avatars.githubusercontent.com/u/36204574?v=4",
+"profile": "https://github.com/ChristinaLast",
+"contributions": [
+"code",
+"data",
+"ideas",
+"review",
+"content"
+]
+},
+{
+"login": "lukehare",
+"name": "lukehare",
+"avatar_url": "https://avatars.githubusercontent.com/u/44277986?v=4",
+"profile": "https://github.com/lukehare",
+"contributions": [
+"code",
+"data",
+"ideas",
+"review",
+"content"
+]
+},
+{
+"login": "edwardchalstrey1",
+"name": "Ed Chalstrey",
+"avatar_url": "https://avatars.githubusercontent.com/u/5486164?v=4",
+"profile": "http://edchalstrey.com/",
+"contributions": [
+"review",
+"ideas"
+]
+}
+],
+"contributorsPerLine": 7,
+"projectName": "TuringDataStories",
+"projectOwner": "alan-turing-institute",
+"repoType": "github",
+"repoHost": "https://github.com",
+"skipCi": true
 }
