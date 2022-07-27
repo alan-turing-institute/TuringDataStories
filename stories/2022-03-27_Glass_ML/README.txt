@@ -7,7 +7,7 @@ in the same size and shape (but not color), found on eBay, can be identified as 
 er by an ML model fitted to a 1987 glass database.
 
 The notebook, ML_20th_Century.ipynb, can be viewed in NBViewer here:
-https://nbviewer.org/github/joecerniglia/Glass_ML2/blob/b49fa50a2defef9e1c7ae8dc2e3d9f97a9259520/ML_20th_Century.ipynb
+https://nbviewer.org/github/joecerniglia/Glass_ML2/blob/main/ML_20th_Century.ipynb
 
 I support the sentiments expressed by The Turing Way:
 https://the-turing-way.netlify.app/welcome.html#
