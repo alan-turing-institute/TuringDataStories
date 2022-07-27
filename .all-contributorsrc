@@ -205,6 +205,17 @@
         "ideas",
         "review"
       ]
+    },
+    {
+      "login": "joecerniglia",
+      "name": "joecerniglia",
+      "avatar_url": "https://avatars.githubusercontent.com/u/97735240?v=4",
+      "profile": "https://github.com/joecerniglia",
+      "contributions": [
+        "ideas",
+        "content",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
