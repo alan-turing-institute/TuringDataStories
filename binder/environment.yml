@@ -36,3 +36,14 @@ dependencies:
     - sklearn==0.0
     - imblearn==0.0
     - colorama==0.4.4
+    
+   - sphinx:
+        config:
+          latex_elements:
+          # Note this line cheats the table parameter into the documentclass[] parameter
+          papersize: letterpaper,table
+          # These lines add the desired packages to the latex build
+          preamble: |+
+            \usepackage{xcolor}
+            \usepackage{booktabs}
+            \usepackage{multirow}
