@@ -5,7 +5,7 @@
 </p>
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-19-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-20-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Our stories are published online via fastpages, you can check them out [here](https://alan-turing-institute.github.io/TuringDataStories-fastpages/).
@@ -138,6 +138,7 @@ We virtually meet on Wednesday afternoons to work collaboratively.
       <td align="center"><a href="http://edchalstrey.com/"><img src="https://avatars.githubusercontent.com/u/5486164?v=4?s=100" width="100px;" alt="Ed Chalstrey"/><br /><sub><b>Ed Chalstrey</b></sub></a><br /><a href="#ideas-edwardchalstrey1" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3Aedwardchalstrey1" title="Reviewed Pull Requests">👀</a></td>
       <td align="center"><a href="https://github.com/joecerniglia"><img src="https://avatars.githubusercontent.com/u/97735240?v=4?s=100" width="100px;" alt="joecerniglia"/><br /><sub><b>joecerniglia</b></sub></a><br /><a href="#ideas-joecerniglia" title="Ideas, Planning, & Feedback">🤔</a> <a href="#content-joecerniglia" title="Content">🖋</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=joecerniglia" title="Code">💻</a> <a href="#data-joecerniglia" title="Data">🔣</a></td>
       <td align="center"><a href="https://github.com/callummole"><img src="https://avatars.githubusercontent.com/u/22677759?v=4?s=100" width="100px;" alt="Callum Mole"/><br /><sub><b>Callum Mole</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3Acallummole" title="Reviewed Pull Requests">👀</a></td>
+      <td align="center"><a href="https://aoifehughes.github.io"><img src="https://avatars.githubusercontent.com/u/10923695?v=4?s=100" width="100px;" alt="Aoife Hughes"/><br /><sub><b>Aoife Hughes</b></sub></a><br /><a href="#ideas-AoifeHughes" title="Ideas, Planning, & Feedback">🤔</a></td>
     </tr>
   </tbody>
   <tfoot>
