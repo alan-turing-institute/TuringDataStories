@@ -219,6 +219,15 @@
         "code",
         "data"
       ]
+    },
+    {
+      "login": "callummole",
+      "name": "Callum Mole",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22677759?v=4",
+      "profile": "https://github.com/callummole",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
