@@ -23,7 +23,7 @@ include:
 - Focusing on what is best for the community
 - Showing empathy towards other community members
 
-Examples of unacceptable behavior by participants include:
+Examples of unacceptable behaviour by participants include:
 
 - The use of sexualized language or imagery and unwelcome sexual attention or
  advances
@@ -45,17 +45,17 @@ We also strive to adhere to the [SUM values](https://www.gov.uk/guidance/underst
 
 Project maintainers are responsible for clarifying the standards of acceptable
 behaviour and are expected to take appropriate and fair corrective action in
-response to any instances of unacceptable behavior.
+response to any instances of unacceptable behaviour.
 
 Project maintainers have the right and responsibility to remove, edit, or
 reject comments, commits, code, wiki edits, issues, and other contributions
 that are not aligned to this Code of Conduct, or to ban temporarily or
-permanently any contributor for other behaviors that they deem inappropriate,
+permanently any contributor for other behaviours that they deem inappropriate,
 threatening, offensive, or harmful.
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be
+Instances of abusive, harassing, or otherwise unacceptable behaviour may be
 reported by contacting the project team either [David Beavan](https://www.turing.ac.uk/people/researchers/david-beavan) or [Camila Rangel Smith ](https://www.turing.ac.uk/people/researchers/camila-rangel-smith). All
 complaints will be reviewed and investigated and will result in a response that
 is deemed necessary and appropriate to the circumstances. The project team is
