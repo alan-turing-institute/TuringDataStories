@@ -44,6 +44,12 @@ After the story has been completed, reviewers must fill in this checklist and co
 
 The checklist is the following:
 
+
+#### Conflict of interest 
+
+- [ ]  I confirm that I have raised any potential COI with the handling editor
+  of this submission
+
 #### Code of conduct
 - [ ] I confirm that I read and will adhere to the Turing Data Stories [code of conduct](https://github.com/alan-turing-institute/TuringDataStories/blob/master/CODE_OF_CONDUCT.md) and the SUM values therein.
 

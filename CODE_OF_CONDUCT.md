@@ -1,7 +1,7 @@
 # Code of Conduct
 
 We value the participation of every member of our community and want to ensure 
-that every contributer has an enjoyable and fulfilling experience. Accordingly, 
+that every contributor has an enjoyable and fulfilling experience. Accordingly, 
 everyone who participates in the `Turing Data Studies` project is expected to show respect and 
 courtesy to other community members at all time.
 
@@ -14,7 +14,7 @@ appearance, race, religion, or sexual identity and orientation.
 
 ## Our Standards
 
-Examples of behavior that contributes to creating a positive environment
+Examples of behaviour that contributes to creating a positive environment
 include:
 
 - Using welcoming and inclusive language
@@ -37,14 +37,14 @@ Examples of unacceptable behavior by participants include:
 We also strive to adhere to the [SUM values](https://www.gov.uk/guidance/understanding-artificial-intelligence-ethics-and-safety):
 - Respect the dignity of individuals.
 - Connect with each other sincerely, openly, and inclusively.
-- Care for the wellbeing of all.
+- Care for the welling of all.
 - Protect the priorities of social values, justice, and public interest.
 
 
 ## Our Responsibilities
 
 Project maintainers are responsible for clarifying the standards of acceptable
-behavior and are expected to take appropriate and fair corrective action in
+behaviour and are expected to take appropriate and fair corrective action in
 response to any instances of unacceptable behavior.
 
 Project maintainers have the right and responsibility to remove, edit, or
