@@ -22,3 +22,5 @@ dependencies:
     - pycountry-convert==0.7.2
     - openpyxl==3.0.9
     - networkx==2.6.3
+    - imblearn==0.0
+    - colorama==0.4.4
