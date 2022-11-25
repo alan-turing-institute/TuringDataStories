@@ -3,23 +3,23 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - brotli=1.0.9=h5eb16cf_7
-  - brotli-bin=1.0.9=h5eb16cf_7
-  - c-ares=1.18.1=h0d85af4_0
-  - ca-certificates=2022.9.24=h033912b_0
-  - cartopy=0.21.0=py39hed56034_0
-  - cycler=0.11.0=pyhd8ed1ab_0
-  - freetype=2.12.1=h3f81eb7_0
-  - geos=3.11.0=hb486fe8_0
-  - jpeg=9e=hac89ed1_2
-  - kiwisolver=1.4.4=py39h7c694c3_0
-  - krb5=1.19.3=hb49756b_0
-  - lcms2=2.12=h577c468_0
-  - lerc=4.0.0=hb486fe8_0
-  - libblas=3.9.0=16_osx64_openblas
-  - libbrotlicommon=1.0.9=h5eb16cf_7
-  - libbrotlidec=1.0.9=h5eb16cf_7
-  - libbrotlienc=1.0.9=h5eb16cf_7
+  - brotli=1.0.9
+  - brotli-bin=1.0.9
+  - c-ares=1.18.1
+  - ca-certificates=2022.9.24
+  - cartopy=0.21.0
+  - cycler=0.11.0
+  - freetype=2.12.1
+  - geos=3.11.0
+  - jpeg=9e
+  - kiwisolver=1.4.4
+  - krb5=1.19.3
+  - lcms2=2.12
+  - lerc=4.0.0
+  - libblas=3.9.0
+  - libbrotlicommon=1.0.9
+  - libbrotlidec=1.0.9
+  - libbrotlienc=1.0.9
   - libcblas=3.9.0=16_osx64_openblas
   - libcurl=7.85.0=h57eb407_0
   - libcxx=14.0.6=h9765a3e_0
