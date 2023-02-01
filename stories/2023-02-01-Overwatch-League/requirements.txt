@@ -1,0 +1,6 @@
+requests
+notebook
+pandas
+numpy
+seaborn
+scikit-learn
