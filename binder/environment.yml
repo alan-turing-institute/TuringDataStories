@@ -1,4 +1,4 @@
-name: borisbike
+name: TDS
 channels:
   - conda-forge
   - defaults
