@@ -120,7 +120,7 @@ stonesoup==0.1b9; python_version >= "3.7"
 terminado==0.15.0; python_version >= "3.7"
 tinycss2==1.1.1; python_version >= "3.7"
 tomli==2.0.1; python_version >= "3.7"
-tornado==6.2; python_version >= "3.7"
+tornado==6.3.2; python_version >= "3.7"
 tqdm==4.64.0; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.4.0")
 traitlets==5.3.0; python_full_version >= "3.7.0" and python_version >= "3.8"
 typing-extensions==4.3.0; python_version >= "3.7"
