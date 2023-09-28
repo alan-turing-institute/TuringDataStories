@@ -264,6 +264,18 @@
         "review",
         "content"
       ]
+    },
+    {
+      "login": "llewelld",
+      "name": "David Llewellyn-Jones",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446122?v=4",
+      "profile": "https://www.flypig.co.uk",
+      "contributions": [
+        "ideas",
+        "code",
+        "review",
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7,
