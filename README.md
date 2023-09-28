@@ -5,7 +5,7 @@
 </p>
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-26-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-27-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Our stories are published online via fastpages, you can check them out [here](https://alan-turing-institute.github.io/TuringDataStories-fastpages/).
@@ -147,6 +147,7 @@ We virtually meet on Wednesday afternoons to work collaboratively.
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/IFenton"><img src="https://avatars.githubusercontent.com/u/5773962?v=4?s=100" width="100px;" alt="Isabel Fenton"/><br /><sub><b>Isabel Fenton</b></sub></a><br /><a href="#ideas-IFenton" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=IFenton" title="Code">💻</a> <a href="#content-IFenton" title="Content">🖋</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://katrionagoldmann.github.io"><img src="https://avatars.githubusercontent.com/u/25952322?v=4?s=100" width="100px;" alt="Katriona Goldmann"/><br /><sub><b>Katriona Goldmann</b></sub></a><br /><a href="#ideas-KatrionaGoldmann" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=KatrionaGoldmann" title="Code">💻</a> <a href="#content-KatrionaGoldmann" title="Content">🖋</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://rchan26.github.io/"><img src="https://avatars.githubusercontent.com/u/44200705?v=4?s=100" width="100px;" alt="Ryan Chan"/><br /><sub><b>Ryan Chan</b></sub></a><br /><a href="#ideas-rchan26" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=rchan26" title="Code">💻</a> <a href="#content-rchan26" title="Content">🖋</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3Archan26" title="Reviewed Pull Requests">👀</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/eirini-zormpa"><img src="https://avatars.githubusercontent.com/u/30151074?v=4?s=100" width="100px;" alt="Eirini Zormpa"/><br /><sub><b>Eirini Zormpa</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3Aeirini-zormpa" title="Reviewed Pull Requests">👀</a></td>
     </tr>
   </tbody>
 </table>
