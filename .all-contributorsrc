@@ -310,6 +310,15 @@
         "content",
         "review"
       ]
+    },
+    {
+      "login": "eirini-zormpa",
+      "name": "Eirini Zormpa",
+      "avatar_url": "https://avatars.githubusercontent.com/u/30151074?v=4",
+      "profile": "https://github.com/eirini-zormpa",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
