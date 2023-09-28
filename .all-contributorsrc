@@ -241,6 +241,16 @@
         "code",
         "data"
       ]
+    },
+    {
+      "login": "phinate",
+      "name": "Nathan Simpson",
+      "avatar_url": "https://avatars.githubusercontent.com/u/49782545?v=4",
+      "profile": "http://phinate.github.io",
+      "contributions": [
+        "infra",
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -248,5 +258,7 @@
   "projectOwner": "alan-turing-institute",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitType": "docs",
+  "commitConvention": "angular"
 }
