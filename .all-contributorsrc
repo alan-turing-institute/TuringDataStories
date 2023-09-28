@@ -298,6 +298,18 @@
         "code",
         "content"
       ]
+    },
+    {
+      "login": "rchan26",
+      "name": "Ryan Chan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/44200705?v=4",
+      "profile": "https://rchan26.github.io/",
+      "contributions": [
+        "ideas",
+        "code",
+        "content",
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
