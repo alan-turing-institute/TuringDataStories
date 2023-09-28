@@ -350,6 +350,15 @@
         "code",
         "content"
       ]
+    },
+    {
+      "login": "myyong",
+      "name": "myyong",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5417696?v=4",
+      "profile": "https://github.com/myyong",
+      "contributions": [
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 7,
