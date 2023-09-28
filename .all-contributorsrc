@@ -287,6 +287,17 @@
         "code",
         "content"
       ]
+    },
+    {
+      "login": "KatrionaGoldmann",
+      "name": "Katriona Goldmann",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25952322?v=4",
+      "profile": "https://katrionagoldmann.github.io",
+      "contributions": [
+        "ideas",
+        "code",
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7,
