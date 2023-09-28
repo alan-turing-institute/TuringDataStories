@@ -251,6 +251,19 @@
         "infra",
         "ideas"
       ]
+    },
+    {
+      "login": "yongrenjie",
+      "name": "Jonathan Yong",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22414895?v=4",
+      "profile": "https://github.com/yongrenjie",
+      "contributions": [
+        "infra",
+        "ideas",
+        "code",
+        "review",
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7,
