@@ -328,6 +328,17 @@
       "contributions": [
         "review"
       ]
+    },
+    {
+      "login": "edchapman88",
+      "name": "Ed Chapman",
+      "avatar_url": "https://avatars.githubusercontent.com/u/93717706?v=4",
+      "profile": "https://github.com/edchapman88",
+      "contributions": [
+        "ideas",
+        "code",
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7,
