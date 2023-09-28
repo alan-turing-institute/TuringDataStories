@@ -276,6 +276,17 @@
         "review",
         "content"
       ]
+    },
+    {
+      "login": "IFenton",
+      "name": "Isabel Fenton",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5773962?v=4",
+      "profile": "https://github.com/IFenton",
+      "contributions": [
+        "ideas",
+        "code",
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7,
