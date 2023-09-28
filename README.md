@@ -5,7 +5,7 @@
 </p>
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-21-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-22-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Our stories are published online via fastpages, you can check them out [here](https://alan-turing-institute.github.io/TuringDataStories-fastpages/).
@@ -140,6 +140,9 @@ We virtually meet on Wednesday afternoons to work collaboratively.
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/callummole"><img src="https://avatars.githubusercontent.com/u/22677759?v=4?s=100" width="100px;" alt="Callum Mole"/><br /><sub><b>Callum Mole</b></sub></a><br /><a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3Acallummole" title="Reviewed Pull Requests">👀</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://aoifehughes.github.io"><img src="https://avatars.githubusercontent.com/u/10923695?v=4?s=100" width="100px;" alt="Aoife Hughes"/><br /><sub><b>Aoife Hughes</b></sub></a><br /><a href="#ideas-AoifeHughes" title="Ideas, Planning, & Feedback">🤔</a> <a href="#content-AoifeHughes" title="Content">🖋</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=AoifeHughes" title="Code">💻</a> <a href="#data-AoifeHughes" title="Data">🔣</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://phinate.github.io"><img src="https://avatars.githubusercontent.com/u/49782545?v=4?s=100" width="100px;" alt="Nathan Simpson"/><br /><sub><b>Nathan Simpson</b></sub></a><br /><a href="#infra-phinate" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#ideas-phinate" title="Ideas, Planning, & Feedback">🤔</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/yongrenjie"><img src="https://avatars.githubusercontent.com/u/22414895?v=4?s=100" width="100px;" alt="Jonathan Yong"/><br /><sub><b>Jonathan Yong</b></sub></a><br /><a href="#infra-yongrenjie" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#ideas-yongrenjie" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=yongrenjie" title="Code">💻</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/pulls?q=is%3Apr+reviewed-by%3Ayongrenjie" title="Reviewed Pull Requests">👀</a> <a href="#content-yongrenjie" title="Content">🖋</a></td>
     </tr>
   </tbody>
 </table>
