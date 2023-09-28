@@ -5,7 +5,7 @@
 </p>
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-30-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-31-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Our stories are published online via fastpages, you can check them out [here](https://alan-turing-institute.github.io/TuringDataStories-fastpages/).
@@ -153,6 +153,7 @@ We virtually meet on Wednesday afternoons to work collaboratively.
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/edchapman88"><img src="https://avatars.githubusercontent.com/u/93717706?v=4?s=100" width="100px;" alt="Ed Chapman"/><br /><sub><b>Ed Chapman</b></sub></a><br /><a href="#ideas-edchapman88" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=edchapman88" title="Code">💻</a> <a href="#content-edchapman88" title="Content">🖋</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/mastoffel"><img src="https://avatars.githubusercontent.com/u/7348440?v=4?s=100" width="100px;" alt="martin"/><br /><sub><b>martin</b></sub></a><br /><a href="#ideas-mastoffel" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/alan-turing-institute/TuringDataStories/commits?author=mastoffel" title="Code">💻</a> <a href="#content-mastoffel" title="Content">🖋</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/myyong"><img src="https://avatars.githubusercontent.com/u/5417696?v=4?s=100" width="100px;" alt="myyong"/><br /><sub><b>myyong</b></sub></a><br /><a href="#ideas-myyong" title="Ideas, Planning, & Feedback">🤔</a></td>
     </tr>
   </tbody>
 </table>
