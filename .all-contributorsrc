@@ -128,7 +128,9 @@
       "profile": "https://github.com/billfinnegan",
       "contributions": [
         "ideas",
-        "review"
+        "review",
+        "content",
+        "code"
       ]
     },
     {
@@ -178,13 +180,183 @@
       "profile": "http://mhauru.org",
       "contributions": [
         "review",
-        "code"
+        "code",
+        "projectManagement",
+        "content",
+        "ideas"
+      ]
+    },
+    {
+      "login": "radka-j",
+      "name": "Radka Jersakova",
+      "avatar_url": "https://avatars.githubusercontent.com/u/29207091?v=4",
+      "profile": "https://github.com/radka-j",
+      "contributions": [
+        "projectManagement",
+        "ideas",
+        "doc",
+        "infra",
+        "review"
+      ]
+    },
+    {
       "login": "edwardchalstrey1",
       "name": "Ed Chalstrey",
       "avatar_url": "https://avatars.githubusercontent.com/u/5486164?v=4",
       "profile": "http://edchalstrey.com/",
       "contributions": [
+        "ideas",
+        "review"
+      ]
+    },
+    {
+      "login": "joecerniglia",
+      "name": "joecerniglia",
+      "avatar_url": "https://avatars.githubusercontent.com/u/97735240?v=4",
+      "profile": "https://github.com/joecerniglia",
+      "contributions": [
+        "ideas",
+        "content",
+        "code",
+        "data"
+      ]
+    },
+    {
+      "login": "callummole",
+      "name": "Callum Mole",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22677759?v=4",
+      "profile": "https://github.com/callummole",
+      "contributions": [
+        "review"
+      ]
+    },
+    {
+      "login": "AoifeHughes",
+      "name": "Aoife Hughes",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10923695?v=4",
+      "profile": "https://aoifehughes.github.io",
+      "contributions": [
+        "ideas",
+        "content",
+        "code",
+        "data"
+      ]
+    },
+    {
+      "login": "phinate",
+      "name": "Nathan Simpson",
+      "avatar_url": "https://avatars.githubusercontent.com/u/49782545?v=4",
+      "profile": "http://phinate.github.io",
+      "contributions": [
+        "infra",
+        "ideas"
+      ]
+    },
+    {
+      "login": "yongrenjie",
+      "name": "Jonathan Yong",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22414895?v=4",
+      "profile": "https://github.com/yongrenjie",
+      "contributions": [
+        "infra",
+        "ideas",
+        "code",
         "review",
+        "content"
+      ]
+    },
+    {
+      "login": "llewelld",
+      "name": "David Llewellyn-Jones",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446122?v=4",
+      "profile": "https://www.flypig.co.uk",
+      "contributions": [
+        "ideas",
+        "code",
+        "review",
+        "content"
+      ]
+    },
+    {
+      "login": "IFenton",
+      "name": "Isabel Fenton",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5773962?v=4",
+      "profile": "https://github.com/IFenton",
+      "contributions": [
+        "ideas",
+        "code",
+        "content"
+      ]
+    },
+    {
+      "login": "KatrionaGoldmann",
+      "name": "Katriona Goldmann",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25952322?v=4",
+      "profile": "https://katrionagoldmann.github.io",
+      "contributions": [
+        "ideas",
+        "code",
+        "content"
+      ]
+    },
+    {
+      "login": "rchan26",
+      "name": "Ryan Chan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/44200705?v=4",
+      "profile": "https://rchan26.github.io/",
+      "contributions": [
+        "ideas",
+        "code",
+        "content",
+        "review"
+      ]
+    },
+    {
+      "login": "eirini-zormpa",
+      "name": "Eirini Zormpa",
+      "avatar_url": "https://avatars.githubusercontent.com/u/30151074?v=4",
+      "profile": "https://github.com/eirini-zormpa",
+      "contributions": [
+        "review"
+      ]
+    },
+    {
+      "login": "dingaaling",
+      "name": "Jennifer Ding",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5104098?v=4",
+      "profile": "http://jending.com",
+      "contributions": [
+        "review"
+      ]
+    },
+    {
+      "login": "edchapman88",
+      "name": "Ed Chapman",
+      "avatar_url": "https://avatars.githubusercontent.com/u/93717706?v=4",
+      "profile": "https://github.com/edchapman88",
+      "contributions": [
+        "ideas",
+        "code",
+        "content"
+      ]
+    },
+    {
+      "login": "mastoffel",
+      "name": "martin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7348440?v=4",
+      "profile": "https://github.com/mastoffel",
+      "contributions": [
+        "ideas",
+        "code",
+        "content"
+      ]
+    },
+    {
+      "login": "myyong",
+      "name": "myyong",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5417696?v=4",
+      "profile": "https://github.com/myyong",
+      "contributions": [
         "ideas"
       ]
     }
@@ -194,5 +366,7 @@
   "projectOwner": "alan-turing-institute",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitType": "docs",
+  "commitConvention": "angular"
 }

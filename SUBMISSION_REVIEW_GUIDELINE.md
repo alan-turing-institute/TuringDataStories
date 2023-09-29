@@ -28,7 +28,7 @@ Add any other context or screenshots about the story here.
 Ideally a Turing Data Story has these properties and follows the [5 safes framework](http://blog.ukdataservice.ac.uk/access-to-sensitive-data-for-research-the-5-safes/). We will request the author to commit that the story will follow this checklist:
 
 - [ ] The analysis you produce is openly available and reproducible.
-- [ ] Any data used are [open](https://opendatahandbook.org/guide/en/what-is-open-data/) and have an explicit licence, provenance and attribution.
+- [ ] Any data used are [open](https://opendatahandbook.org/guide/en/what-is-open-data/) and have an explicit licence, provenance, and attribution.
 - [ ] Any data used are not [personal data](https://ico.org.uk/for-organisations/guide-to-data-protection/guide-to-the-general-data-protection-regulation-gdpr/key-definitions/what-is-personal-data/) (i.e. the data is anonymous or anonymised).
 - [ ] Any linkage of datasets in your data story does not lead to an increased risk of the personal identification of individuals.
 - [ ] The Story must be truthful and clear about any limitations of analysis (and potential biases in data).
@@ -44,12 +44,18 @@ After the story has been completed, reviewers must fill in this checklist and co
 
 The checklist is the following:
 
+
+#### Conflict of interest 
+
+- [ ] I confirm that I have raised any potential COI with the handling editor
+  of this submission.
+
 #### Code of conduct
 - [ ] I confirm that I read and will adhere to the Turing Data Stories [code of conduct](https://github.com/alan-turing-institute/TuringDataStories/blob/master/CODE_OF_CONDUCT.md) and the SUM values therein.
 
 #### General checks
 - [ ]  **Notebook:** Is the source code for this data story available as a notebook in the linked pull request?
-- [ ]  **Contribution and authorship:** Are the authors clearly listed? Does the author list seem appropriate and complete?
+- [ ] **Contribution and authorship:** Are the authors clearly listed? Does the author list seem appropriate and complete?
 - [ ] **Scope and eligibility:** Does the submission contain an original and complete analysis of open data? Is the story aligned with the Turing Data Stories [vision statement](https://github.com/alan-turing-institute/TuringDataStories#our-vision)?
 
 
@@ -57,15 +63,15 @@ The checklist is the following:
 - [ ] Does the notebook run in a local environment?
 - [ ] Does the notebook build and run in binder?
 - [ ] Are all data sources openly accessible and properly cited with a link?
-- [ ] Are the data [open](https://opendatahandbook.org/guide/en/what-is-open-data/), and do they have an explicit licence, provenance and attribution?
+- [ ] Are the data [open](https://opendatahandbook.org/guide/en/what-is-open-data/), and do they have an explicit licence, provenance, and attribution?
 
 #### Pedagogy
 - [ ] Does the story demonstrate some specific data analysis or visualisation techniques?
 - [ ] Are these techniques well motivated?
 - [ ] Are these techniques well implemented?
 - [ ] Is the notebook well documented, using both markdown cells and comments in code cells?
-- [ ] Does the notebook has a introduction section motivating the story?
-- [ ] Does the notebook has a conclusion section discussing the main insight from the stories?
+- [ ] Does the notebook have a introduction section motivating the story?
+- [ ] Does the notebook have a conclusion section discussing the main insight from the stories?
 - [ ] Is the paper well written (it does not require editing for structure, language, or writing quality)?
 
 #### Context
