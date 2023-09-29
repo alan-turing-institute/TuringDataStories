@@ -4,6 +4,7 @@ project:
   render:
     - "*.qmd"
     - "stories/*/*.ipynb"
+    - "!stories/_*"
 website:
   title: "Turing Data Stories"
   navbar:
@@ -14,6 +15,3 @@ format:
   html:
     theme: cosmo
     css: styles.css
-
-
-
