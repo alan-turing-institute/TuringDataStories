@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="David Beavan">
+<meta name="author" content="Camila Rangel Smith">
+<meta name="author" content="Sam Van Stroud">
+<meta name="author" content="Kevin Xu">
+<meta name="dcterms.date" content="2020-11-20">
+
+<title>Turing Data Stories - Who was protected by the first COVID-19 lockdown in England?</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Turing Data Stories</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/alan-turing-institute/turingdatastories" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Who was protected by the first COVID-19 lockdown in England?</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">COVID-19</div>
+                <div class="quarto-category">data wrangling</div>
+                <div class="quarto-category">data exploration</div>
+              </div>
+                  </div>
+  </div>
+    
+  <div class="quarto-title-meta-author">
+    <div class="quarto-title-meta-heading">Authors</div>
+    <div class="quarto-title-meta-heading">Affiliations</div>
+    
+      <div class="quarto-title-meta-contents">
+      <p class="author"><a href="https://www.turing.ac.uk/people/researchers/david-beavan">David Beavan</a> </p>
+    </div>
+      <div class="quarto-title-meta-contents">
+          <p class="affiliation">
+              <a href="www.turing.ac.uk">
+              The Alan Turing Institute
+              </a>
+            </p>
+        </div>
+        <div class="quarto-title-meta-contents">
+      <p class="author"><a href="https://www.turing.ac.uk/people/researchers/camila-rangel-smith">Camila Rangel Smith</a> </p>
+    </div>
+      <div class="quarto-title-meta-contents">
+          <p class="affiliation">
+              <a href="www.turing.ac.uk">
+              The Alan Turing Institute
+              </a>
+            </p>
+        </div>
+        <div class="quarto-title-meta-contents">
+      <p class="author"><a href="https://github.com/samvanstroud">Sam Van Stroud</a> </p>
+    </div>
+      <div class="quarto-title-meta-contents">
+          <p class="affiliation">
+              <a href="https://www.ucl.ac.uk/">
+              University College London
+              </a>
+            </p>
+        </div>
+        <div class="quarto-title-meta-contents">
+      <p class="author"><a href="https://github.com/kevinxufs">Kevin Xu</a> </p>
+    </div>
+      <div class="quarto-title-meta-contents">
+          <p class="affiliation">
+              <a href="https://www.gov.uk/government/organisations/civil-service">
+              Civil Service
+              </a>
+            </p>
+        </div>
+      </div>
+
+  <div class="quarto-title-meta">
+
+        
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">November 20, 2020</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p><em>All the authors above contributed to this data story story with ideas, code development and story telling.</em></p>
+<section id="reviewers" class="level3">
+<h3 class="anchored" data-anchor-id="reviewers">Reviewers</h3>
+<ul>
+<li><strong>Nick Barlow</strong>. The Alan Turing Institute. Github: <span class="citation" data-cites="nbarlowATI">@nbarlowATI</span></li>
+<li><strong>Louise Bowler</strong>. The Alan Turing Institute. Github: <span class="citation" data-cites="LouiseABowler">@LouiseABowler</span></li>
+</ul>
+<p>Welcome to the first Turing Data Story!</p>
+<p>Our goal at Turing Data Stories is to produce educational data science content by telling stories with data.</p>
+<p>A data story begins with a question about a societal issue that is close to our hearts, and covers our entire analysis process in trying to answer it. From gathering and cleaning the data, to using it for data analysis. We hope that our stories will not only provide the reader with insight into some societal issues, but also to showcase the explanatory power of data science, and enable the reader to try out some of these techniques themselves.</p>
+<p>Each of our stories comes in the form of a Jupyter notebook, which will contain all the code required to follow along with the analysis, along with an explanations of our thought process.</p>
+</section>
+<section id="covid-19-and-deprivation" class="level2">
+<h2 class="anchored" data-anchor-id="covid-19-and-deprivation">COVID-19 and Deprivation</h2>
+<p>Everyone has been impacted by the COVID-19 pandemic. On the <a href="https://www.bbc.co.uk/news/uk-52012432">23rd of March 2020</a>, the UK Government announced various lockdown measures with the intention of limiting the spread of the virus and reducing the number of COVID-19 related deaths. These lockdown measures meant the temporary closure of many commercial shops and businesses, as well as the limiting of work based travel to only those jobs that could not be done at home.</p>
+<p><strong>We are concerned that the impact of COVID-19 has disproportionately affected certain groups of people. In particular, that the lockdown may have had a worse impact on those in the most deprived areas, whose livelihoods may have required them to leave the house more frequently.</strong></p>
+<p>There have been a number of <a href="https://www.ft.com/content/301c847c-a317-4950-a75b-8e66933d423a">concerns</a> with Government COVID-19 reporting, in particular with testing and mortality statistics. This motivates independent, open analysis to validate and expand on our understanding of our current state of the pandemic.</p>
+<p>Earlier in June, the Office of National Statistics (ONS) <a href="https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/bulletins/deathsinvolvingcovid19bylocalareasanddeprivation/latest">published a report</a> exploring this exact question: to assess whether those living in the most deprived areas of the UK were disproportionately affected by COVID-19. The report seems to confirm our fear - between the months of March to May 2020 those in the most deprived areas of the UK were more than twice as likely to die as a result of COVID-19 than those in the least deprived areas.</p>
+<p>There are two caveats that we have with the ONS analysis. The first is <strong>reproducibility</strong>. We want to confirm the ONS results by making the analysis procedure open. The second caveat is that the ONS report <strong>aggregates data over time</strong>, and therefore that it might miss interesting differences in outcomes between the different stages of lockdown. The lockdown was most severe between March and May, with measures relaxing from June onwards. We wonder whether the ONS analysis will continue to be relevant as lockdown eases. For this purpose, we wish to extend the ONS analysis to cover all available data, and at the same time, make a comparison between the different stages of lockdown.</p>
+<p>Thus for our first story we ask:</p>
+<p><strong>Have the COVID-19 lockdown measures protected people equally across all socio-economic groups in society?</strong></p>
+<p>We have two main objectives</p>
+<ol type="1">
+<li><p>We want to replicate the ONS analysis using their provided data to ensure that we have all the inputs necessary to understand the problem.</p></li>
+<li><p>We want to extend the ONS analysis to consider different time periods - representing the severity of the different stages of lockdown - to see how this affects people from different socio-economic groups.</p></li>
+</ol>
+<section id="key-metrics" class="level3">
+<h3 class="anchored" data-anchor-id="key-metrics">Key Metrics</h3>
+<p>Our analysis will involve exploring the relationship between the following key metrics:</p>
+<ul>
+<li>COVID-19 mortality rates over time and across geographical regions.</li>
+<li>Index of multiple deprivation (IMD) by geographical region - a measure of the geographic spread of social deprivation (see <a href="https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/835115/IoD2019_Statistical_Release.pdf">definition</a> and <a href="https://en.wikipedia.org/wiki/Multiple_deprivation_index">explanation</a>).</li>
+</ul>
+</section>
+<section id="data-sources" class="level3">
+<h3 class="anchored" data-anchor-id="data-sources">Data Sources</h3>
+<p>We will use the following datasets:</p>
+<ul>
+<li><a href="https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/causesofdeath/datasets/deathregistrationsandoccurrencesbylocalauthorityandhealthboard">Mortality count time series</a></li>
+<li><a href="https://www.gov.uk/government/statistics/english-indices-of-deprivation-2019">IMD Rankings (England only)</a></li>
+<li><a href="https://www.ons.gov.uk/file?uri=%2fpeoplepopulationandcommunity%2fpopulationandmigration%2fpopulationestimates%2fdatasets%2fpopulationestimatesforukenglandandwalesscotlandandnorthernireland%2fmid20182019laboundaries/ukmidyearestimates20182019ladcodes.xls">Populations</a> provided by the <a href="https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationestimatesforukenglandandwalesscotlandandnorthernireland">ONS</a></li>
+<li><a href="https://opendata.arcgis.com/datasets/3ba3daf9278f47daba0f561889c3521a_0.csv">Local Authority District Code Region Lookup Table</a> provided by the <a href="https://geoportal.statistics.gov.uk/datasets/3ba3daf9278f47daba0f561889c3521a_0">ONS</a></li>
+<li><a href="https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/datasets/deathsinvolvingcovid19bylocalareaanddeprivation">ONS Mortality and Depravation Data</a></li>
+</ul>
+<p>In case any of the data sources become unavailable in the future, a download mirror is available <a href="https://drive.google.com/drive/folders/1NXp7DtBeCbTIv49_ngdgvQpQXaaB3f8F?usp=sharing">here</a>.</p>
+<p>For simplicity this study is only focusing on England. We understand the importance of investigating all of the regions of the UK. However due to the difference of lockdown measures across the nations of the UK, and also due to the way the IMD ranking is defined, an independent analysis is required for each nation. We encourage readers to replicate our analysis with the other nations.</p>
+</section>
+<section id="analysis-outline" class="level3">
+<h3 class="anchored" data-anchor-id="analysis-outline">Analysis Outline</h3>
+<p>Here’s a list of the different steps of the analysis:</p>
+<ol type="1">
+<li>Download and process data from multiple deprivation and COVID-19 deaths.</li>
+<li>Combine the different datasets into a single table by joining on geographical region.</li>
+<li>Calculate age standardised mortality rates from mortality counts.</li>
+<li>Replicate the ONS analysis, looking at mortality rate by region.</li>
+<li>Visualise the distribution of COVID-19 deaths across the UK.</li>
+<li>Segment the data into time periods, corresponding to the different stages of lockdown.</li>
+<li>Explore at the relationship between our two key metrics (deprivation and mortality rates) in the different time periods.</li>
+</ol>
+</section>
+</section>
+<section id="data-collation-and-wrangling" class="level1">
+<h1>Data Collation and Wrangling</h1>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">🔧 Setup</h2>
+<p>We begin by setting up our environment and importing various python libraries that we will be using for the analysis. In particular, <code>pandas</code> and <code>numpy</code> are key data science libraries used for data processing. <code>matplotlib</code> and <code>seaborn</code> will help us visualise our data.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:41:33.990446Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:41:31.786104Z&quot;}" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> zipfile</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span>  pearsonr</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>sns.<span class="bu">set</span>(style<span class="op">=</span><span class="st">'white'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>🔧 Let’s make some directories in which we can store the data we are going to download.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:41:33.996567Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:41:33.993086Z&quot;}" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># downloaded data goes here</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>downloaded_data_dir <span class="op">=</span> <span class="st">'data/downloaded'</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># processed data goes here</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>derived_data_dirname <span class="op">=</span> <span class="st">'data/derived'</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># create the directory if it does not already exist</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>os.makedirs(downloaded_data_dir, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>os.makedirs(derived_data_dirname, exist_ok<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>🔧 Here is a small helper function which will download files from a URL.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:41:34.003306Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:41:33.999650Z&quot;}" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This function can download data from a URL and then save it in a directory of our choice.</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> download_file(url, filename):</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># create the directory if it does not already exist</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    os.makedirs(os.path.dirname(filename), exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># make the HTTP request</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> requests.get(url, allow_redirects<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># save file</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=</span> <span class="bu">open</span>(filename, <span class="st">'wb'</span>).write(r.content)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="index-of-multiple-deprivation-imd" class="level2">
+<h2 class="anchored" data-anchor-id="index-of-multiple-deprivation-imd">Index of Multiple Deprivation (IMD)</h2>
+<p>🔧 Now let’s download and process our deprivation data. This data provides a deprivation rank (lower rank meaning more deprived) for each geographical region in England (the geographical regions are here are called Lower Super Output Areas, or <a href="https://www.datadictionary.nhs.uk/nhs_business_definitions/lower_layer_super_output_area.html#:~:text=Description,statistics%20in%20England%20and%20Wales.">LSOAs</a>). As a rough idea of scale, LSOAs contain on average around 1,500 people.</p>
+<section id="download" class="level3">
+<h3 class="anchored" data-anchor-id="download">Download</h3>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:41:37.489171Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:41:34.006622Z&quot;}" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># specify URL</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">'https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/833970/File_1_-_IMD2019_Index_of_Multiple_Deprivation.xlsx'</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># specify filename</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>filename <span class="op">=</span> <span class="st">'ONS_2019_Index_of_Multiple_Deprivation.xlsx'</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># construct file path</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>filepath <span class="op">=</span> os.path.join(downloaded_data_dir, filename)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># download and save file at the specified URL</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>download_file(url, filepath)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># read the relevant sheet</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>imd_df <span class="op">=</span> pd.read_excel(filepath, sheet_name<span class="op">=</span><span class="st">'IMD2019'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If we sort by deprivation rank, we can get an idea of the most / least deprived LSOAs.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:41:37.509047Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:41:37.490497Z&quot;}" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>imd_df.sort_values(by<span class="op">=</span><span class="st">'Index of Multiple Deprivation (IMD) Rank'</span>).head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">LSOA code (2011)</th>
+<th data-quarto-table-cell-role="th">LSOA name (2011)</th>
+<th data-quarto-table-cell-role="th">Local Authority District code (2019)</th>
+<th data-quarto-table-cell-role="th">Local Authority District name (2019)</th>
+<th data-quarto-table-cell-role="th">Index of Multiple Deprivation (IMD) Rank</th>
+<th data-quarto-table-cell-role="th">Index of Multiple Deprivation (IMD) Decile</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">21400</td>
+<td>E01021988</td>
+<td>Tendring 018A</td>
+<td>E07000076</td>
+<td>Tendring</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">12280</td>
+<td>E01012673</td>
+<td>Blackpool 010A</td>
+<td>E06000009</td>
+<td>Blackpool</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">12288</td>
+<td>E01012681</td>
+<td>Blackpool 006A</td>
+<td>E06000009</td>
+<td>Blackpool</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">12279</td>
+<td>E01012672</td>
+<td>Blackpool 013B</td>
+<td>E06000009</td>
+<td>Blackpool</td>
+<td>4</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">12278</td>
+<td>E01012671</td>
+<td>Blackpool 013A</td>
+<td>E06000009</td>
+<td>Blackpool</td>
+<td>5</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:41:37.528512Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:41:37.511126Z&quot;}" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>imd_df.sort_values(by<span class="op">=</span><span class="st">'Index of Multiple Deprivation (IMD) Rank'</span>).tail()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">LSOA code (2011)</th>
+<th data-quarto-table-cell-role="th">LSOA name (2011)</th>
+<th data-quarto-table-cell-role="th">Local Authority District code (2019)</th>
+<th data-quarto-table-cell-role="th">Local Authority District name (2019)</th>
+<th data-quarto-table-cell-role="th">Index of Multiple Deprivation (IMD) Rank</th>
+<th data-quarto-table-cell-role="th">Index of Multiple Deprivation (IMD) Decile</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">17759</td>
+<td>E01018293</td>
+<td>South Cambridgeshire 012B</td>
+<td>E07000012</td>
+<td>South Cambridgeshire</td>
+<td>32840</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">15715</td>
+<td>E01016187</td>
+<td>Bracknell Forest 002D</td>
+<td>E06000036</td>
+<td>Bracknell Forest</td>
+<td>32841</td>
+<td>10</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">30976</td>
+<td>E01031773</td>
+<td>Mid Sussex 008D</td>
+<td>E07000228</td>
+<td>Mid Sussex</td>
+<td>32842</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">26986</td>
+<td>E01027699</td>
+<td>Harrogate 021A</td>
+<td>E07000165</td>
+<td>Harrogate</td>
+<td>32843</td>
+<td>10</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">17268</td>
+<td>E01017787</td>
+<td>Chiltern 005E</td>
+<td>E07000005</td>
+<td>Chiltern</td>
+<td>32844</td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="derive-mean-imd-decile" class="level3">
+<h3 class="anchored" data-anchor-id="derive-mean-imd-decile">Derive Mean IMD Decile</h3>
+<p>At this point we want to join the two datasets together in order to explore the relationship between our two key metrics.</p>
+<p>A problem is that the index of multiple deprivation comes with a geographical granularity at the LSOA level, whilst the COVID-19 mortality counts come with a geographical granularity at the Local Authority District (LAD) level. To complicate things, for each LAD there are generally multiple LSOAs, each with different indexes of multiple deprivation. For more information about the different geographical regions in the UK, read <a href="https://data.gov.uk/dataset/ec39697d-e7f4-4419-a146-0b9c9c15ee06/output-area-to-lsoa-to-msoa-to-local-authority-district-december-2017-lookup-with-area-classifications-in-great-britain">this</a>.</p>
+<p>We need to aggregate the LSOAs into LADs by averaging out the indexes of multiple deprivation. First let’s write some functions to help us.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:41:37.533744Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:41:37.530656Z&quot;}" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_mean_IMD_decile(LAD_code):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># select relevant LSOAs</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    LSOAs <span class="op">=</span> imd_df[imd_df[<span class="st">'Local Authority District code (2019)'</span>] <span class="op">==</span> LAD_code]</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate mean IMD rank</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    mean_IMD_decile <span class="op">=</span> <span class="bu">round</span>(LSOAs[<span class="st">'Index of Multiple Deprivation (IMD) Decile'</span>].mean(), <span class="dv">2</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    std_IMD_decile <span class="op">=</span> <span class="bu">round</span>(LSOAs[<span class="st">'Index of Multiple Deprivation (IMD) Decile'</span>].std(), <span class="dv">2</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mean_IMD_decile, std_IMD_decile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we can use these functions to calculate the mean IMD decile in each Local Authority District.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:41:38.497633Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:41:37.538318Z&quot;}" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>LAD_codes <span class="op">=</span> imd_df[<span class="st">'Local Authority District code (2019)'</span>].unique()</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>mean_IMD_decile, std_IMD_decile  <span class="op">=</span> np.vectorize(get_mean_IMD_decile)(LAD_codes)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>LAD_df <span class="op">=</span> pd.DataFrame({<span class="st">'LAD Code'</span>: LAD_codes, </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>                       <span class="st">'LAD Name'</span>: imd_df[<span class="st">'Local Authority District name (2019)'</span>].unique(),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                       <span class="st">'Mean IMD decile'</span>: mean_IMD_decile,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>                       <span class="st">'Std IMD decile'</span>: std_IMD_decile})</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>LAD_df <span class="op">=</span> LAD_df.set_index(<span class="st">'LAD Code'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s make a quick histogram of the mean IMD decile.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:41:38.716029Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:41:38.501369Z&quot;}" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>LAD_df[<span class="st">'Mean IMD decile'</span>].hist(<span class="bu">range</span><span class="op">=</span>(<span class="dv">1</span>,<span class="dv">11</span>), bins<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Mean IMD Decile'</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Count'</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2020-11-20-Who_was_protected_by_the_first_COVID-19_lockdown_files/figure-html/cell-10-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>It should be noted that we lose some information when averaging the IMD ranks in this way. The central region of the distribution is relatively flat, and so we cannot differentiate well between LADs in this region.</p>
+<p>Notice there are no Local Authority Districts that have a mean IMD decile of 1 or 10. This is due to the presence of variance inside each Local Authority District. For example, there is no single LAD whose constituent LSOAs all have a IMD deciles of 1 (or 10). See the table below for the maximum and minimum mean IMD deciles. Note that Blackpool, the most deprived (on average) LAD in England, has a mean IMD decile of 2.41. This demonstrates that this LAD has some LSOAs that are not in the most deprived deciles. The opposite is true for the least deprived areas. The “Std IMD decile” column in the below table shows the level of variation of the IMD (measured by the standard deviation) within each LAD.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:41:38.733796Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:41:38.717948Z&quot;}" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>LAD_df.sort_values(by<span class="op">=</span><span class="st">'Mean IMD decile'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">LAD Name</th>
+<th data-quarto-table-cell-role="th">Mean IMD decile</th>
+<th data-quarto-table-cell-role="th">Std IMD decile</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">LAD Code</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">E06000009</td>
+<td>Blackpool</td>
+<td>2.41</td>
+<td>1.58</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">E08000003</td>
+<td>Manchester</td>
+<td>2.54</td>
+<td>1.84</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">E08000011</td>
+<td>Knowsley</td>
+<td>2.56</td>
+<td>1.91</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">E09000002</td>
+<td>Barking and Dagenham</td>
+<td>2.68</td>
+<td>1.01</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">E09000012</td>
+<td>Hackney</td>
+<td>2.74</td>
+<td>1.11</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">E07000155</td>
+<td>South Northamptonshire</td>
+<td>8.78</td>
+<td>1.32</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">E07000176</td>
+<td>Rushcliffe</td>
+<td>8.82</td>
+<td>1.58</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">E07000005</td>
+<td>Chiltern</td>
+<td>8.86</td>
+<td>1.51</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">E06000041</td>
+<td>Wokingham</td>
+<td>9.27</td>
+<td>1.43</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">E07000089</td>
+<td>Hart</td>
+<td>9.39</td>
+<td>1.08</td>
+</tr>
+</tbody>
+</table>
+
+<p>317 rows × 3 columns</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="derive-age-standardisation-weight" class="level2">
+<h2 class="anchored" data-anchor-id="derive-age-standardisation-weight">Derive Age Standardisation Weight</h2>
+<p>To account for the different population sizes in the different Local Area Districts, we want to use a mortality rate rather than an overall count. When we do this we convert a count into a rate per 100,000 people. Furthermore, we want to account for differences in the age distributions of the different LADs in order to make a valid comparison between the different geographic areas. An age standardised rate allows for this comparison. Ideally we would calculate this rate directly from the data, but as our mortality over time dataset does not contain information about age, we instead will need to extract a standardisation factor from a different dataset.</p>
+<p>The <a href="https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/datasets/deathsinvolvingcovid19bylocalareaanddeprivation">dataset</a> we will use to do this comes from the ONS study on COVID-19 and deprivation. We will use it to derive a standardisation factor which will allow us to convert our mortality counts into an age and population standardise mortality rate. This mortality rate is a European standard (2013 ESP). As we mentioned, we cannot calculate the factor directly as our mortality over time dataset does not include age information, so this reverse engineering is the best we can do.</p>
+<p>For more information on how the mortality rate is calculated, <a href="https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/methodologies/userguidetomortalitystatisticsjuly2017#death-rates-ratios-and-standardisation">see here</a>. Simply put, this is the formula that we are assuming approximates the relationship between the age standardised rate and the mortality count:</p>
+<pre><code>age standardised mortality rate = [standardisation factor] * [mortality count]</code></pre>
+<p>⚠️ The above procedure is not ideal because it assumes that the distribution of ages of those who died inside each Local Area District is constant in time, and therefore the standardisation factor we derive in one dataset (which doesn’t have information about time) can be applied to the other (which has information about time).</p>
+<p>First, let’s download the data.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:41:39.824735Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:41:38.736150Z&quot;}" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># download the ONS data from the deprivation study</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">'https://www.ons.gov.uk/file?uri=</span><span class="sc">%2f</span><span class="st">peoplepopulationandcommunity</span><span class="sc">%2f</span><span class="st">birthsdeathsandmarriages</span><span class="sc">%2f</span><span class="st">deaths</span><span class="sc">%2f</span><span class="st">datasets</span><span class="sc">%2f</span><span class="st">deathsinvolvingcovid19bylocalareaanddeprivation</span><span class="sc">%2f</span><span class="st">1march2020to17april2020/referencetablesdraft.xlsx'</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># specify filename</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>filename <span class="op">=</span> <span class="st">'ONS_age_standarisation_April2020.xlsx'</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># construct file path</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>filepath <span class="op">=</span> os.path.join(downloaded_data_dir, filename)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co"># download and save file at the specified URL</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>download_file(url, filepath)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co"># read the relevant sheet</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>age_rate_df <span class="op">=</span> pd.read_excel(filepath, sheet_name<span class="op">=</span><span class="st">'Table 2'</span>, header<span class="op">=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, we can do some minor selection and reformatting of the DataFrame.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:41:39.852745Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:41:39.826309Z&quot;}" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># data if given for many categories and regios, lets choose the inclusive gender, and the unitary authority levels</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>age_rate_persons_df <span class="op">=</span> age_rate_df[age_rate_df[<span class="st">'Sex'</span>] <span class="op">==</span> <span class="st">'Persons'</span>] </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&nbsp;rename columns</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>age_rate_persons_df.columns <span class="op">=</span> [<span class="st">'Sex'</span>, <span class="st">'Geography type'</span>, <span class="st">'LAD Code'</span>, <span class="st">'Area name'</span>, <span class="st">'All causes Deaths'</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>       <span class="st">'All causes Rate'</span>,<span class="st">''</span> ,<span class="st">'All causes Lower CI'</span>, <span class="st">'All causes Upper CI'</span>,<span class="st">''</span> ,<span class="st">'COVID-19 Deaths'</span>,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>       <span class="st">'COVID-19 Rate'</span>, <span class="st">''</span>,<span class="st">'COVID-19 Lower CI'</span>, <span class="st">'COVID-19 Upper CI'</span> ]</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co"># remove anomalous row (Isles of Scilly) without numerical data</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>age_rate_persons_df <span class="op">=</span> age_rate_persons_df[age_rate_persons_df[<span class="st">'All causes Rate'</span>] <span class="op">!=</span> <span class="st">':'</span>]</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>age_rate_persons_df <span class="op">=</span> age_rate_persons_df[age_rate_persons_df[<span class="st">'COVID-19 Rate'</span>] <span class="op">!=</span> <span class="st">':'</span>]</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co"># remove columns where all entries are NaN due to the spreadsheet formating.</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>age_rate_persons_df.dropna(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>age_rate_persons_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Sex</th>
+<th data-quarto-table-cell-role="th">Geography type</th>
+<th data-quarto-table-cell-role="th">LAD Code</th>
+<th data-quarto-table-cell-role="th">Area name</th>
+<th data-quarto-table-cell-role="th">All causes Deaths</th>
+<th data-quarto-table-cell-role="th">All causes Rate</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">All causes Lower CI</th>
+<th data-quarto-table-cell-role="th">All causes Upper CI</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">COVID-19 Deaths</th>
+<th data-quarto-table-cell-role="th">COVID-19 Rate</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">COVID-19 Lower CI</th>
+<th data-quarto-table-cell-role="th">COVID-19 Upper CI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Persons</td>
+<td>Unitary Authority</td>
+<td>E06000001</td>
+<td>Hartlepool</td>
+<td>154</td>
+<td>170.7</td>
+<td>NaN</td>
+<td>143.5</td>
+<td>197.8</td>
+<td>NaN</td>
+<td>29</td>
+<td>31</td>
+<td>NaN</td>
+<td>20.7</td>
+<td>44.5</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Persons</td>
+<td>Unitary Authority</td>
+<td>E06000002</td>
+<td>Middlesbrough</td>
+<td>289</td>
+<td>256</td>
+<td>NaN</td>
+<td>226.1</td>
+<td>286</td>
+<td>NaN</td>
+<td>89</td>
+<td>79</td>
+<td>NaN</td>
+<td>63.2</td>
+<td>97.6</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3</td>
+<td>Persons</td>
+<td>Unitary Authority</td>
+<td>E06000003</td>
+<td>Redcar and Cleveland</td>
+<td>215</td>
+<td>142.6</td>
+<td>NaN</td>
+<td>123.5</td>
+<td>161.8</td>
+<td>NaN</td>
+<td>40</td>
+<td>26.5</td>
+<td>NaN</td>
+<td>18.9</td>
+<td>36.2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Persons</td>
+<td>Unitary Authority</td>
+<td>E06000004</td>
+<td>Stockton-on-Tees</td>
+<td>297</td>
+<td>167</td>
+<td>NaN</td>
+<td>147.8</td>
+<td>186.1</td>
+<td>NaN</td>
+<td>38</td>
+<td>21</td>
+<td>NaN</td>
+<td>14.8</td>
+<td>28.9</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">5</td>
+<td>Persons</td>
+<td>Unitary Authority</td>
+<td>E06000005</td>
+<td>Darlington</td>
+<td>169</td>
+<td>151.5</td>
+<td>NaN</td>
+<td>128.6</td>
+<td>174.4</td>
+<td>NaN</td>
+<td>26</td>
+<td>22.9</td>
+<td>NaN</td>
+<td>15</td>
+<td>33.7</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Let us now calculate the factor by which we need to multiply the count of deaths to derive the age-standardised mortality rate per 100,000 habitants.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:41:39.862838Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:41:39.854444Z&quot;}" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># derive standardisation factors</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>age_rate_persons_df[<span class="st">'All causes rate factor'</span>] <span class="op">=</span> (</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    age_rate_persons_df[<span class="st">'All causes Rate'</span>] <span class="op">/</span> age_rate_persons_df[<span class="st">'All causes Deaths'</span>] )</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>age_rate_persons_df[<span class="st">'COVID-19 rate factor'</span>] <span class="op">=</span> (</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    age_rate_persons_df[<span class="st">'COVID-19 Rate'</span>] <span class="op">/</span> age_rate_persons_df[<span class="st">'COVID-19 Deaths'</span>] )</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co"># drop columns</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>age_rate_persons_df <span class="op">=</span> age_rate_persons_df[[<span class="st">'LAD Code'</span>, <span class="st">'All causes rate factor'</span>, <span class="st">'COVID-19 rate factor'</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can merge this into the previous DataFrame so all the information is accessible in one place.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:41:39.873242Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:41:39.864861Z&quot;}" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>LAD_df <span class="op">=</span> LAD_df.reset_index()</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>LAD_df <span class="op">=</span> LAD_df.merge(age_rate_persons_df, on<span class="op">=</span><span class="st">'LAD Code'</span>, how<span class="op">=</span><span class="st">'inner'</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>LAD_df <span class="op">=</span> LAD_df.set_index(<span class="st">'LAD Code'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally, let’s save the standardisation factors for each LAD, stored in the DataFrame <code>LAD_df</code>, so that we can easily use them later.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:41:39.882757Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:41:39.875246Z&quot;}" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create filename</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>LAD_df_filename <span class="op">=</span> <span class="st">'Local_Authority_District_Lookup.csv'</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>LAD_df_filepath <span class="op">=</span> os.path.join(derived_data_dirname, LAD_df_filename)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># write to csv</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>LAD_df.to_csv(LAD_df_filepath, index<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="mortality-counts" class="level2">
+<h2 class="anchored" data-anchor-id="mortality-counts">Mortality Counts</h2>
+<p>Now we are ready to download the main dataset that we will be analysing: the number of COVID-19 and non COVID-19 deaths across time and place.</p>
+<section id="download-and-format" class="level3">
+<h3 class="anchored" data-anchor-id="download-and-format">Download and Format</h3>
+<p>Let’s download the ONS dataset containing mortality counts by week and Local Authority District.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:41:42.383600Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:41:39.884550Z&quot;}" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># specify URL</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">'https://www.ons.gov.uk/file?uri=</span><span class="sc">%2f</span><span class="st">peoplepopulationandcommunity</span><span class="sc">%2f</span><span class="st">healthandsocialcare</span><span class="sc">%2f</span><span class="st">causesofdeath</span><span class="sc">%2f</span><span class="st">datasets</span><span class="sc">%2f</span><span class="st">deathregistrationsandoccurrencesbylocalauthorityandhealthboard</span><span class="sc">%2f</span><span class="st">2020/lahbtablesweek35.xlsx'</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># specify filename</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>filename <span class="op">=</span> <span class="st">'ONS_COVID_Mortality_Counts.xlsx'</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># construct file path</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>filepath <span class="op">=</span> os.path.join(downloaded_data_dir, filename)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co"># download and save file at the specified URL</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>download_file(url, filepath)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:04.661090Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:41:42.385239Z&quot;}" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># specify the sheet of the excel file we want to read</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>sheet_name <span class="op">=</span> <span class="st">'Occurrences - All data'</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># read the sheet into a pandas DataFrame</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>mortality_df <span class="op">=</span> pd.read_excel(filepath, sheet_name<span class="op">=</span>sheet_name, header<span class="op">=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s quickly check if all the LADs are represented in both datasets so that we can join the IMD rank with the mortality information for each LAD.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:04.704628Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:42:04.662585Z&quot;}" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>not_in_imd <span class="op">=</span> <span class="bu">set</span>(mortality_df[<span class="st">'Area code'</span>]) <span class="op">-</span> <span class="bu">set</span>(imd_df[<span class="st">'Local Authority District code (2019)'</span>])</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>not_in_mortality <span class="op">=</span> <span class="bu">set</span>(imd_df[<span class="st">'Local Authority District code (2019)'</span>]) <span class="op">-</span> <span class="bu">set</span>(mortality_df[<span class="st">'Area code'</span>])</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'There are'</span>, <span class="bu">len</span>(not_in_mortality), <span class="st">'codes in the IMD dataset but not in the mortality dataset.'</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'There are'</span>, <span class="bu">len</span>(not_in_imd), <span class="st">'codes in the mortality dataset but not in the IMD dataset.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>There are 4 codes in the IMD dataset but not in the mortality dataset.
+There are 30 codes in the mortality dataset but not in the IMD dataset.</code></pre>
+</div>
+</div>
+<p>We have 346 LAD codes in the mortality data set, and only 317 in the IMD dataset. Upon closer inspection, it turned out that IMD dataset does not contain any Welsh entries (as the IMD ranking is defined for England only). Additionally, the mortality dataset contains a single entry for Buckinghamshire, a new unitary authority in 2020 (E06000060). The IMD dataset, meanwhile, contains 4 LAD codes for Buckinghamshire. We will drop these anomalous locations from the analysis for now.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:04.736486Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:42:04.707016Z&quot;}" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract those LAD codes which are present in the mortality dataset but not the IMD dataset (Wales)</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>missing_LAD_codes_df <span class="op">=</span> mortality_df[<span class="op">~</span>mortality_df[<span class="st">'Area code'</span>].isin(imd_df[<span class="st">'Local Authority District code (2019)'</span>])]</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>missing_LAD_codes <span class="op">=</span> missing_LAD_codes_df[<span class="st">'Area code'</span>].unique()</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co"># filter by common LAD codes</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>mortality_df <span class="op">=</span> mortality_df[<span class="op">~</span>mortality_df[<span class="st">'Area code'</span>].isin(missing_LAD_codes)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Furthermore, the age standardisation factor derived previously was not able to be derived for one LAD (the Isles of Scilly). Let’s drop that now too to avoid any problems later down the line.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:04.753741Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:42:04.737870Z&quot;}" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&nbsp;remove LADs from the mortality DataFrame if we do not have an entry for them in the LAD_df</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>mortality_df <span class="op">=</span> mortality_df[mortality_df[<span class="st">'Area code'</span>].isin(LAD_df.index)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally, since we are interested in looking at the effect of COVID-19 and the lockdown policies on the working population, we can remove deaths that took place in care homes or hospices.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:04.787123Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:42:04.756001Z&quot;}" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># select only deaths outside of care homes and hospices</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>mortality_df <span class="op">=</span> mortality_df[(mortality_df[<span class="st">'Place of death'</span>] <span class="op">!=</span> <span class="st">'Care home'</span>) <span class="op">&amp;</span> </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                            (mortality_df[<span class="st">'Place of death'</span>] <span class="op">!=</span> <span class="st">'Hospice'</span>)]</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># to instead select only deaths in care homes or hospices, use this line:</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co">#mortality_df = mortality_df[(mortality_df['Place of death']=='Care home') | </span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co">#                            (mortality_df['Place of death']=='Hospice')]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The mortality data starts from Wednesday 1st Jan 2020. Let’s use that to convert the supplied week numbers into a date.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:06.209897Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:42:04.789656Z&quot;}" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first day of 2020 is a Wednesday</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>mortality_df[<span class="st">'Date'</span>] <span class="op">=</span> [datetime.strptime(<span class="ss">f'2020 </span><span class="sc">{</span>n<span class="op">-</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> 3'</span>, <span class="st">'%Y %W %w'</span>).strftime(<span class="st">'%Y-%m-</span><span class="sc">%d</span><span class="st">'</span>) </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>                        <span class="cf">for</span> n <span class="kw">in</span> mortality_df[<span class="st">'Week number'</span>]]</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># drop week number column</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>mortality_df <span class="op">=</span> mortality_df.drop(columns<span class="op">=</span><span class="st">'Week number'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally, we can take a random sample of 5 rows from the DataFrame to check everything looks okay, and to get an idea of its structure.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:06.229771Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:42:06.214791Z&quot;}" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>mortality_df.sample(n<span class="op">=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="23">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Area code</th>
+<th data-quarto-table-cell-role="th">Geography type</th>
+<th data-quarto-table-cell-role="th">Area name</th>
+<th data-quarto-table-cell-role="th">Cause of death</th>
+<th data-quarto-table-cell-role="th">Place of death</th>
+<th data-quarto-table-cell-role="th">Number of deaths</th>
+<th data-quarto-table-cell-role="th">Date</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">43031</td>
+<td>E07000136</td>
+<td>Local Authority</td>
+<td>Boston</td>
+<td>COVID 19</td>
+<td>Other communal establishment</td>
+<td>0</td>
+<td>2020-03-11</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">27659</td>
+<td>E08000002</td>
+<td>Local Authority</td>
+<td>Bury</td>
+<td>COVID 19</td>
+<td>Other communal establishment</td>
+<td>0</td>
+<td>2020-02-12</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">41644</td>
+<td>E06000043</td>
+<td>Local Authority</td>
+<td>Brighton and Hove</td>
+<td>All causes</td>
+<td>Hospital</td>
+<td>13</td>
+<td>2020-03-11</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">28045</td>
+<td>E08000036</td>
+<td>Local Authority</td>
+<td>Wakefield</td>
+<td>All causes</td>
+<td>Elsewhere</td>
+<td>2</td>
+<td>2020-02-12</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">77533</td>
+<td>E09000007</td>
+<td>Local Authority</td>
+<td>Camden</td>
+<td>All causes</td>
+<td>Elsewhere</td>
+<td>0</td>
+<td>2020-05-06</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>If you want to reproduce the results from the initial <a href="https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/bulletins/deathsinvolvingcovid19bylocalareasanddeprivation/latest">ONS report</a>, you can restrict the date ranges of the data by uncommenting these lines.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:06.235543Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:42:06.233454Z&quot;}" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">#mortality_df = mortality_df[mortality_df['Date'] &gt; '2020-03-01']</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co">#mortality_df = mortality_df[mortality_df['Date'] &lt; '2020-04-18']</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="download-local-area-district-to-region-lookup-table" class="level2">
+<h2 class="anchored" data-anchor-id="download-local-area-district-to-region-lookup-table">Download Local Area District to Region Lookup Table</h2>
+<p>As shown in the ONS report, a nice plot to make is the total number of mortalities in each region of England (a region is composed of many LADs). To do this, we need to know which region each LAD belongs. Let’s download this data now from the following website: https://geoportal.statistics.gov.uk/datasets/local-authority-district-to-region-april-2019-lookup-in-england.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:06.916291Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:42:06.237187Z&quot;}" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># specify URL</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">'https://opendata.arcgis.com/datasets/3ba3daf9278f47daba0f561889c3521a_0.csv'</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co"># specify filename</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>filename <span class="op">=</span> <span class="st">'LAD_Code_Region_Lookup.csv'</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="co"># construct file path</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>filepath <span class="op">=</span> os.path.join (downloaded_data_dir, filename)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="co"># download and save file at the specified URL</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>download_file(url, filepath)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="co"># read the relevant sheet</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>LAD_code_region_lookup_df <span class="op">=</span> pd.read_csv(filepath, index_col<span class="op">=</span><span class="st">'FID'</span>).set_index(<span class="st">'LAD19CD'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Taking a look at the data, we can see that the index “LAD19CD” contains our familiar LAD code, and the column “RGN12NM” gives us the name of the region in which that LAD is located. Perfect!</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:06.930702Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:42:06.918056Z&quot;}" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>LAD_code_region_lookup_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="26">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">LAD19NM</th>
+<th data-quarto-table-cell-role="th">RGN19CD</th>
+<th data-quarto-table-cell-role="th">RGN19NM</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">LAD19CD</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">E09000001</td>
+<td>City of London</td>
+<td>E12000007</td>
+<td>London</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">E06000054</td>
+<td>Wiltshire</td>
+<td>E12000009</td>
+<td>South West</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">E09000002</td>
+<td>Barking and Dagenham</td>
+<td>E12000007</td>
+<td>London</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">E09000003</td>
+<td>Barnet</td>
+<td>E12000007</td>
+<td>London</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">E09000004</td>
+<td>Bexley</td>
+<td>E12000007</td>
+<td>London</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="split-data-into-different-time-periods" class="level2">
+<h2 class="anchored" data-anchor-id="split-data-into-different-time-periods">Split Data Into Different Time Periods</h2>
+<p>Now, the final step before we can really start our analysis is to split our dataset into different time periods. As mentioned in the introduction, we want to compare COVID-19 mortality before, during and after lockdown was in place. Within each time period, we sum over all deaths, and add the IMD decile for each LAD. Finally, we’ll also include Region information.</p>
+<p>Let’s write a function to sum the mortality data over time to get the total number of deaths. Then, we’ll reformat the DataFrame to separate COVID-19 and non COVID-19 deaths. Finally, we’ll use the table downloaded in the previous section to get the Region name for each LAD. The function combines information from all the previous DataFrames and produces a DataFrame with everything we need to do our analysis.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:06.942237Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:42:06.934088Z&quot;}" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> filter_date_and_aggregate(df, date_range<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co">    The function:</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co">    - Selects dates that are inside the supplied date range.</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co">    - Sums over time in this date range.</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co">    - Separates COVID-19 vs non COVID-19 deaths.</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co">    - Decorates rows with area and region name columns.</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co">    - Calculates the standardised mortality rate using previously calculated factors.</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="co">    - Pulls in the mean IMD decile as previously calculated.</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># filter dates</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> date_range:</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> df[(df[<span class="st">'Date'</span>] <span class="op">&gt;=</span> date_range[<span class="dv">0</span>]) <span class="op">&amp;</span> (df[<span class="st">'Date'</span>] <span class="op">&lt;</span> date_range[<span class="dv">1</span>])]</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(df) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">'Error: Please make sure there is some data availbile for the supplied date range!'</span>)</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># sum over time</span></span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.groupby(by<span class="op">=</span>[<span class="st">'Area code'</span>, <span class="st">'Cause of death'</span>]).<span class="bu">sum</span>()</span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.reset_index(level<span class="op">=</span>[<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># seperate out all deaths and COVID deaths as their own columns</span></span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.pivot(columns<span class="op">=</span><span class="st">'Cause of death'</span>, values<span class="op">=</span><span class="st">'Number of deaths'</span>)</span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>    df.columns.name <span class="op">=</span> <span class="st">''</span></span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># rename columns</span></span>
+<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.rename(columns<span class="op">=</span>{<span class="st">'All causes'</span>: <span class="st">'Total deaths'</span>, <span class="st">'COVID 19'</span>: <span class="st">'COVID deaths'</span>})</span>
+<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># add non-COVID deaths as column</span></span>
+<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'Non COVID deaths'</span>] <span class="op">=</span> df[<span class="st">'Total deaths'</span>] <span class="op">-</span> df[<span class="st">'COVID deaths'</span>]</span>
+<span id="cb29-32"><a href="#cb29-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-33"><a href="#cb29-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># add area names</span></span>
+<span id="cb29-34"><a href="#cb29-34" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'Area name'</span>] <span class="op">=</span> LAD_df.loc[df.index][<span class="st">'LAD Name'</span>]</span>
+<span id="cb29-35"><a href="#cb29-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-36"><a href="#cb29-36" aria-hidden="true" tabindex="-1"></a>    <span class="co"># add region names</span></span>
+<span id="cb29-37"><a href="#cb29-37" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'Region name'</span>] <span class="op">=</span> LAD_code_region_lookup_df.loc[df.index][<span class="st">'RGN19NM'</span>]</span>
+<span id="cb29-38"><a href="#cb29-38" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb29-39"><a href="#cb29-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate the rate per 100k using the age-standardisation factor estimated previously</span></span>
+<span id="cb29-40"><a href="#cb29-40" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'COVID-19 rate'</span>] <span class="op">=</span> (LAD_df.loc[df.index][<span class="st">'COVID-19 rate factor'</span>] <span class="op">*</span> df[<span class="st">'COVID deaths'</span>]).astype(<span class="bu">float</span>)</span>
+<span id="cb29-41"><a href="#cb29-41" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'All causes rate'</span>] <span class="op">=</span> (LAD_df.loc[df.index][<span class="st">'All causes rate factor'</span>] <span class="op">*</span> df[<span class="st">'Total deaths'</span>]).astype(<span class="bu">float</span>)</span>
+<span id="cb29-42"><a href="#cb29-42" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb29-43"><a href="#cb29-43" aria-hidden="true" tabindex="-1"></a>    <span class="co"># import mean IMD rank</span></span>
+<span id="cb29-44"><a href="#cb29-44" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'Mean IMD decile'</span>] <span class="op">=</span> LAD_df[<span class="st">'Mean IMD decile'</span>]</span>
+<span id="cb29-45"><a href="#cb29-45" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb29-46"><a href="#cb29-46" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:06.988126Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:42:06.945583Z&quot;}" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sum over "Place of death" column</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>mortality_sum_df <span class="op">=</span> mortality_df.groupby(by<span class="op">=</span>[<span class="st">'Area code'</span>, <span class="st">'Date'</span>, <span class="st">'Cause of death'</span>]).<span class="bu">sum</span>().reset_index()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>First, let’s agreggate the data without splitting into different time periods.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:07.012995Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:42:06.989674Z&quot;}" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># this line performs the agreggation step (summing mortality over time).</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co"># and also includes information about deprivation, no date filtering yet.</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>total_deaths_df <span class="op">=</span> filter_date_and_aggregate(mortality_sum_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we can split up the data into three periods. The first period is from January 1st to April 7th - 16 days from the beginning of lockdown. The second period runs from April 7th to June 1st - 16 days after the stay at home order was lifted. The final period runs from June 1st to August 28th.</p>
+<p>We use a time delay of 16 days after key policy decisions to account for the time lag between onset of the disase and death. The number was taken from this study: “Clinical characteristics of 113 deceased patients with coronavirus disease 2019: retrospective study” <a href="https://www.bmj.com/content/368/bmj.m1091">BMJ 2020;368:m1091</a>.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:07.072635Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:42:07.014996Z&quot;}" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first date range</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>first_date_range <span class="op">=</span> (<span class="st">'2020-01-01'</span>, <span class="st">'2020-04-07'</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>first_df <span class="op">=</span> filter_date_and_aggregate(mortality_sum_df, first_date_range)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>first_df[<span class="st">'period'</span>] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="co"># second date range</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>second_date_range <span class="op">=</span> (<span class="st">'2020-04-07'</span>, <span class="st">'2020-06-01'</span>)</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>second_df <span class="op">=</span> filter_date_and_aggregate(mortality_sum_df, second_date_range)</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>second_df[<span class="st">'period'</span>] <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="co"># second date range</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>third_date_range <span class="op">=</span> (<span class="st">'2020-06-01'</span>, <span class="st">'2020-08-28'</span>)</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>third_df <span class="op">=</span> filter_date_and_aggregate(mortality_sum_df, third_date_range)</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>third_df[<span class="st">'period'</span>] <span class="op">=</span> <span class="dv">3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:07.080006Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:42:07.075856Z&quot;}" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Total deaths from COVID-19 in before lockdown period:</span><span class="ch">\t</span><span class="st">'</span>, first_df[<span class="st">'COVID deaths'</span>].<span class="bu">sum</span>())</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Total deaths from COVID-19 in during lockdown period:</span><span class="ch">\t</span><span class="st">'</span>, second_df[<span class="st">'COVID deaths'</span>].<span class="bu">sum</span>())</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Total deaths from COVID-19 in after lockdown period:</span><span class="ch">\t</span><span class="st">'</span>, third_df[<span class="st">'COVID deaths'</span>].<span class="bu">sum</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Total deaths from COVID-19 in before lockdown period:    6521
+Total deaths from COVID-19 in during lockdown period:    24179
+Total deaths from COVID-19 in after lockdown period:     3217</code></pre>
+</div>
+</div>
+<p>Let’s also divide the rate by the number of days in each time period, which will give us the the age standardised mortality rate per day.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:07.093415Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:42:07.082234Z&quot;}" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_num_days(date_range):</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    d0 <span class="op">=</span> datetime.strptime(date_range[<span class="dv">1</span>], <span class="st">'%Y-%m-</span><span class="sc">%d</span><span class="st">'</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    d1 <span class="op">=</span> datetime.strptime(date_range[<span class="dv">0</span>], <span class="st">'%Y-%m-</span><span class="sc">%d</span><span class="st">'</span>)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (d0 <span class="op">-</span> d1).days</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>full_date_range <span class="op">=</span> (<span class="st">'2020-01-01'</span>, <span class="st">'2020-08-28'</span>)</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>total_deaths_df[<span class="st">'All causes rate'</span>] <span class="op">=</span> total_deaths_df[<span class="st">'All causes rate'</span>] <span class="op">/</span> get_num_days(full_date_range)</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>total_deaths_df[<span class="st">'COVID-19 rate'</span>] <span class="op">=</span> total_deaths_df[<span class="st">'COVID-19 rate'</span>] <span class="op">/</span> get_num_days(full_date_range)</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>first_df[<span class="st">'All causes rate'</span>] <span class="op">=</span> first_df[<span class="st">'All causes rate'</span>] <span class="op">/</span> get_num_days(first_date_range)</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>first_df[<span class="st">'COVID-19 rate'</span>]   <span class="op">=</span> first_df[<span class="st">'COVID-19 rate'</span>]   <span class="op">/</span> get_num_days(first_date_range)</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>second_df[<span class="st">'All causes rate'</span>] <span class="op">=</span> second_df[<span class="st">'All causes rate'</span>] <span class="op">/</span> get_num_days(second_date_range)</span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>second_df[<span class="st">'COVID-19 rate'</span>]   <span class="op">=</span> second_df[<span class="st">'COVID-19 rate'</span>]   <span class="op">/</span> get_num_days(second_date_range)</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>third_df[<span class="st">'All causes rate'</span>] <span class="op">=</span> third_df[<span class="st">'All causes rate'</span>] <span class="op">/</span> get_num_days(third_date_range)</span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>third_df[<span class="st">'COVID-19 rate'</span>]   <span class="op">=</span> third_df[<span class="st">'COVID-19 rate'</span>]   <span class="op">/</span> get_num_days(third_date_range)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:07.103295Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:42:07.096053Z&quot;}" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># recombining with the additional column</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>all_df <span class="op">=</span> pd.concat([first_df,second_df, third_df])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we are finished with all of the processing steps and we are ready for the fun part: analysing the data!</p>
+</section>
+</section>
+<section id="study-1---regional-mortality-counts-rates" class="level1">
+<h1>Study #1 - Regional Mortality Counts &amp; Rates</h1>
+<p>Our first objective was to reproduce the ONS analysis to ensure that we have all the pieces we need to understand the problem. The first plots that we will replicate compare COVID-19 mortality across the different regions in England (Figures 1 &amp; 2 in the ONS analysis).</p>
+<p>For more information about what a “replicate” means in this context, check out the definitions over at the <a href="https://the-turing-way.netlify.app/reproducible-research/overview/overview-definitions.html#rr-overview-definitions">Turing Way</a>. In this case, a replicate means a different team coming to the same conclusion, using the same analysis procedure.</p>
+<section id="total-mortalities-by-region" class="level2">
+<h2 class="anchored" data-anchor-id="total-mortalities-by-region">Total Mortalities by Region</h2>
+<p>For Figure 1, we will produce a stacked bar chart showing the mortality count (split up into COVID-19 and non COVID-19 deaths) for each Region in England.</p>
+<p>Summing over region and sorting the values, we are almost ready to make the plot.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:07.112047Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:42:07.105269Z&quot;}" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sum over LADs in each region</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>total_deaths_by_region_df <span class="op">=</span> total_deaths_df.groupby(by<span class="op">=</span><span class="st">'Region name'</span>).<span class="bu">sum</span>()</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="co"># sort ascending</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>total_deaths_by_region_df <span class="op">=</span> total_deaths_by_region_df.sort_values(by<span class="op">=</span><span class="st">'Total deaths'</span>, ascending<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally, let’s write the code to actually make the plot.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:07.392393Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:42:07.113542Z&quot;}" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># region names</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>xs <span class="op">=</span> total_deaths_by_region_df.index</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="co"># mortality counts</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>non_covid_deaths <span class="op">=</span> total_deaths_by_region_df[<span class="st">'Non COVID deaths'</span>]</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>covid_deaths <span class="op">=</span> total_deaths_by_region_df[<span class="st">'COVID deaths'</span>]</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="co"># set bar width</span></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>width <span class="op">=</span> <span class="fl">0.75</span></span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a><span class="co"># colors similar to ONS</span></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>covid_color <span class="op">=</span> (<span class="dv">251</span><span class="op">/</span><span class="dv">255</span>, <span class="dv">213</span><span class="op">/</span><span class="dv">255</span>, <span class="dv">59</span><span class="op">/</span><span class="dv">255</span>, <span class="fl">0.9</span>)</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>noncovid_color <span class="op">=</span> (<span class="dv">25</span><span class="op">/</span><span class="dv">255</span>, <span class="dv">142</span><span class="op">/</span><span class="dv">255</span>, <span class="dv">188</span><span class="op">/</span><span class="dv">255</span>, <span class="fl">0.9</span>)</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a><span class="co"># create a figure and plot data</span></span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>,<span class="dv">10</span>))</span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>p1 <span class="op">=</span> plt.barh(xs, covid_deaths, width, color<span class="op">=</span>covid_color, label<span class="op">=</span><span class="st">'COVID-19 Deaths'</span>)</span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>p2 <span class="op">=</span> plt.barh(xs, non_covid_deaths, width, left<span class="op">=</span>covid_deaths, color<span class="op">=</span>noncovid_color, label<span class="op">=</span><span class="st">'Non COVID-19 Deaths'</span>)</span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a><span class="co"># label axes</span></span>
+<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Deaths Since 01/01/2020'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Region'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb38-23"><a href="#cb38-23" aria-hidden="true" tabindex="-1"></a>plt.yticks(rotation<span class="op">=</span><span class="dv">30</span>)</span>
+<span id="cb38-24"><a href="#cb38-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-25"><a href="#cb38-25" aria-hidden="true" tabindex="-1"></a><span class="co"># add vertical grid lines</span></span>
+<span id="cb38-26"><a href="#cb38-26" aria-hidden="true" tabindex="-1"></a>plt.gca().xaxis.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, which<span class="op">=</span><span class="st">'major'</span>, color<span class="op">=</span><span class="st">'grey'</span>, alpha<span class="op">=</span><span class="fl">.25</span>)</span>
+<span id="cb38-27"><a href="#cb38-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-28"><a href="#cb38-28" aria-hidden="true" tabindex="-1"></a><span class="co"># show legend and plot</span></span>
+<span id="cb38-29"><a href="#cb38-29" aria-hidden="true" tabindex="-1"></a>plt.legend(fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb38-30"><a href="#cb38-30" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2020-11-20-Who_was_protected_by_the_first_COVID-19_lockdown_files/figure-html/cell-36-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>There it is! A lot of work but now we can already begin to try and understand what this data is telling us. Here are some conclusions: - For all regions, the number of COVID-19 deaths is smaller than the number of non COVID-19 deaths. - The number of deaths varies a lot between different regions. This can be due to the fact that there are different numbers of people living in each region (for example, there are more people living in the South East than there are in the North East). On top of that, we know that older people have a higher risk of dying after contracting COVID-19, and as the age distributions are different for different regions, this can also affect the overall number of deaths.</p>
+</section>
+<section id="standardised-mortality-rate-by-region" class="level2">
+<h2 class="anchored" data-anchor-id="standardised-mortality-rate-by-region">Standardised Mortality Rate by Region</h2>
+<p>To account for the varying population sizes and age distributions, let’s look at the age-standardised mortality rates per 100,000 people, standardised to the 2013 European Standard Population. Age-standardised mortality rates allow for differences in the age structure of populations and therefore allow valid comparisons to be made between geographical areas, the sexes and over time.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:07.404238Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:42:07.396837Z&quot;}" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the mean rate per region and sort</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>total_rates_df_by_region <span class="op">=</span> total_deaths_df.groupby(by<span class="op">=</span><span class="st">'Region name'</span>, as_index<span class="op">=</span><span class="va">False</span>).agg(<span class="st">'mean'</span>)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>total_rates_df_by_region <span class="op">=</span> total_rates_df_by_region.sort_values(by<span class="op">=</span><span class="st">'All causes rate'</span>, ascending<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:07.636959Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:42:07.405685Z&quot;}" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># region names</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>x_labels <span class="op">=</span> total_rates_df_by_region[<span class="st">'Region name'</span>]</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>xs <span class="op">=</span> np.array(<span class="bu">range</span>(<span class="bu">len</span>(x_labels)))</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="co"># mortality counts</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>non_covid_rate <span class="op">=</span> total_rates_df_by_region[<span class="st">'All causes rate'</span>]</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>covid_rate <span class="op">=</span> total_rates_df_by_region[<span class="st">'COVID-19 rate'</span>]</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="co"># set bar width</span></span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>width <span class="op">=</span> <span class="fl">0.4</span></span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="co"># create a figure and plot data</span></span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>,<span class="dv">10</span>))</span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>p2 <span class="op">=</span> plt.barh(xs<span class="op">+</span><span class="fl">0.2</span>, non_covid_rate, width, color<span class="op">=</span>noncovid_color, label<span class="op">=</span><span class="st">'All Causes Mortality Rate'</span>, tick_label<span class="op">=</span>x_labels)</span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>p1 <span class="op">=</span> plt.barh(xs<span class="op">-</span><span class="fl">0.2</span>, covid_rate, width, color<span class="op">=</span>covid_color, label<span class="op">=</span><span class="st">'COVID-19 Mortality Rate'</span>)</span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a><span class="co"># label axes</span></span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Age standardised mortality rate per 100,000 people per day since 01/01/2020'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Region'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a>plt.yticks(rotation<span class="op">=</span><span class="dv">30</span>)</span>
+<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-22"><a href="#cb40-22" aria-hidden="true" tabindex="-1"></a><span class="co"># add vertical grid lines</span></span>
+<span id="cb40-23"><a href="#cb40-23" aria-hidden="true" tabindex="-1"></a>plt.gca().xaxis.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, which<span class="op">=</span><span class="st">'major'</span>, color<span class="op">=</span><span class="st">'grey'</span>, alpha<span class="op">=</span><span class="fl">.25</span>)</span>
+<span id="cb40-24"><a href="#cb40-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-25"><a href="#cb40-25" aria-hidden="true" tabindex="-1"></a><span class="co"># show legend and plot</span></span>
+<span id="cb40-26"><a href="#cb40-26" aria-hidden="true" tabindex="-1"></a>plt.legend(fontsize<span class="op">=</span><span class="dv">14</span>, loc<span class="op">=</span><span class="st">'lower right'</span>)</span>
+<span id="cb40-27"><a href="#cb40-27" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2020-11-20-Who_was_protected_by_the_first_COVID-19_lockdown_files/figure-html/cell-38-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Note that as we plot the rates, we switch from a stacked bar chart (showing counts of COVID-19 and non COVID-19 mortalities), to two bar charts side by side (showing the COVID-19 mortality rate, and the all causes mortality rate). Even with this caveat in mind, when looking at the chart we see it tells a very different story to the previous plot. For example, in the previous plot, the South East had the highest number of total deaths, but looking at the standardised rates in this plot we see that it is ranked second from the bottom. This shows that the raw mortality counts do not tell the whole story, and so we cannot rely solely on them to make meaningful comparisons between different Regions.</p>
+</section>
+</section>
+<section id="study-2---mortality-by-deprivation" class="level1">
+<h1>Study #2 - Mortality by Deprivation</h1>
+<p>We can now study the relationship between COVID-19 mortality and deprivation. To do this we will make some plots showing the standardised mortality rate as a function of the mean IMD decile for each LAD in England. Recall that the rate has been normalised by the number of days in each time period, so that they are comparable.</p>
+<p>In the plots, you will see the <span class="math inline">\(y\)</span> axis labelled with “Standardised Mortality Rate”. In fact, this rate is the <strong>age standardised count of deaths observed per 100,000 people per day</strong>.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:07.641881Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:42:07.638538Z&quot;}" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define a function that we can use to calculate the correlation and slope of a linear fit</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_corr_and_slope(xs, ys):</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">#&nbsp;calculate the correlation coefficient</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    corr <span class="op">=</span> <span class="bu">round</span>(pearsonr(xs, ys)[<span class="dv">0</span>], <span class="dv">2</span>)</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">#&nbsp;calcualte the slope of a linear fit</span></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>    slope <span class="op">=</span> <span class="bu">round</span>(np.polyfit(xs, ys, <span class="dv">1</span>)[<span class="dv">0</span>], <span class="dv">2</span>)</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> corr, slope</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="comparing-all-causes-and-covid-19-mortality-rates" class="level2">
+<h2 class="anchored" data-anchor-id="comparing-all-causes-and-covid-19-mortality-rates">Comparing All Causes and COVID-19 Mortality Rates</h2>
+<p>To get started, let’s overlay the mortality rates for all causes of death and COVID-19 on the same plot.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:08.382199Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:42:07.643422Z&quot;}" data-execution_count="39">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot formatting</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>po <span class="op">=</span> {<span class="st">'s'</span>: <span class="dv">10</span>, <span class="st">'alpha'</span>:<span class="fl">0.5</span>}</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="co"># select data</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>IMD_decile <span class="op">=</span> total_deaths_df[<span class="st">'Mean IMD decile'</span>]</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>all_causes_rate <span class="op">=</span> total_deaths_df[<span class="st">'All causes rate'</span>]</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>covid_rate <span class="op">=</span> total_deaths_df[<span class="st">'COVID-19 rate'</span>]</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a><span class="co"># calcualte correlations and slopes</span></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>ac_stats <span class="op">=</span> get_corr_and_slope(IMD_decile, all_causes_rate)</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>c19_stats <span class="op">=</span> get_corr_and_slope(IMD_decile, covid_rate)</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a><span class="co"># make plots</span></span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">6</span>))</span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>sns.regplot(x<span class="op">=</span>IMD_decile, y<span class="op">=</span>all_causes_rate, label<span class="op">=</span><span class="ss">f'All causes $r=</span><span class="sc">{</span>ac_stats[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">$'</span>, scatter_kws<span class="op">=</span>po)</span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>sns.regplot(x<span class="op">=</span>IMD_decile, y<span class="op">=</span>covid_rate, color<span class="op">=</span><span class="st">'red'</span>, label<span class="op">=</span><span class="ss">f'COVID-19 $r=</span><span class="sc">{</span>c19_stats[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">$'</span>, scatter_kws<span class="op">=</span>po)</span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a><span class="co"># format plot</span></span>
+<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Standardised Mortality Rate'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Mean IMD Decile'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a>plt.legend(fontsize<span class="op">=</span><span class="dv">14</span>)<span class="op">;</span> plt.ylim((<span class="dv">0</span>, <span class="fl">3.5</span>))</span>
+<span id="cb42-22"><a href="#cb42-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2020-11-20-Who_was_protected_by_the_first_COVID-19_lockdown_files/figure-html/cell-40-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>In the plot legends, <span class="math inline">\(r\)</span> is the correlation coefficient. If you are unfamiliar with the concept of correlation, or want a refresher, take a look <a href="https://www.displayr.com/what-is-correlation/">here</a>.</p>
+<p>Recall that the lower the mean IMD rank in each LAD, the more deprived the area is. There is a negative correlation between the standardised rate and the IMD decile, for both the all causes rate and the COVID-19 rate. The <strong>negative correlation</strong> tells us that in more deprived areas (those with a <strong>lower mean IMD decile</strong>), the <strong>standardised mortality rate is higher</strong>.</p>
+<p>Note however that the strength of the correlations are quite different. COVID-19 appears to discriminate less based on social deprivation than all causes of death combined. This link between social deprivation and mortality has been previously observed - see discussions <a href="https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/articles/changingtrendsinmortalitybynationalindicesofdeprivationenglandandwales/2001to2018">here</a> and <a href="https://www.health.org.uk/news-and-comment/charts-and-infographics/preventable-death-and-deprivation">here</a>.</p>
+</section>
+<section id="time-periods" class="level2">
+<h2 class="anchored" data-anchor-id="time-periods">Time Periods</h2>
+<p>We are now finally ready to investigate the relationship between mortality and deprivation in the different periods of lockdown. The three periods we defined are: - <strong>Before lockdown</strong>: January 1st to April 7th - <strong>Duing lockdown</strong>: April 7th to June 1st - <strong>After lockdown</strong>: June 1st to August 28th</p>
+<p>We will look at this relationship for all causes of death, and for COVID-19 deaths separately.</p>
+<section id="all-causes" class="level3">
+<h3 class="anchored" data-anchor-id="all-causes">All Causes</h3>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:09.353863Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:42:08.384262Z&quot;}" data-execution_count="40">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>ymax <span class="op">=</span> <span class="fl">4.5</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">16</span>,<span class="dv">5</span>))</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="co"># calcualte correlations and slopes</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>pre_stats <span class="op">=</span> get_corr_and_slope(first_df[<span class="st">'Mean IMD decile'</span>], first_df[<span class="st">'All causes rate'</span>])</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>dur_stats <span class="op">=</span> get_corr_and_slope(second_df[<span class="st">'Mean IMD decile'</span>], second_df[<span class="st">'All causes rate'</span>])</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>pos_stats <span class="op">=</span> get_corr_and_slope(third_df[<span class="st">'Mean IMD decile'</span>], third_df[<span class="st">'All causes rate'</span>])</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">131</span>)</span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Before Lockdown'</span>)</span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>sns.regplot(x<span class="op">=</span><span class="st">'Mean IMD decile'</span>, y<span class="op">=</span><span class="st">'All causes rate'</span>, data<span class="op">=</span>first_df, label<span class="op">=</span><span class="ss">f"$r=</span><span class="sc">{</span>pre_stats[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">$"</span>, scatter_kws<span class="op">=</span>po)</span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Mean IMD Decile'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'All Causes Standardised Mortality Rate'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a>plt.legend()<span class="op">;</span> plt.ylim((<span class="dv">0</span>, ymax))</span>
+<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">132</span>)</span>
+<span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'During Lockdown'</span>)</span>
+<span id="cb43-18"><a href="#cb43-18" aria-hidden="true" tabindex="-1"></a>sns.regplot(x<span class="op">=</span><span class="st">'Mean IMD decile'</span>, y<span class="op">=</span><span class="st">'All causes rate'</span>, data<span class="op">=</span>second_df, label<span class="op">=</span><span class="ss">f"$r=</span><span class="sc">{</span>dur_stats[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">$"</span>, scatter_kws<span class="op">=</span>po)</span>
+<span id="cb43-19"><a href="#cb43-19" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Mean IMD Decile'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb43-20"><a href="#cb43-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'All Causes Standardised Mortality Rate'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb43-21"><a href="#cb43-21" aria-hidden="true" tabindex="-1"></a>plt.legend()<span class="op">;</span> plt.ylim((<span class="dv">0</span>, ymax))</span>
+<span id="cb43-22"><a href="#cb43-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-23"><a href="#cb43-23" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">133</span>)</span>
+<span id="cb43-24"><a href="#cb43-24" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'After Lockdown'</span>)</span>
+<span id="cb43-25"><a href="#cb43-25" aria-hidden="true" tabindex="-1"></a>sns.regplot(x<span class="op">=</span><span class="st">'Mean IMD decile'</span>, y<span class="op">=</span><span class="st">'All causes rate'</span>, data<span class="op">=</span>third_df, label<span class="op">=</span><span class="ss">f"$r=</span><span class="sc">{</span>pos_stats[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">$"</span>, scatter_kws<span class="op">=</span>po)</span>
+<span id="cb43-26"><a href="#cb43-26" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Mean IMD Decile'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb43-27"><a href="#cb43-27" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'All Causes Standardised Mortality Rate'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb43-28"><a href="#cb43-28" aria-hidden="true" tabindex="-1"></a>plt.legend()<span class="op">;</span> plt.ylim((<span class="dv">0</span>, ymax))</span>
+<span id="cb43-29"><a href="#cb43-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-30"><a href="#cb43-30" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2020-11-20-Who_was_protected_by_the_first_COVID-19_lockdown_files/figure-html/cell-41-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>After splitting the data into the three time periods, we that the the negative correlation persists for each period, but has different strengths. The potential reasons for the differences in strength are numerous. The middle plot refers to the peak period in the number of COVID-19 deaths. This could be one explanation for the interesting effect that we observe in the middle plot: the correlation is lower (the variance is larger), but the slope seems to be steeper.</p>
+<p>To get a better sense of the number of deaths as a function of time take a look at <a href="https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/bulletins/deathsregisteredweeklyinenglandandwalesprovisional/weekending4september2020">this</a> ONS study.</p>
+</section>
+<section id="covid-19" class="level3">
+<h3 class="anchored" data-anchor-id="covid-19">COVID-19</h3>
+<p>Next we’ll make the same set of three plots, but look specifically at deaths involving COVID-19.</p>
+<div class="cell" data-executetime="{&quot;end_time&quot;:&quot;2020-12-02T13:42:10.397723Z&quot;,&quot;start_time&quot;:&quot;2020-12-02T13:42:09.355415Z&quot;}" data-execution_count="41">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>ymax <span class="op">=</span> <span class="fl">2.5</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">16</span>,<span class="dv">5</span>))</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="co"># calcualte correlations and slopes</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>pre_stats <span class="op">=</span> get_corr_and_slope(first_df[<span class="st">'Mean IMD decile'</span>], first_df[<span class="st">'COVID-19 rate'</span>])</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>dur_stats <span class="op">=</span> get_corr_and_slope(second_df[<span class="st">'Mean IMD decile'</span>], second_df[<span class="st">'COVID-19 rate'</span>])</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>pos_stats <span class="op">=</span> get_corr_and_slope(third_df[<span class="st">'Mean IMD decile'</span>], third_df[<span class="st">'COVID-19 rate'</span>])</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">131</span>)</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Before Lockdown'</span>)</span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>sns.regplot(x<span class="op">=</span><span class="st">'Mean IMD decile'</span>, y<span class="op">=</span><span class="st">'COVID-19 rate'</span>, data<span class="op">=</span>first_df, label<span class="op">=</span><span class="ss">f"</span><span class="ch">\t</span><span class="ss">$r=</span><span class="sc">{</span>pre_stats[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">$  $m=</span><span class="sc">{</span>pre_stats[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">$"</span>, scatter_kws<span class="op">=</span>po)</span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Mean IMD Decile'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'COVID-19 Standardised Mortality Rate'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>plt.legend()<span class="op">;</span> plt.ylim((<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">132</span>)</span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'During Lockdown'</span>)</span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>sns.regplot(x<span class="op">=</span><span class="st">'Mean IMD decile'</span>, y<span class="op">=</span><span class="st">'COVID-19 rate'</span>, data<span class="op">=</span>second_df, label<span class="op">=</span><span class="ss">f"</span><span class="ch">\t</span><span class="ss">$r=</span><span class="sc">{</span>dur_stats[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">$  $m=</span><span class="sc">{</span>dur_stats[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">$"</span>, scatter_kws<span class="op">=</span>po)</span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Mean IMD Decile'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'COVID-19 Standardised Mortality Rate'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a>plt.legend()<span class="op">;</span> plt.ylim((<span class="dv">0</span>, ymax))</span>
+<span id="cb44-22"><a href="#cb44-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-23"><a href="#cb44-23" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">133</span>)</span>
+<span id="cb44-24"><a href="#cb44-24" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'After Lockdown'</span>)</span>
+<span id="cb44-25"><a href="#cb44-25" aria-hidden="true" tabindex="-1"></a>sns.regplot(x<span class="op">=</span><span class="st">'Mean IMD decile'</span>, y<span class="op">=</span><span class="st">'COVID-19 rate'</span>, data<span class="op">=</span>third_df, label<span class="op">=</span><span class="ss">f"</span><span class="ch">\t</span><span class="ss">$r=</span><span class="sc">{</span>pos_stats[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">$  $m=</span><span class="sc">{</span>pos_stats[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">$"</span>, scatter_kws<span class="op">=</span>po)</span>
+<span id="cb44-26"><a href="#cb44-26" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Mean IMD Decile'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb44-27"><a href="#cb44-27" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'COVID-19 Standardised Mortality Rate'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb44-28"><a href="#cb44-28" aria-hidden="true" tabindex="-1"></a>plt.legend()<span class="op">;</span> plt.ylim((<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb44-29"><a href="#cb44-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-30"><a href="#cb44-30" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2020-11-20-Who_was_protected_by_the_first_COVID-19_lockdown_files/figure-html/cell-42-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>⚠️ The “During Lockdown” middle plot contains the peak of COVID-19 mortalities in the UK. The standardised rate is therefore much higher in this plot, and the range of the <span class="math inline">\(y\)</span>-axis has been increased to reflect this.</p>
+</blockquote>
+<p>Looking only at COVID-19 mortalities, we observe that during lockdown and the peak of the pandemic, the strength of the correlation increases. Again, there are many things that could be the cause of this. Our hypothesis is that, during lockdown, those in more socially deprived areas were more likely to be in circumstances that increased their exposure to COVID-19 (for example key workers who are unable to work remotely - see <a href="https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/articles/whichjobscanbedonefromhome/2020-07-21">here</a> and <a href="https://yougov.co.uk/topics/economy/articles-reports/2020/05/13/most-middle-class-workers-are-working-home-full-ti">here</a>).</p>
+</section>
+</section>
+</section>
+<section id="conclusions" class="level1">
+<h1>Conclusions</h1>
+<p>We started writing this story in order to investigate whether COVID-19 deaths were related to social deprivation. We’ve also learnt a lot of other things along the way.</p>
+<p>First, there is a very strong relationship between deprivation and general mortality. This means that deprived areas have a higher rate of mortality from all causes than less deprived areas. Life is more difficult if you live in deprivation. This effect is still observed when looking at COVID-19 specific morality rates, although is less strong than the trend from all causes. So COVID-19 appears to be less discriminatory across the different parts of society compared to other causes of death.</p>
+<p>We suspected at the beginning that the the state of lockdown may have different affects on different groups of people. We thus wanted to know if this relationship between COVID-19 and death rates changed during the different stages of lockdown. Our analysis shows that the relationship is stronger during the main lockdown period. Note that the relationship we see is only a correlation. More work would need to be done to give any answers about the causal processes that generate this correlation.</p>
+<p>There are many things that could be the cause of the observed correlation. Speculatively, it could be down to the fact that people from working class backgrounds are <a href="https://yougov.co.uk/topics/economy/articles-reports/2020/05/13/most-middle-class-workers-are-working-home-full-ti">less likely</a> to be able to work from home made them more prone to contracting the virus during lockdown and take it home with them. This would explain their higher rates of mortality. But, as stated, more sophisticated data and analysis techniques would be needed to attempt answer the question of what is the cause of what.</p>
+<p>At the moment of writing we are entering a <a href="https://www.bbc.co.uk/news/uk-54212654">second wave</a>. We hope that we will be able to learn from the challenges that were faced earlier this year, and that more consideration and support is offered to people living in the most deprived areas of the country.</p>
+<p>Thank you for taking the time to read this first Turing Data Story, we hope you have found it both interesting and informative. We encourage you to expand on the ideas presented in this story and as well as explore your own questions on this topic. 🙂</p>
+<p>We’re now taking in external submissions for new stories 📗 so if you are interested in contributing, please <a href="https://github.com/alan-turing-institute/TuringDataStories/blob/master/CONTRIBUTING.md">get in touch!</a></p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

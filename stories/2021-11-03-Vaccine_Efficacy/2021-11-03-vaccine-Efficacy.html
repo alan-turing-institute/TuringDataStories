@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Eric Daub">
+<meta name="dcterms.date" content="2021-11-03">
+<meta name="keywords" content="Bayesian modeling, Covid-19">
+
+<title>Turing Data Stories - Modelling COVID-19 Hospitalizations in England</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Turing Data Stories</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/alan-turing-institute/turingdatastories" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Modelling COVID-19 Hospitalizations in England</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p><a href="https://www.turing.ac.uk/about-us/people/researchers/eric-daub">Eric Daub</a> </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">November 3, 2021</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  <div>
+    <div class="abstract">
+      <div class="abstract-title">Abstract</div>
+      Investigating the link between infections and hospitalizations using COVID-19 data in England for 2020-2021 and Bayesian inference.
+    </div>
+  </div>
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="reviewers" class="level3">
+<h3 class="anchored" data-anchor-id="reviewers">Reviewers</h3>
+<ul>
+<li>Helen Duncan, Alan Turing Institute</li>
+<li>Christina Last, Alan Turing Institute</li>
+<li>Luke Hare, Alan Turing Institute</li>
+</ul>
+</section>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>On 28 June, 2021, newly installed Health Secretary Sajid Javid announced that the COVID-19 Vaccine Programme in the UK had severed the link between infection and severe disease, hospitalization, and death (see <a href="https://hansard.parliament.uk/Commons/2021-06-28/debates/16849758-096E-4650-B84D-643DF5458417/Covid-19Update">here</a> for the speech made to parliament on this topic). Although cases were rising quickly at the time due to the spread of the Delta variant, this was not leading to as strong a rise in hospital admissions and deaths when compared to the earlier waves of the disease.</p>
+<p>However, one problem that had cropped up in the COVID-19 pandemic is that exponential rises in cases, combined with some strong inertia in the causal chains that lead from infection to hospital admission, can obscure a crisis situation that can quickly become much, much worse. The delay between infection and hospital admission can last for a few weeks, so it may be that we just had not waited long enough to see the effect of cases on the hospital admissions at the time of the speech. This story examines a method for analyzing the COVID-19 data in England for 2020-2021 and accounting for uncertainty by applying Bayesian inference to the problem.</p>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>The UK has a <a href="https://coronavirus.data.gov.uk/">COVID-19 data website</a> with a public API that allows us to examine daily counts for COVID-19 tests, hospital admissions, deaths, and other statistics surrounding the pandemic. We are principally interested in determining how positive tests collected on a particular date lead to hospital admissions some time later. Because testing was not always consistent in the early days of the pandemic, we will focus our analysis on the fall “second wave” starting in July 2020, using test data starting from May 2020. While the May 2020 data likely includes a time period where widespread testing was not available, we do this to give our model a fixed window of 60 days to link hospital admissions to tests on any of the previous days in the window to ensure that we fully account for the possibility of a long delay between tests and hospital admission.</p>
+<p>Similarly, since the first vaccine doses were given in late December 2020, we cut off our period of analysis for fitting the model at 31 December, 2020, to ensure that we fit the model to a time period where we can be confident that no widespread vaccines had been given. We will use this time period to fit the model parameters, and then make predictions on the spring/summer 2021 wave using the model parameters derived from the fall 2020 data.</p>
+<p>First, we can look at the COVID test data for England for this time period:</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_data(query_type, start, end):</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"Queries UK Covid Data API for a particular type of data and returns data queried during a specific time frame"</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="st">'https://coronavirus.data.gov.uk/api/v1/data?filters=areaType=nation&amp;structure=%7B%22areaType%22:%22areaType%22,%22areaName%22:%22areaName%22,%22areaCode%22:%22areaCode%22,</span><span class="sc">%22d</span><span class="st">ate%22:</span><span class="sc">%22d</span><span class="st">ate%22,%22query_type%22:%22query_type</span><span class="sc">%22%</span><span class="st">7D&amp;format=csv'</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    new_url <span class="op">=</span> url.replace(<span class="st">"query_type"</span>, query_type)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pandas.read_csv(new_url)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"date"</span>] <span class="op">=</span> pandas.to_datetime(df[<span class="st">"date"</span>])</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    query_string <span class="op">=</span> <span class="st">'areaName == "England" &amp; date &gt;= "</span><span class="sc">{}</span><span class="st">" &amp; date &lt;= "</span><span class="sc">{}</span><span class="st">"'</span>.<span class="bu">format</span>(start, end)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.query(query_string)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>cases_str <span class="op">=</span> <span class="st">"newCasesBySpecimenDate"</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>cases <span class="op">=</span> get_data(cases_str, <span class="st">"2020-05-02"</span>, <span class="st">"2020-12-31"</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>plt.plot(cases[<span class="st">"date"</span>], cases[cases_str])</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Date"</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Daily positive tests"</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2021-11-03-vaccine-Efficacy_files/figure-html/cell-2-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>And for the hospital admissions, we have:</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>admissions_str <span class="op">=</span> <span class="st">"newAdmissions"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>admissions <span class="op">=</span> get_data(admissions_str, <span class="st">"2020-07-01"</span>, <span class="st">"2020-12-31"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>plt.plot(admissions[<span class="st">"date"</span>], admissions[admissions_str])</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Date"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Daily hospital admissions"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2021-11-03-vaccine-Efficacy_files/figure-html/cell-3-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="model" class="level2">
+<h2 class="anchored" data-anchor-id="model">Model</h2>
+<p>To examine hospital admissions, we need to develop a model that predicts two things: <em>how many</em> hospital admissions to expect given a number of positive COVID tests, and <em>when</em> those hospital admissions occur. One simple way we might do this is via the following:</p>
+<ol type="1">
+<li>All positive tests have a fixed probability <span class="math inline">\(\psi\)</span> of causing a hospital admission at some later date. This is all that is required to determine how many hospital admissions occur given a number of positive tests.</li>
+<li>For those that will be admitted to hospital, we then need to determine when the person will go into hospital. We use the following model to determine the date:
+<ol type="1">
+<li>Every day, a COVID-19 patient that will eventually require hospitalization has a fixed probability <span class="math inline">\(p\)</span> of their condition worsening.</li>
+<li>Once their condition has worsened <span class="math inline">\(k\)</span> times, they are admitted to hospital.</li>
+<li>This process follows a negative binomial distribution, shifted by <span class="math inline">\(k\)</span> days. An equivalent way to view this is to say that the date of hospital admission follows a multinomial distribution, with the multinomial probabilities following the PMF of a negative binomial distribution, shifted by <span class="math inline">\(k\)</span> days.</li>
+</ol></li>
+</ol>
+<p>A negative binomial distribution describes the number of successful Bernoulli trials expected before we obtain a fixed number of failures. Note that we need to shift this distribution because we care about the total number of trials before we reach the fixed number of failures, rather than the number of successes.</p>
+<p>Once we can predict how many hospital admissions to expect and when they occur, we just need to provide the model with the number of positive tests on each day, and the model will output a prediction of the number of hospital admissions on each day. This can then be compared with the data to estimate the values of <span class="math inline">\(\psi\)</span>, <span class="math inline">\(p\)</span>, and <span class="math inline">\(k\)</span>.</p>
+<p>The model is implemented below. Note that since the UK COVID API returns data with the most recent dates first, while our simulation goes forward in time, we need to reverse the cases to feed it into the function that simulates hospitalizations. Note also that we do a few checks of the admission probabilities before they are fed into the multinomial distribution – this is because the outputs of the admission probabilities sum to greater than one on occasion due to rounding errors, and sometimes we might have accidentally put in a bad number for <span class="math inline">\(k\)</span> that returns NaN values so we would like to prevent these situations from crashing our simulation.</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> binom, nbinom, multinomial</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reverse_df_data(df, column):</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.array(df[column], dtype<span class="op">=</span>np.int64)[::<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> simulate_hospital_admissions(cases, psi, k, p):</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">"Run a random forward simulation of the hospitalizations given cases and the model parameters"</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    daily_hospital_admissions <span class="op">=</span> binom.rvs(n<span class="op">=</span>cases, p<span class="op">=</span>np.broadcast_to(psi, (<span class="bu">len</span>(cases),)), size<span class="op">=</span>(<span class="bu">len</span>(cases),))</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    window <span class="op">=</span> <span class="dv">60</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    dates <span class="op">=</span> np.arange(<span class="dv">0</span>, window, <span class="dv">1</span>, dtype<span class="op">=</span>np.int64)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    admission_probs <span class="op">=</span> nbinom.pmf(dates, loc<span class="op">=</span>k, n<span class="op">=</span>k, p<span class="op">=</span>p)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Run a few checks on admission_probs to avoid issues with multinomial sampling</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> np.<span class="bu">sum</span>(admission_probs) <span class="op">&gt;</span> <span class="fl">1.</span>:</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>        admission_probs <span class="op">=</span> admission_probs<span class="op">/</span>(<span class="fl">1.</span><span class="op">+</span><span class="fl">1.e-10</span>)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> np.<span class="bu">any</span>(np.isnan(admission_probs)):</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.zeros(<span class="bu">len</span>(cases)<span class="op">-</span>window, dtype<span class="op">=</span>np.int64)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    admissions <span class="op">=</span> np.zeros(<span class="bu">len</span>(cases)<span class="op">+</span>window)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(daily_hospital_admissions)):</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>        admit_samples <span class="op">=</span> multinomial.rvs(n<span class="op">=</span>daily_hospital_admissions[i], p<span class="op">=</span>admission_probs, size<span class="op">=</span><span class="dv">1</span>)[<span class="dv">0</span>]</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>        admissions[i:i<span class="op">+</span>window] <span class="op">+=</span> admit_samples</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> admissions[window:<span class="op">-</span>window]</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>case_array <span class="op">=</span> reverse_df_data(cases, cases_str)</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>admissions_array <span class="op">=</span> simulate_hospital_admissions(case_array, <span class="fl">0.1</span>, <span class="dv">4</span>, <span class="fl">0.1</span>)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>plt.plot(admissions[<span class="st">"date"</span>][::<span class="op">-</span><span class="dv">1</span>], admissions_array)</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Date"</span>)</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Simulated daily hospital admissions"</span>)</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2021-11-03-vaccine-Efficacy_files/figure-html/cell-4-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>If you try simulating different choices of <span class="math inline">\(\psi\)</span>, <span class="math inline">\(p\)</span> and <span class="math inline">\(k\)</span>, you can see that the parameters that control the timing of admissions does have an effect on the overall size and shape of the peak (or peaks). Thus, we need to find a way to use the actual hospitalization data to fit reasonable values for these simulation parameters.</p>
+</section>
+<section id="bayesian-inference" class="level2">
+<h2 class="anchored" data-anchor-id="bayesian-inference">Bayesian Inference</h2>
+<p>To fit the model and account for uncertainty, we will turn to Bayesian Inference. Bayesian Inference treats our model parameters <span class="math inline">\(\theta = (\psi, p, k)\)</span> as uncertain and thus described by a probability distribution. We wish to compute the posterior distribution of our parameters conditioned on the observed hospitalization data from the fall 2020 <span class="math inline">\(y\)</span>, written <span class="math inline">\(p(\theta|y)\)</span>. To compute this, we use Bayes’ rule</p>
+<p><span class="math display">\[p(\theta|y)=\frac{p(y|\theta)p(\theta)}{p(y)}\]</span></p>
+<p>which relates the posterior to the likelihood <span class="math inline">\(p(y|\theta)\)</span>, or the probability that a given choice of parameters would have produced the data, our prior beliefs about reasonable parameter values <span class="math inline">\(p(\theta)\)</span>, and the evidence <span class="math inline">\(p(y)\)</span>, which is the probability of getting the data given all possible models. In most cases, computing the evidence is not feasible, so we resort to drawing samples from the posterior distribution rather than computing the distribution analytically.</p>
+<section id="prior" class="level3">
+<h3 class="anchored" data-anchor-id="prior">Prior</h3>
+<p>We need to specify our initial beliefs about what we expect might be reasonable model parameters. Based on previous reporting on the pandemic, we expect a relatively small fraction of positive tests to result in hospital admissions. We can quantify this through a Beta distribution, a flexible distribution well suited for modeling parameters that are constrained between 0 and 1. Beta distributions have two shape parameters <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> (or <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>) that control where the distribution has highest density. We want our priors to be skewed towards small numbers, so we will choose <span class="math inline">\(a=0.5\)</span> and <span class="math inline">\(b=2\)</span>, which puts most of the distribution mass at smaller values.</p>
+<p>For <span class="math inline">\(k\)</span> and <span class="math inline">\(p\)</span>, we might want to consider information that hospital admissions usually occur a week or two after contracting the disease. However, there are two ways our model might express this: <span class="math inline">\(k\)</span> and <span class="math inline">\(p\)</span> could both be large, meaning that the patient has a high probability of their conditions worsening a little bit each day, eventually leading to a (predictable) hospital admission a large number of days later. Alternatively, <span class="math inline">\(p\)</span> and <span class="math inline">\(k\)</span> might both be small. This would describe the situation where the person testing positive has a low chance of their symptoms getting significantly worse every day, but when it does get worse they must be hospitalized quickly. This will lead to more variability in the exact hospitalization date. We have no reason to prefer either possibility, nor would we like to exclude either possibility, so we will use uniform priors for <span class="math inline">\(k\)</span> and <span class="math inline">\(p\)</span> (a Discrete Uniform distribution for <span class="math inline">\(k\)</span> between 1 and 20 and a Beta distribution with <span class="math inline">\(a=1\)</span> and <span class="math inline">\(b=1\)</span> for <span class="math inline">\(p\)</span>).</p>
+<p>Finally, we should note that the model for determining when a patient goes into hospital is probably not a very realistic description of how a COVID-19 infection proceeds. Rather, we should think more about the two end member cases described above as ways of capturing exactly when, on average, patients need to be admitted to hospital, and the variability in when that occurs. Looking at the values that best fit the data thus tells us more about the type of model that tends to fit the data, rather than providing actual clinical insight into the disease.</p>
+</section>
+<section id="likelihood" class="level3">
+<h3 class="anchored" data-anchor-id="likelihood">Likelihood</h3>
+<p>The data for this model is a time series of hospital admissions that is a superposition of many Multinomial distributions. The likelihood for this model unfortunately does not exist in closed form. However, we can easily run a forward simulation of the approach by sampling from the appropriate probability distributions, so we will resort to a method known as Approximate Bayesian Computation (ABC) to approximate the likelihood.</p>
+<p>Rather than requiring that the forward model produce exactly the same set of hospital admissions as is seen in the data (which is unlikely due to the fact that we are performing a single random sample when we run the forward simulation), we will instead try to find a model that is fairly close to the data. We use a Gaussian measure of dissimilarity, which penalizes models that show a large difference between the real data and the model predictions. The Gaussian measure depends on an additional parameter <span class="math inline">\(\epsilon\)</span>, which can be thought of as a tolerance parameter that sets the scale for how much to penalize the difference between the real and simulated data.</p>
+<p>We use <span class="math inline">\(\epsilon=500\)</span> here due to the number of daily hospitalizations being in the thousands at the peak, or in other words we want to penalize models that differ by more than around 500 between the real and simulated data. However, some experimenting with values from 10 to 2000 has shown that the exact results are not too sensitive to the choice of this parameter so we can be confident that the results do not depend too much on this choice.</p>
+</section>
+<section id="sequential-monte-carlo-sampling" class="level3">
+<h3 class="anchored" data-anchor-id="sequential-monte-carlo-sampling">Sequential Monte Carlo Sampling</h3>
+<p>As discussed above, rather than compute the posterior directly, we will draw samples from it. To do so, we will use a technique known as Sequential Monte Carlo (SMC) sampling, or, in some other contexts, Particle Markov Chain Monte Carlo. SMC is a method for sampling from an unknown distribution (the posterior) by instead sampling from a known distribution (the prior) and then resampling based on weights determined from the computed likelihood <span class="math inline">\(\times\)</span> prior for each sample. The higher the weight of a particular sample, the higher the probability it will be re-sampled and remain in the set of samples taken at the next step. Thus, over time, the samples where the posterior is highest will be repeatedly passed on to the next step, while those where the posterior is lower will be removed.</p>
+<p>This resampling technique works best if the two distributions are similar. Because we expect the prior and posterior to be quite different, SMC gradually tunes between the prior and posterior by resampling from <span class="math inline">\(q \propto p(y|\theta)^\beta p(\theta)\)</span> at each step, where <span class="math inline">\(\beta\)</span> varies from 0 to 1. This ensures that the two distributions are reasonably similar at each step and the resampling technique will be accurate.</p>
+<p>In addition to resampling, which ensures that good samples are likely to show up in successive steps, SMC also perturbs the samples at each step using a Markov Chain Monte Carlo random walk to ensure that the method explores the regions surrounding good samples. Both the tempering and exploration can be tuned adaptively based on the results of the sampling to try and optimize the number of steps needed to move between the prior and the posterior. This helps to balance accuracy of the sampling with the computational cost.</p>
+</section>
+<section id="implementation" class="level3">
+<h3 class="anchored" data-anchor-id="implementation">Implementation</h3>
+<p>Below, I implement this model and draw samples from it using the PyMC3 library. The <code>Simulation</code> class in PyMC3 allows us to do ABC inference and draw the samples using SMC without having the explicit likelihood implemented in the library.</p>
+<p>Note also that I need to bind the array of cases to the simulation function, which I do so using the <code>partial</code> function in the <code>functools</code> module – this is because the PyMC3 <code>Simulation</code> class requires that the only parameters that are passed to the simulation be the model parameters that we are trying to estimate. Since the actual cases are known, and are not estimated, we need to fix that value of the input.</p>
+<p>Finally, PyMC3 by default draws multiple sets of samples based on the number of cores on the computer, so I set the number of chains to be 1 to give consistent results across different machines. Be aware that to draw the full set of 2000 samples, the simulations were run for roughly 10 minutes on a MacBook Pro.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> functools <span class="im">import</span> partial</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pymc3</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit_model(simulation, cases, hospitalization, epsilon):</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    simulate_hospital <span class="op">=</span> partial(simulation, cases<span class="op">=</span>cases)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> pymc3.Model():</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        psi <span class="op">=</span> pymc3.Beta(<span class="st">"psi"</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, beta<span class="op">=</span><span class="fl">2.</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        p <span class="op">=</span> pymc3.Beta(<span class="st">"p"</span>, alpha<span class="op">=</span><span class="fl">1.</span>, beta<span class="op">=</span><span class="fl">1.</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        k <span class="op">=</span> pymc3.DiscreteUniform(<span class="st">"k"</span>, lower<span class="op">=</span><span class="dv">1</span>, upper<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        sim_admissions <span class="op">=</span> pymc3.Simulator(<span class="st">"admissions"</span>, simulate_hospital,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>                                         params<span class="op">=</span>(psi, k, p), epsilon<span class="op">=</span>epsilon,</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>                                         observed<span class="op">=</span>hospitalization)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        trace <span class="op">=</span> pymc3.sample_smc(kernel<span class="op">=</span><span class="st">"ABC"</span>, chains<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> trace</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>obs_array <span class="op">=</span> reverse_df_data(admissions, admissions_str)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>epsilon <span class="op">=</span> <span class="fl">500.</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>trace <span class="op">=</span> fit_model(simulate_hospital_admissions, case_array, obs_array, epsilon)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Initializing SMC sampler...
+Sampling 1 chain in 1 job
+Stage:   0 Beta: 0.004
+Stage:   1 Beta: 0.020
+Stage:   2 Beta: 0.067
+Stage:   3 Beta: 0.177
+Stage:   4 Beta: 0.382
+Stage:   5 Beta: 0.654
+Stage:   6 Beta: 1.000</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<section id="posterior-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="posterior-distribution">Posterior Distribution</h3>
+<p>First, we can look at the posterior samples to learn about the type of model that fits the data. We see that <span class="math inline">\(\psi\)</span> has a peak around 9%, meaning that proportion of positive tests lead to hospitalization. The distribution is fairly tight around this value, so there is not much uncertainty in this parameter.</p>
+<p>For <span class="math inline">\(p\)</span> and <span class="math inline">\(k\)</span>, we see that most of the samples tend to favor the low <span class="math inline">\(p\)</span>, low <span class="math inline">\(k\)</span> model described above. As previously discussed, this is not necessarily a realistic model of how an infection evolves, but rather a way of understanding the uncertainty in when a patient goes into hospital. What is important is that there is variability in when we expect positive tests on a given day to lead to later hospitalizations.</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">131</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>plt.hist(trace[<span class="st">"psi"</span>], bins<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"$\psi$"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">132</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>plt.hist(trace[<span class="st">"p"</span>], bins<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"p"</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">133</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>plt.hist(trace[<span class="st">"k"</span>], bins<span class="op">=</span><span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">20</span>)))<span class="op">;</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"k"</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2021-11-03-vaccine-Efficacy_files/figure-html/cell-6-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="posterior-predictive-samples" class="level3">
+<h3 class="anchored" data-anchor-id="posterior-predictive-samples">Posterior Predictive Samples</h3>
+<p>We can look at the range of simulated outcomes and compare these (along with some summary statistics) to the actual evolution in cases.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> draw_posterior_samples(cases, trace):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"Draw samples from the simulation using the SMC samples"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    samples <span class="op">=</span> []</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> s <span class="kw">in</span> trace:</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        samples.append(simulate_hospital_admissions(cases, s[<span class="st">"psi"</span>], s[<span class="st">"k"</span>], s[<span class="st">"p"</span>]))</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.array(samples)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_posterior_statistics(samples):</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">"Compute mean and credible intervals from posterior samples"</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    mean <span class="op">=</span> np.mean(samples, axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    quantile_005 <span class="op">=</span> np.quantile(samples, <span class="fl">0.005</span>, axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    quantile_995 <span class="op">=</span> np.quantile(samples, <span class="fl">0.995</span>, axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mean, quantile_005, quantile_995</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_data_with_samples(cases, admissions, trace):</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    samples <span class="op">=</span> draw_posterior_samples(cases, trace)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    mean, quantile_005, quantile_995 <span class="op">=</span> compute_posterior_statistics(samples)</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    plt.plot(admissions[<span class="st">"date"</span>][::<span class="op">-</span><span class="dv">1</span>], samples.T[:,:<span class="dv">100</span>], color<span class="op">=</span><span class="st">"C0"</span>, alpha<span class="op">=</span><span class="fl">0.2</span>)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    plt.plot(admissions[<span class="st">"date"</span>], admissions[admissions_str], color<span class="op">=</span><span class="st">"C1"</span>, label<span class="op">=</span><span class="st">"Data"</span>)</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"Date"</span>)</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">"Daily Hospital Admissions"</span>)</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    plt.plot([], [], color<span class="op">=</span><span class="st">'C0'</span>, alpha<span class="op">=</span><span class="fl">0.2</span>, label<span class="op">=</span><span class="st">'Posterior Samples'</span>)</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    plt.plot(admissions[<span class="st">"date"</span>][::<span class="op">-</span><span class="dv">1</span>], mean, color<span class="op">=</span><span class="st">"C2"</span>, label<span class="op">=</span><span class="st">"Mean"</span>)</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    plt.plot(admissions[<span class="st">"date"</span>][::<span class="op">-</span><span class="dv">1</span>], quantile_005, color<span class="op">=</span><span class="st">"C3"</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    plt.plot(admissions[<span class="st">"date"</span>][::<span class="op">-</span><span class="dv">1</span>], quantile_995, color<span class="op">=</span><span class="st">"C3"</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="st">"99% Credible Interval"</span>)</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>    plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>plot_data_with_samples(case_array, admissions, trace)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2021-11-03-vaccine-Efficacy_files/figure-html/cell-7-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The model is able to capture the overall dynamics of the fall 2020 wave, including the rise in admissions in October 2020, the decrease in late November 2020 due to the second national lockdown which began on 5 November, 2020, and the continued rise through Christmas 2020 when the third national lockdown came into effect on 6 January, 2021.</p>
+<p>Interestingly, the model has difficulty capturing the timing of the decrease at the end of the second lockdown, where the actual data strays outside of the 99% interval on the posterior samples. One reason this might occur is that during the second lockdown, schools remained in session, while most other non-essential sectors of the economy were forced to close. This means that younger children probably saw a smaller decrease in their exposure to COVID than most adults (many of whom were just staying home and not going to work). This likely changed the underlying demographics of the population testing positive to skew younger. We expect fewer hospitalizations in a younger population, which might explain the more rapid drop in admissions in late November 2020 in the real data when compared to the simulations. This appears to be a consistent feature of all models that were fit to the data, suggesting this is a change in the data rather than a shortcoming of the model.</p>
+</section>
+<section id="predicting-the-spring-2021-wave" class="level3">
+<h3 class="anchored" data-anchor-id="predicting-the-spring-2021-wave">Predicting the Spring 2021 Wave</h3>
+<p>We can now query the data for the spring/summer 2021 increase in cases, and forecast what the model fit on the fall 2020 data would predict. We simulate the spring/summer 2021 wave for all sets of samples that were drawn from the posterior to determine the posterior predictive distribution, and then for each point in time we can compute credible intervals to put uncertainty bounds on the predicted hospitalizations if the spring/summer 2021 wave could be modelled with the same parameters as the fall 2020 wave:</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>spring_cases <span class="op">=</span> get_data(cases_str, <span class="st">"2021-03-02"</span>, <span class="st">"2021-09-30"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>spring_case_array <span class="op">=</span> reverse_df_data(spring_cases, cases_str)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>spring_admissions <span class="op">=</span> get_data(admissions_str, <span class="st">"2021-05-01"</span>, <span class="st">"2021-09-30"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>plot_data_with_samples(spring_case_array, spring_admissions, trace)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2021-11-03-vaccine-Efficacy_files/figure-html/cell-8-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>As we can see, the model predicts substantially more hospitalization (by a factor of about 4-5) than is observed in the data, lending credence to the claim that the link between infections and hospital admissions had been weakened. Additionally, the uncertainty in the prediction is much smaller than the observed differences, suggesting that this would need to be due to some extremely rare fluke if there had not been any changes in the underlying population being exposed to COVID. Note also that the fluctuations in the number of hospital admissions predicted in summer 2021 are quite large (roughly a difference of 1000 between the lowest and highest estimates). This suggests that despite months of data on infections and hospitalizations there is still considerable uncertainty in understanding how much hospital care a population exposed to COVID will require. This should highlight the need for careful consideration of the modelling assumptions that are made in any forecast of the effect of an emerging, uncertain infectious disease on the vulnerable members of a population.</p>
+</section>
+</section>
+<section id="discussion" class="level2">
+<h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
+<p>Why might the link between infections and hospitalizations be weaker? One obvious reason is vaccination, which is what was highlighted by the Health Secretary in his announcement. While this almost certainly played a big role, we cannot necessarily attribute the entire effect to this. Why?</p>
+<p>As mentioned above, we saw that the model had difficulty handling the data during the second national lockdown, and one possible explanation was a change in the population testing positive. Indeed, during the time period under consideration, schools were open while other parts of the economy remained under restriction, meaning that it is possible that more testing in schools could be partially responsible for this difference. Since young people received vaccines later than the elderly population during spring/summer 2021, we would expect that as time progresses, the population that tests positive should gradually skew younger, which could explain some of the reduction in hospital admissions over spring/summer 2021. However, we can potentially estimate the magnitude of this effect by looking at the November 2020 data, which shows a reduction of a few hundred hospital admissions. This is substantially smaller than the observed differences, so it is unlikely to explain the full discrepancy between the model and the data.</p>
+<p>Given that we are confident that the data differs from the predictions, how might we account for vaccinations? One possibility is to make <span class="math inline">\(\psi\)</span> no longer a constant, but rather a function of the single and double dose vaccination rates, possibly with a time lag to allow for immunity to build up. We might also fit three different <span class="math inline">\(\psi\)</span> values for 0, 1, or 2 vaccine doses, though since vaccinated people are less likely than unvaccinated people to become infected, we would also need to estimate the chances of infection which is likely to be difficult. This is particularly true due to the fact that infection rates can be very locally heterogeneous, as pockets of the population with more or less vaccination coverage will see very different infection rates.</p>
+<p>Regardless of the exact cause of this reduced hospitalization risk, the change in the data clearly shows that this wave of the pandemic differs from the previous ones. As the UK Government shifts its policies to one of learning to live with the virus, rather than one of actively suppressing it, data on infections and hospitalizations will continue to provide valuable insight into the evolution of the pandemic and should be guiding our decisions and behavior. Hopefully, this model provides an example of how this can be done with an eye for building simple, interpretable models that robustly account for uncertainty.</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

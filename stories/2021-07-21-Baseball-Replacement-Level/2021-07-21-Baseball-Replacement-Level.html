@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Eric Daub">
+<meta name="dcterms.date" content="2021-07-21">
+<meta name="keywords" content="Baseball, Bayesian modeling, SQL">
+
+<title>Turing Data Stories - French Pastries, Baseball Players, and Marginal Utility</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Turing Data Stories</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/alan-turing-institute/turingdatastories" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">French Pastries, Baseball Players, and Marginal Utility</h1>
+                      </div>
+  </div>
+    
+  <div class="quarto-title-meta-author">
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-heading">Affiliation</div>
+    
+      <div class="quarto-title-meta-contents">
+      <p class="author"><a href="https://www.turing.ac.uk/people/researchers/eric-daub">Eric Daub</a> </p>
+    </div>
+      <div class="quarto-title-meta-contents">
+          <p class="affiliation">
+              The Alan Turing Institute
+            </p>
+        </div>
+      </div>
+
+  <div class="quarto-title-meta">
+
+        
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">July 21, 2021</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  <div>
+    <div class="abstract">
+      <div class="abstract-title">Abstract</div>
+      Understanding and estimating the replacement value of US baseball players with Bayesian models.
+    </div>
+  </div>
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="reviewers" class="level3">
+<h3 class="anchored" data-anchor-id="reviewers">Reviewers</h3>
+<ul>
+<li>Jack Roberts, Alan Turing Institute (Github: <span class="citation" data-cites="jack89roberts">@jack89roberts</span>)</li>
+<li>Nick Barlow, Alan Turing Institute (Github: <span class="citation" data-cites="nbarlowATI">@nbarlowATI</span>)</li>
+</ul>
+</section>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>I was recently chatting with a friend about the respective merits of the French pastries available at our local bakery:</p>
+<p><strong>Friend:</strong> What do you think of the pastries? Are they good?<br>
+<strong>Me:</strong> Yes, though there is another bakery further out of town that I prefer.<br>
+<strong>Friend:</strong> You don’t think these are as good?<br>
+<strong>Me:</strong> No, but not so much worse that I’d walk a half hour each way to get those since I don’t have a car. They are definitely better than the ones you get at Pret A Manger which you can find in every train station and city center, so definitely well above a replacement level crossaint.<br>
+<strong>Friend:</strong> What do you mean by that, replacement level?<br>
+<strong>Me:</strong> Oh, it’s a term that baseball statisticians use to measure if it’s worth paying money for a particular player. The idea is to come up with some baseline that’s easily available, and then try to determine how much better something is than that. Economists call this “Marginal Utility.”<br>
+<strong>Friend:</strong> [Silence]<br>
+<strong>Me:</strong> [To myself] Did I really just say “replacement level crossaint?”</p>
+<p>While I took a course in Economics when I was an undergraduate, I definitely did not completely understand the concept of Marginal Utility until I started reading more about baseball statistics (no doubt beginning with my dog-eared copy of <a href="https://en.wikipedia.org/wiki/Moneyball"><em>Moneyball</em> by Michael Lewis</a>). The idea is that to compare two goods that have different prices, I need to determine how much additional value I get out of the more expensive one to justify the extra expense. Regarding crossaints, the extra cost of the better bakery was my time, which I determined would be better spent doing something else and thus the marginal utility of the fancier bakery was not worth it.</p>
+<p>The undergraduate version of me certainly nodded when the professor talked about this in class, as it sounds simple enough. But what I failed to appreciate back then is the idea that to really understand value in some absolute sense, we need to compare these things to some baseline level that I can always acquire without any effort and minimal expense, something that the baseball statisticians were able to very clearly articulate. In terms of pastries, this was the fare available at the Pret just around the corner – always available for 2 pounds no matter where I am without having to walk a long way, always the same product as they are no doubt churned out en masse at some factory bakery.</p>
+</section>
+<section id="replacement-level" class="level2">
+<h2 class="anchored" data-anchor-id="replacement-level">Replacement Level</h2>
+<p>In baseball, this baseline level is referred to as “replacement level.” Conceptually, replacement level does not refer to any player in particular, but rather some theoretical player that any team can acquire at any time with minimal effort (either time or money). We can think of these players as being effectively in infinite supply (by infinite, what we really mean is that “there are far more players of this caliber than there are jobs available on Major League Baseball teams”). If we put a bunch of these theoretical players on the field and played 162 games (a full MLB season), they would not be a particularly good team, but they would be cheap. To win more games than this theoretical team would win, I need to spend some additional time or money in finding players that are better than this replacement level.</p>
+<p>One thing to note is that this level is <em>not</em> the average of all players in the league – presumably all of the teams have made considerable effort to spend resources to make their team better, so the league average will reflect some amount of value above this level. How much more valuable is an average player than a replacement level? Most statisticians put replacement level at around 80% of the league average (see for instance the <a href="https://en.wikipedia.org/wiki/Value_over_replacement_player">Wikipedia page</a>).</p>
+<p>On face, this all seems quite sensible. But recently, I asked myself: why is this a reasonable level? Why 80%? Why not 25%, or 95%? And can we be more precise about <em>why</em> 80% represents this “easily findable value” and what it really means in a statistical sense? This is one of the main criticisms of the statistical effort to estimate replacement value. In the following analysis, I present one way to try and make this estimate more concrete and not include any arbitrary numbers in it.</p>
+</section>
+<section id="a-primer-on-baseball" class="level2">
+<h2 class="anchored" data-anchor-id="a-primer-on-baseball">A Primer on Baseball</h2>
+<p>Given that baseball is more popular in some parts of the world than others, I give a brief description of the rules of the game in this section. If you are already familiar with the sport, feel free to skip ahead. If the summary in this section is too brief, the <a href="https://en.wikipedia.org/wiki/Baseball">Wikipedia page</a> contains more details.</p>
+<p>Baseball is a bat and ball game where teams take alternate turns attempting to hit a ball thrown by the defensive team. The <a href="https://en.wikipedia.org/wiki/Baseball_field">field of play is roughly diamond shaped</a>, with four bases placed in a counterclockwise direction around a square:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Baseball_diamond.svg/780px-Baseball_diamond.svg.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Baseball Diamond</figcaption>
+</figure>
+</div>
+<p>The hitters start from “home plate” at the base of the diamond (not labelled on the above image, but it is between the batter’s and catcher’s boxes), then first, second, and third bases proceed around the square. The objective of the offensive team is to hit the ball, thrown from the pitcher’s mound at the center of the bases towards home plate, into the field of play between the foul lines in a way that the defensive players are (1) unable to catch the ball before it hits the ground <em>and</em> (2) not able to retrieve the ball and throw it to first base before the offensive player is able to run from home plate to first base. If the offensive player is not successful, then an “out” is recorded, while if the player is able to hit the ball safely, then they are able to remain on the bases and the next member of the team can attempt to hit the ball.</p>
+<p>However, the offensive player may not always be able to hit the ball. If the pitcher can successfully cause the hitter to miss the ball three times (called “strikes”), the offensive player makes an out, while if the pitcher throws four pitches that are deemed not to be hittable (called “balls”), then the hitter does not make an out and is awarded first base (a “walk” or “base on balls”, abbreviated <code>BB</code>). Alternatively, if the pitcher throws the ball and it hits the body of the batter (hit by pitch, abbreviated <code>HBP</code>), then that player is awarded first base in the same way as a walk. All attempts by an offensive player thus either result in an out, or the player successfully reaches the bases and the offensive team is able to continue hitting.</p>
+<p>If the offensive team is able to advance a player completely around the bases (first, second, third, and then back to home plate), then a point is scored (also called a “run”). If the defensive team is able to record three outs, then the offensive team is out of chances to score and the defensive and offensive teams switch places. Each successive series of attempts is known as an “inning,” and a game consists of 9 innings.</p>
+<p>Different types of hits are able to advance runners more bases, so players that are able to do this more often are inherently more valuable. Hits that go for 2 bases are known as “doubles” (<code>2B</code>), 3 bases are known as “triples” (<code>3B</code>) and hits that leave the field of play are known as “home runs” (<code>HR</code>) and all players on the bases are able to advance to home plate. Additionally, one base hits (“singles”, or <code>1B</code>) tend to advance existing runners multiple bases, as they are often able to get a running start, while walks only allow players to advance if the runner at the previous base is forced to advance. However, the analysis below will ignore the value of baserunning, and instead focus on the above types of hits.</p>
+<p>Finally, some types of outs are traditionally treated differently in baseball statistics, as they have a positive effect in that they are able to advance a runner along the bases despite the negative value associated with making an out. These are known as sacrifice hits (abbreviated <code>SH</code> or <code>SF</code> for sacrifice flies), and are usually not counted towards the number of attempts a player is credited with when looking at hitting statistics. Additionally, for historical reasons walks are not counted towards the number of attempts a player is credited with either. Because of these quirks, the number of official “at bats” (abbreviated <code>AB</code>) will be different from the number of “plate appearances” (abbreviated <code>PA</code>). However, since walks create positive value, while sacrifice hits still make an out, we will care more about the number of plate appearances rather than the more common at bats.</p>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>In this story, I use the publically available and widely used <a href="http://www.seanlahman.com/baseball-archive/statistics">Lahman Baseball Database</a>. This database is known for its full coverage of most of MLB history, and includes all of the standard batting and pitching statistics for all players for all seasons. It is maintained by a group of volunteers who tabulate statistics and have gone through past newspaper archives to collect the extensive data that it contains. It is available in a number of SQL formats, as well as the raw CSV files, and is updated every year.</p>
+<p>In the following, I will use the SQLite version of the database that runs through the 2019 season (it can be found <a href="https://github.com/WebucatorTraining/lahman-baseball-mysql/raw/master/lahmansbaseballdb.sqlite">here</a>). I choose this mostly because Python has built-in support for SQLite, and since I will be using this database as a standalone data source, I don’t have to worry about setting up a server, dealing with concurrent users, or modifying the database.</p>
+<p>The tables of the Lahman database are described in the <a href="http://www.seanlahman.com/files/database/readme2017.txt">documentation</a>. I will mainly be using the <code>batting</code> table, which contains the relevant hitting statistics and can easily be queried to pull out the specific data that I need to perform this analysis. As a reference, here is a table of the abbreviations used in the database and our data frame:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Symbol</th>
+<th style="text-align: center;">Description</th>
+<th style="text-align: left;">How to Calculate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>AB</code></td>
+<td style="text-align: center;">At Bats</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>H</code></td>
+<td style="text-align: center;">Hits</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>2B</code></td>
+<td style="text-align: center;">Doubles</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>3B</code></td>
+<td style="text-align: center;">Triples</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>HR</code></td>
+<td style="text-align: center;">Home Runs</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>BB</code></td>
+<td style="text-align: center;">Walks</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>IBB</code></td>
+<td style="text-align: center;">Intentional Walks</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>HBP</code></td>
+<td style="text-align: center;">Hit By Pitch</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>SH</code></td>
+<td style="text-align: center;">Sacrifice Hits</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>SF</code></td>
+<td style="text-align: center;">Sacrifice Flies</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>PA</code></td>
+<td style="text-align: center;">Plate Appearances</td>
+<td style="text-align: left;"><code>AB + BB + IBB + HBP + SH + SF</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>O</code></td>
+<td style="text-align: center;">Outs</td>
+<td style="text-align: left;"><code>AB + SH + SF - H</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>1B</code></td>
+<td style="text-align: center;">Singles</td>
+<td style="text-align: left;"><code>H - 2B - 3B - HR</code></td>
+</tr>
+</tbody>
+</table>
+<p>Note there are a few statistics we need that are derived from the other statistics: * Plate Appearances (<code>PA</code>) are all at bats, plus all special cases (i.e.&nbsp;walks and sacrifices) where the player came up but did not result in an at bat. * Outs are the number at bats plus all sacrifices (i.e.&nbsp;outs that are not counted in at bats), minus the number of hits. * Singles (<code>1B</code>) are the number of hits minus all hits resulting on multiple bases (doubles, triples, and home runs).</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sqlite3</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.stats</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> sqlite3.<span class="ex">connect</span>(<span class="st">"lahmansbaseballdb.sqlite"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>year <span class="op">=</span> <span class="dv">2019</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Once I have connected to the database, I can query the <code>batting</code> table to get the full statistics for all hitters that registered at least 10 at bats in the most recent full season (2019) and load into a data frame using pandas:</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pandas.read_sql(<span class="st">'select * from batting where yearID = </span><span class="sc">{}</span><span class="st"> and AB &gt; 10'</span>.<span class="bu">format</span>(year), conn)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">ID</th>
+<th data-quarto-table-cell-role="th">playerID</th>
+<th data-quarto-table-cell-role="th">yearID</th>
+<th data-quarto-table-cell-role="th">stint</th>
+<th data-quarto-table-cell-role="th">teamID</th>
+<th data-quarto-table-cell-role="th">team_ID</th>
+<th data-quarto-table-cell-role="th">lgID</th>
+<th data-quarto-table-cell-role="th">G</th>
+<th data-quarto-table-cell-role="th">G_batting</th>
+<th data-quarto-table-cell-role="th">AB</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">RBI</th>
+<th data-quarto-table-cell-role="th">SB</th>
+<th data-quarto-table-cell-role="th">CS</th>
+<th data-quarto-table-cell-role="th">BB</th>
+<th data-quarto-table-cell-role="th">SO</th>
+<th data-quarto-table-cell-role="th">IBB</th>
+<th data-quarto-table-cell-role="th">HBP</th>
+<th data-quarto-table-cell-role="th">SH</th>
+<th data-quarto-table-cell-role="th">SF</th>
+<th data-quarto-table-cell-role="th">GIDP</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>105864</td>
+<td>abreujo02</td>
+<td>2019</td>
+<td>1</td>
+<td>CHA</td>
+<td>2900</td>
+<td>AL</td>
+<td>159</td>
+<td>None</td>
+<td>634</td>
+<td>...</td>
+<td>123</td>
+<td>2</td>
+<td>2</td>
+<td>36</td>
+<td>152</td>
+<td>4</td>
+<td>13</td>
+<td>0</td>
+<td>10</td>
+<td>24</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>105865</td>
+<td>acunaro01</td>
+<td>2019</td>
+<td>1</td>
+<td>ATL</td>
+<td>2897</td>
+<td>NL</td>
+<td>156</td>
+<td>None</td>
+<td>626</td>
+<td>...</td>
+<td>101</td>
+<td>37</td>
+<td>9</td>
+<td>76</td>
+<td>188</td>
+<td>4</td>
+<td>9</td>
+<td>0</td>
+<td>1</td>
+<td>8</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>105866</td>
+<td>adamecr01</td>
+<td>2019</td>
+<td>1</td>
+<td>SFN</td>
+<td>2920</td>
+<td>NL</td>
+<td>10</td>
+<td>None</td>
+<td>22</td>
+<td>...</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>8</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>105867</td>
+<td>adamewi01</td>
+<td>2019</td>
+<td>1</td>
+<td>TBA</td>
+<td>2922</td>
+<td>AL</td>
+<td>152</td>
+<td>None</td>
+<td>531</td>
+<td>...</td>
+<td>52</td>
+<td>4</td>
+<td>2</td>
+<td>46</td>
+<td>153</td>
+<td>1</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+<td>9</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>105874</td>
+<td>adamsma01</td>
+<td>2019</td>
+<td>1</td>
+<td>WAS</td>
+<td>2925</td>
+<td>NL</td>
+<td>111</td>
+<td>None</td>
+<td>310</td>
+<td>...</td>
+<td>56</td>
+<td>0</td>
+<td>0</td>
+<td>20</td>
+<td>115</td>
+<td>1</td>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+<td>7</td>
+</tr>
+</tbody>
+</table>
+
+<p>5 rows × 25 columns</p>
+</div>
+</div>
+</div>
+<p>This only gives us the raw numbers for these players, and the player is identified with a <code>playerID</code> rather than their full name. If I want to get the names, I need to do a join with the <code>people</code> table:</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pandas.read_sql(<span class="st">'''select nameLast, nameFirst, AB, H, "2B", "3B", HR, BB</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="st">                        from batting inner join people on batting.playerID = people.playerID</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="st">                        where yearID = </span><span class="sc">{}</span><span class="st"> and AB &gt; 10'''</span>.<span class="bu">format</span>(year), conn)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">nameLast</th>
+<th data-quarto-table-cell-role="th">nameFirst</th>
+<th data-quarto-table-cell-role="th">AB</th>
+<th data-quarto-table-cell-role="th">H</th>
+<th data-quarto-table-cell-role="th">2B</th>
+<th data-quarto-table-cell-role="th">3B</th>
+<th data-quarto-table-cell-role="th">HR</th>
+<th data-quarto-table-cell-role="th">BB</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Abreu</td>
+<td>Jose</td>
+<td>634</td>
+<td>180</td>
+<td>38</td>
+<td>1</td>
+<td>33</td>
+<td>36</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Acuna</td>
+<td>Ronald</td>
+<td>626</td>
+<td>175</td>
+<td>22</td>
+<td>2</td>
+<td>41</td>
+<td>76</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Adames</td>
+<td>Cristhian</td>
+<td>22</td>
+<td>7</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>Adames</td>
+<td>Willy</td>
+<td>531</td>
+<td>135</td>
+<td>25</td>
+<td>1</td>
+<td>20</td>
+<td>46</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Adams</td>
+<td>Matt</td>
+<td>310</td>
+<td>70</td>
+<td>14</td>
+<td>0</td>
+<td>20</td>
+<td>20</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>While it is useful to be able to identify particular players, I am most interested the distribution of outcomes over the entire league, I don’t particularly care which players are which. Thus, most of the time I will just be doing the same query of the <code>batting</code> table to pull out hitting statistics.</p>
+<p>However, one non-trivial thing to consider is that players that play different defensive positions have different expectations associated with their batting ability. The most important correction by far is the fact that pitchers tend to be significantly worse hitters than players that play other defensive positions (colloquially referred to as “position players”), though this also applies to other defensive positions to a lesser extent. Pitchers tend to be worse hitters than average, in large part because they get less regular at bats due to the fact that they only pitch every few days. To make a fair comparison, I would thus like to look only at position players, so for the query that I need I will need to do a join on the <code>appearances</code> table. This table lists how many games a player appeared as a pitcher, so I can filter out all players that appeared in a game as a pitcher to exclude them from the analysis.</p>
+</section>
+<section id="runs-created" class="level2">
+<h2 class="anchored" data-anchor-id="runs-created">Runs Created</h2>
+<p>At a basic level, baseball comes down to two things: runs and outs. Outs occur when a player fails to get a hit. Each game consists of 27 outs per team, so the goal is to not make outs, and instead produce a positive outcome. If a player does not make an out, then there are several possible outcomes: the player can safely hit the ball somewhere, which allows the player and the player’s teammates to advance around the bases a certain amount, or the player can be awarded a base without getting a hit (either through a walk or a hit by pitch). Hits can be singles, doubles, triples, or home runs which advance the batter 1, 2, 3, or 4 bases, respectively (<em>n.b.</em> hits tend to advance any teammates already on the bases a different number of bases, but it turns out that the metric below does a reasonable job of accounting for this as it turns out that a double is about twice as valuable as a single, a triple is three times as valuable, etc.).</p>
+<p>While the main goal is to not make outs, hitters that are more likely to advance players by more than one base at a time are more likely to create more runs, as if they have other players already on the bases, they are more likely to score runs. The simplest way that we can account for this is through a metric known as <a href="https://en.wikipedia.org/wiki/Runs_created">“Runs Created,”</a> which was designed by the baseball statistician <a href="https://en.wikipedia.org/wiki/Bill_James">Bill James</a> and tries to approximate the number of runs that a player is likely to have produced through their hitting ability. The formula is</p>
+<p><span class="math display">\[RC = {\rm Success\: rate}\times{\rm Total\: bases} = \frac{H+BB}{PA}\times TB\]</span></p>
+<p>Here, <span class="math inline">\(H\)</span> is the number of hits, <span class="math inline">\(BB\)</span> is the number of walks, <span class="math inline">\(PA\)</span> is the number of attempts, and <span class="math inline">\(TB\)</span> is the total number of bases the player advanced through their hits. Note that this is a rate multiplied by a counting stat, ultimately resulting in a counting stat. Note however that the added rate factor means that if two players produce the same number of total bases, but one does it in fewer opportunities or draws more walks, the metric will give more value to the player with the better rate stat.</p>
+<p>This statistic was derived mostly on an empirical basis, but for some intution as to why it works imagine that someone gets 4 hits in 16 opportunities, of which two are singles, one is a double, and one is a home run. Then the success rate is 1/4, while the total number of bases are eight, leading to two runs created. Obviously, the home run must have created one run. Thus, the combined value of all the other hits (plus the chances that someone else was on the bases when they hit the home run) is such that statistically, this player’s production increased the number of runs the team scored over the entire season by one. Note that it does <em>not</em> mean that those hits produced one actual run, but rather that given a typical set of scenarios under which those hits took place, the player’s team likely scored one additional run due to those hits.</p>
+<p>I can pull out the basic statistics that I need to compute Runs Created with the following SQL query, which I will wrap in a function for convenient further use. As mentioned above, to exclude pitchers I need to do an inner join on the <code>appearances</code> table, which allows me to filter out the pitchers and just focus on position players in this analysis.</p>
+<p>I generate 7 columns in this query: the total number of attempts (<code>PA</code> or “Plate Appearances”), number of outs (<code>O</code>), and then 5 additional columns for the types of hits/walks so that I can convert these to the total number of bases. Some statistics, such as sacrifice flies (<code>SF</code>) and intentional walks (<code>IBB</code>) are not recorded for all years, so I use the SQL <code>coalesce</code> function to convert the null values to zero if necessary.</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rc_base_query(year, conn):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"Base query for getting statistics for computing Runs Created"</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pandas.read_sql(<span class="st">'''select AB + BB + coalesce(IBB,0) + HBP + SH + coalesce(SF,0) as PA,</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">                                     AB + SH + coalesce(SF, 0) - H as O,</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">                                     BB + coalesce(IBB,0) + HBP as BB,</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="st">                                     H - "2B" - "3B" - HR  as "1B",</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="st">                                     "2B",</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="st">                                     "3B",</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="st">                                     "HR"</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="st">                                     from batting inner join appearances on batting.playerID = appearances.playerID</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="st">                                     and batting.yearID = appearances.yearID</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="st">                                     where batting.yearID = </span><span class="sc">{}</span><span class="st"> and AB &gt; 10 and appearances.G_p = 0'''</span>.<span class="bu">format</span>(year),</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>                           conn)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(rc_base_query(year, conn)))</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>rc_base_query(year, conn).head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>708</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">PA</th>
+<th data-quarto-table-cell-role="th">O</th>
+<th data-quarto-table-cell-role="th">BB</th>
+<th data-quarto-table-cell-role="th">1B</th>
+<th data-quarto-table-cell-role="th">2B</th>
+<th data-quarto-table-cell-role="th">3B</th>
+<th data-quarto-table-cell-role="th">HR</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>627</td>
+<td>428</td>
+<td>58</td>
+<td>83</td>
+<td>33</td>
+<td>6</td>
+<td>19</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>38</td>
+<td>22</td>
+<td>7</td>
+<td>4</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>78</td>
+<td>57</td>
+<td>6</td>
+<td>5</td>
+<td>4</td>
+<td>0</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>452</td>
+<td>311</td>
+<td>49</td>
+<td>72</td>
+<td>11</td>
+<td>2</td>
+<td>7</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>702</td>
+<td>475</td>
+<td>56</td>
+<td>97</td>
+<td>29</td>
+<td>10</td>
+<td>35</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Because players make outs in the process of producing runs, we will want to normalize the runs created by the outs consumed to create these runs, which turns this back into a rate stat and thus allows us to compare across players regardless of the number of attempts. We can thus view the results of all players over a full season on a histogram this way.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> runs_created(season_stats):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"computes runs created per out from a data frame/array holding plate appearances, outs, singles, doubles, triples, and home runs"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">isinstance</span>(season_stats, pandas.DataFrame):</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        plate_appearances <span class="op">=</span> season_stats[<span class="st">"PA"</span>]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        outs <span class="op">=</span> season_stats[<span class="st">"O"</span>]</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        walks <span class="op">=</span> season_stats[<span class="st">"BB"</span>]</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        singles <span class="op">=</span> season_stats[<span class="st">"1B"</span>]</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        doubles <span class="op">=</span> season_stats[<span class="st">"2B"</span>]</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        triples <span class="op">=</span> season_stats[<span class="st">"3B"</span>]</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        home_runs <span class="op">=</span> season_stats[<span class="st">"HR"</span>]</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> season_stats.ndim <span class="op">==</span> <span class="dv">1</span>: <span class="co"># Only the stats of a single player</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>            season_stats <span class="op">=</span> np.reshape(season_stats, (<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>))</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>        plate_appearances <span class="op">=</span> np.<span class="bu">sum</span>(season_stats, axis<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        outs <span class="op">=</span> season_stats[:,<span class="dv">0</span>]</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>        walks <span class="op">=</span> season_stats[:,<span class="dv">1</span>]</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>        singles <span class="op">=</span> season_stats[:,<span class="dv">2</span>]</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>        doubles <span class="op">=</span> season_stats[:,<span class="dv">3</span>]</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>        triples <span class="op">=</span> season_stats[:,<span class="dv">4</span>]</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>        home_runs <span class="op">=</span> season_stats[:,<span class="dv">5</span>]</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># scrub any player that made no outs</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    nz_outs <span class="op">=</span> (outs <span class="op">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    rc <span class="op">=</span> (<span class="fl">1.</span><span class="op">-</span>outs<span class="op">/</span>plate_appearances)<span class="op">*</span>(singles <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>doubles <span class="op">+</span> <span class="dv">3</span><span class="op">*</span>triples <span class="op">+</span> <span class="dv">4</span><span class="op">*</span>home_runs)</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> rc[nz_outs]<span class="op">/</span>outs[nz_outs]</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rc_histogram(<span class="op">*</span>args, scale<span class="op">=</span><span class="st">"linear"</span>):</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    <span class="co">"plot a histogram of any number of runs created arrays/sequences on a linear or logarithmic scale"</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> rc <span class="kw">in</span> args:</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> scale <span class="op">==</span> <span class="st">"log"</span>:</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>            rc_data <span class="op">=</span> runs_created(rc)</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>            dist <span class="op">=</span> np.log(rc_data[rc_data <span class="op">&gt;</span> <span class="fl">0.</span>])<span class="op">/</span>np.log(<span class="fl">10.</span>)</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>            bins <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">4.</span>, <span class="fl">1.</span>, <span class="dv">100</span>)</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>            dist <span class="op">=</span> runs_created(rc)</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>            bins <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="fl">1.5</span>, <span class="dv">100</span>)</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>        plt.hist(dist, bins<span class="op">=</span>bins, density<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> scale <span class="op">==</span> <span class="st">"log"</span>:</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>        plt.xlabel(<span class="st">"Log Runs Created/Out"</span>)</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>        plt.xlabel(<span class="st">"Runs Created/Out"</span>)</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">"Probability density"</span>)</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>season_stats <span class="op">=</span> rc_base_query(year, conn)</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>rc_histogram(season_stats)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2021-07-21-Baseball-Replacement-Level_files/figure-html/cell-7-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>As we can see, the bulk of the distribution is around 0.2, and then the numbers fall off as we move out towards 0.4, with only a few players managing more than that.</p>
+<p>As an aside, the raw numbers here are illustrative of the general idea behind using Runs Created to measure a player’s ability, but this simple version does not account for a number of well-known additional effects:</p>
+<ul>
+<li>We have not measured baserunning ability. Total bases only includes the bases advanced by the players hitting, not their ability to run the bases once on base. More complex formulae can better account for this effect by including stolen bases. However, more general baserunning ability that allows a runner to advance on another teammate’s hits is not measured in the stats we have available in this database so we cannot account for that here.</li>
+<li>We also have not corrected for the fact that different stadiums tend to produce more runs than others, so a player that has half of their opportunities in a stadium that is friendly to hitters will get a boost for which an empirical correction can be made.</li>
+<li>One final, and more subtle issue, is the fact that the best players will be overvalued here because they cannot possibly be on base when they come up to hit (i.e.&nbsp;a player that is significantly better than their teammates will have fewer people on base than would be expected from the average). Since the statistic assumes that everyone has an average number of people on base for their hits, this will be biased towards the better players that will in general have fewer people on base.</li>
+</ul>
+<p>More sophisticated techniques are needed to treat these effects, but won’t change the overall way that we convert this distribution into a replacement level value, so we will ingore these additional effects going forwards. As mentioned earlier, a good heuristic estimate of replacement level can be found by taking 80% of the mean, so from these calculations we can estimate replacement level:</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> heuristic_replacement_level(season_stats):</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"calculate empirical replacement level statistic using 80% heuristic"</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fl">0.8</span><span class="op">*</span>np.mean(runs_created(season_stats))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Heuristic replacement level for </span><span class="sc">{}</span><span class="st">: </span><span class="sc">{}</span><span class="st"> runs/out"</span>.<span class="bu">format</span>(year, heuristic_replacement_level(season_stats)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Heuristic replacement level for 2019: 0.1321843895833081 runs/out</code></pre>
+</div>
+</div>
+<p>This suggests that creating 0.13 runs per out is a good baseline for comparison for a position player. However, it is not clear why this is the case. The distribution is strongly peaked near 0.2, then falls off towards zero, so it’s not obvious where in the distribution below the mode we should set a cut off for replacement level. The tail of the distribution is also quite heavy, with small numbers of players producing lots of runs. Are these players really so much better than the others, or is this just luck? To address this, we need a way to simulate the season many times to estimate what we expect this distribution to look like with more samples so that we can scrutinize it in more depth.</p>
+</section>
+<section id="multinomial-bayesian-inference" class="level2">
+<h2 class="anchored" data-anchor-id="multinomial-bayesian-inference">Multinomial Bayesian Inference</h2>
+<p>To simulate many versions of the same season, we turn to Bayesian Inference. Bayesian models treat their parameter values as probability distributions, which allows us to quantify the uncertainty in the underlying model and propagate that uncertainty forward in additional simulations. Formally, we treat each parameter <span class="math inline">\(\theta\)</span> in the model as a probability distribution, and determine what our updated beliefs about the parameter values are once we view the data <span class="math inline">\(y\)</span>, <span class="math inline">\(p(\theta|y)\)</span>. Computing this probability distribution is done via Bayes’ Rule:</p>
+<p><span class="math display">\[p(\theta|y) = \frac{p(y|\theta)p(\theta)}{p(y)}\]</span></p>
+<p><span class="math inline">\(p(y|\theta)\)</span> here is the likelihood, or the probability of the data given a particular value of the model parameters. <span class="math inline">\(p(\theta)\)</span> is the prior, our initial beliefs about reasonable values of the parameter. <span class="math inline">\(p(y)\)</span> is known as the evidence, and is the probability of getting the data over all possible realizations of the experiment. This rule lets us convert the likelihood, which is generally more straightforward to compute, to the posterior by weighting it using the prior and evidence.</p>
+<section id="multinomial-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="multinomial-distribution">Multinomial Distribution</h3>
+<p>What model might we use to describe a hitter? At the most basic level, we can think of a hitter as a set of probabilities that they will make an out, draw a walk hit a single, hit a double, etc. Thus, a set of six probabilities that sum to 1 is a straightforward way of capturing the abilities of a hitter. Once we have those five probabilities, the outcome of a series of hitting attempts is described by a <a href="https://en.wikipedia.org/wiki/Multinomial_distribution">Multinomial distribution</a>.</p>
+<p>For example, if I am a hitter and I have a 60% chance of making an out, a 10% chance of drawing a walk, 20% chance of hitting a single, 5% chance of hitting a double, 1% chance of hitting a triple, and 4% chance of hitting a hume run, then if I come up to bat 100 times I would expect the following distribution of outcomes:</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_multiple_distributions(samples):</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"make a plot of multiple components of probability samples"</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> samples.shape[<span class="op">-</span><span class="dv">1</span>] <span class="op">==</span> <span class="dv">6</span>, <span class="st">"samples must have 6 components"</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    labels <span class="op">=</span> [<span class="st">"Out"</span>, <span class="st">"Walk"</span>, <span class="st">"Single"</span>, <span class="st">"Double"</span>, <span class="st">"Triple"</span>, <span class="st">"Home Run"</span>]</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>,<span class="dv">4</span>))</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">6</span>):</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        plt.subplot(<span class="bu">int</span>(<span class="st">"16"</span><span class="op">+</span><span class="bu">str</span>(i<span class="op">+</span><span class="dv">1</span>)))</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>        plt.hist(samples[:,i], bins<span class="op">=</span><span class="dv">25</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>        plt.xlabel(labels[i])</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_multinomial(n_samples, n_trials, p):</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">"plot the distribution of outcomes from a set of multinomial trials"</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> n_samples <span class="op">&gt;</span> <span class="dv">0</span>, <span class="st">"number of samples must be greater than zero"</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> n_trials <span class="op">&gt;</span> <span class="dv">0</span>, <span class="st">"number of trials must be greater than zero"</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> p.ndim <span class="op">==</span> <span class="dv">1</span>, <span class="st">"p must be a 1D array"</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> np.<span class="bu">all</span>(p <span class="op">&gt;=</span> <span class="fl">0.</span>) <span class="kw">and</span> np.<span class="bu">sum</span>(p) <span class="op">==</span> <span class="fl">1.</span>, <span class="st">"all probabilities must be positive and sum to 1"</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    samples <span class="op">=</span> scipy.stats.multinomial.rvs(n<span class="op">=</span>n_trials, p<span class="op">=</span>p, size<span class="op">=</span>n_samples)</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    plot_multiple_distributions(samples)</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>hypothetical_player_probs <span class="op">=</span> np.array([<span class="fl">0.6</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.05</span>, <span class="fl">0.01</span>, <span class="fl">0.04</span>])</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>plot_multinomial(<span class="dv">1000</span>, <span class="dv">100</span>, hypothetical_player_probs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2021-07-21-Baseball-Replacement-Level_files/figure-html/cell-9-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Thus, if I repeated my hypothetical set of 100 hitting attemps many times, this shows the range of outcomes I might expect.</p>
+</section>
+<section id="prior" class="level3">
+<h3 class="anchored" data-anchor-id="prior">Prior</h3>
+<p>Now I need to specify my prior beliefs about what I probabilities I might expect a hitter to have before I see any data. One natural way to handle this is a <a href="https://en.wikipedia.org/wiki/Dirichlet_distribution">Dirichlet distribution</a>, which has the nice property that it plays nicely with a multinomial distribution and gives me an analytical way to compute the posterior. A Dirichlet distribution is a generalization of the Beta distribution in multiple dimensions (in this case, 6 as we need our 6 probabilities for our multinomial distribution).</p>
+<p>A <a href="https://en.wikipedia.org/wiki/Beta_distribution">Beta distribution</a> takes 2 parameters, while an <span class="math inline">\(n\)</span>-dimensional Dirichlet distribution takes <span class="math inline">\(n\)</span> parameters, usually referred to as a vector <span class="math inline">\(\alpha\)</span>. As with the beta distribution, if the parameters are small the probability density is concentrated towards one outcome being more likely, while if the weights are large then probability density is more even across the different dimensions. Combining small and large values let us tweak the distribution in a wide range of different ways, giving plenty of flexibility in describing our prior beliefs.</p>
+<p>For this model, I am going to specify a prior that is rather pessimistic about a player’s ability, thus the probabilities should be large for making an out, and relatively small for the more valuable hits. Only once a player shows sustained ability to do better than this threshold will I have more faith in their run producing capabilities. (One caveat here is that I need to be sure at the end of my analysis that my estimation of replacement level is significantly higher than this level, though we will see in the end that the analysis here can identify those players and separate them out of the overall distribution). Note that these choices are inherently subjective and are based on my personal understanding of what I think a good baseball player is likely to do based on many years of watching and following the game.</p>
+<p>The following illustrates the priors that I use in my analysis:</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_dirichlet(n_samples, alpha):</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"plot samples of the probabilities drawn from a Dirichlet distribution"</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> n_samples <span class="op">&gt;</span> <span class="dv">0</span>, <span class="st">"number of samples must be greater than zero"</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> np.<span class="bu">all</span>(alpha <span class="op">&gt;=</span> <span class="fl">0.</span>), <span class="st">"all alpha components must be positive"</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    samples <span class="op">=</span> scipy.stats.dirichlet.rvs(alpha, size<span class="op">=</span>n_samples)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    plot_multiple_distributions(samples)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>priors <span class="op">=</span> np.array([<span class="fl">12.</span>, <span class="fl">1.</span>, <span class="fl">2.</span>, <span class="fl">0.05</span>, <span class="fl">0.01</span>, <span class="fl">0.03</span>])</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>plot_dirichlet(<span class="dv">1000</span>, priors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2021-07-21-Baseball-Replacement-Level_files/figure-html/cell-10-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="posterior" class="level3">
+<h3 class="anchored" data-anchor-id="posterior">Posterior</h3>
+<p>As noted above, if I use a Dirichlet prior, I can compute the posterior analytically. In this case, the posterior is also a Dirichlet distribution, but with the <span class="math inline">\(\alpha\)</span> parameters summed with the number of observations of each of the outcomes. In this way, if the absolute number of outcomes is high the posterior weights will reflect that of the data, while if there are only a few observations the prior will still hold some sway over the distribution. Thus, if I take my hypothetical player described above with 100 plate appearances, the posterior given a particular set of observations will be:</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>hypothetical_player_stats <span class="op">=</span> scipy.stats.multinomial.rvs(size<span class="op">=</span><span class="dv">1</span>, n<span class="op">=</span><span class="dv">100</span>, p<span class="op">=</span>hypothetical_player_probs).flatten()</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>plot_dirichlet(<span class="dv">1000</span>, priors <span class="op">+</span> hypothetical_player_stats)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2021-07-21-Baseball-Replacement-Level_files/figure-html/cell-11-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="simulating-full-seasons-using-the-posterior" class="level3">
+<h3 class="anchored" data-anchor-id="simulating-full-seasons-using-the-posterior">Simulating full seasons using the posterior</h3>
+<p>Given the posterior samples, we can use these samples from the posterior of the probabilities describing this player to project their performance over a full season (say over 600 plate appearances, a typical number for someone that plays a full season):</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> project_player_season(player_stats, n_samples, plate_appearances, priors):</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"project multiple samples from the season of a player given their stats"</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> n_samples <span class="op">&gt;</span> <span class="dv">0</span>, <span class="st">"number of samples must be greater than zero"</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> plate_appearances <span class="op">&gt;</span> <span class="dv">0</span>, <span class="st">"number of plate appearances must be greater than zero"</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> player_stats.shape <span class="op">==</span> (<span class="dv">6</span>,), <span class="st">"player stats must be a 1D array of length 5"</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> np.<span class="bu">all</span>(player_stats <span class="op">&gt;=</span> <span class="dv">0</span>), <span class="st">"player stats must be non-negative integers"</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> np.<span class="bu">all</span>(priors <span class="op">&gt;</span> <span class="fl">0.</span>), <span class="st">"all prior weights must be greater than zero"</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    outcomes <span class="op">=</span> np.zeros((n_samples, n_samples, <span class="dv">6</span>), dtype<span class="op">=</span>np.int64)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    samples <span class="op">=</span> scipy.stats.dirichlet.rvs(alpha<span class="op">=</span>priors <span class="op">+</span> player_stats, size<span class="op">=</span>n_samples)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># occasionally roundoff error causes the sum of these sampled probabilities to be larger than 1</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> np.<span class="bu">any</span>(np.<span class="bu">sum</span>(samples, axis<span class="op">=-</span><span class="dv">1</span>) <span class="op">&gt;</span> <span class="fl">1.</span>):</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>        rounded_error <span class="op">=</span> (np.<span class="bu">sum</span>(samples, axis<span class="op">=-</span><span class="dv">1</span>) <span class="op">&gt;</span> <span class="fl">1.</span>)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>        samples[rounded_error] <span class="op">=</span> (samples[rounded_error]<span class="op">/</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>                                  (np.<span class="bu">sum</span>(samples[rounded_error], axis<span class="op">=-</span><span class="dv">1</span>)[:,np.newaxis] <span class="op">+</span> <span class="fl">1.e-15</span>))</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_samples):</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>        outcomes[i] <span class="op">=</span> scipy.stats.multinomial.rvs(n<span class="op">=</span>plate_appearances, p<span class="op">=</span>samples[i], size<span class="op">=</span>n_samples)</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.reshape(outcomes, (<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>))</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>full_season_pa <span class="op">=</span> <span class="dv">600</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Hypothetical </span><span class="sc">{}</span><span class="st"> plate appearance season [Outs, Walks, Singles, Doubles, Triples, Home Runs]: </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    full_season_pa, project_player_season(hypothetical_player_stats, <span class="dv">1</span>, full_season_pa, priors)[<span class="dv">0</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Hypothetical 600 plate appearance season [Outs, Walks, Singles, Doubles, Triples, Home Runs]: [365  49 135  25   0  26]</code></pre>
+</div>
+</div>
+<p>With all of this, we are now in a position to simulate the Runs Created over many hypothetical seasons to see the variation in the value of this hypothetical player:</p>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>hypothetical_player_seasons <span class="op">=</span> project_player_season(hypothetical_player_stats, <span class="dv">100</span>, full_season_pa, priors)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>rc_histogram(hypothetical_player_seasons)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2021-07-21-Baseball-Replacement-Level_files/figure-html/cell-13-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>From this, we can see that after 100 chances, we still have quite a bit of uncertainty about how well a player will perform over an entire season, though we are somewhat confident that this player is better than average based on comparing this distribution to the observed data for the season.</p>
+</section>
+</section>
+<section id="simulating-league-seasons" class="level2">
+<h2 class="anchored" data-anchor-id="simulating-league-seasons">Simulating League Seasons</h2>
+<p>Now we can do this for every player in the 2019 season repeatedly to examine what we might expect if this season were to be re-run several times. Once we have simulated this, we can overlay the actual distribution to see what differences we notice.</p>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> project_league_season(season_stats, n_samples, priors):</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">isinstance</span>(season_stats, pandas.DataFrame):</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>        season_stats_array <span class="op">=</span> np.array(season_stats)[:,<span class="dv">1</span>:]</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>        season_stats_array <span class="op">=</span> season_stats</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    league_projections <span class="op">=</span> np.zeros((<span class="bu">len</span>(season_stats), n_samples<span class="op">*</span>n_samples, <span class="dv">6</span>), dtype<span class="op">=</span>np.int64)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(season_stats)):</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>        league_projections[i] <span class="op">=</span> project_player_season(season_stats_array[i],</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>                                                      n_samples, np.<span class="bu">sum</span>(season_stats_array[i]), priors)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.reshape(league_projections, (<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>))</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> project_year(season_stats, stats, n_samples<span class="op">=</span><span class="dv">10</span>):</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">"project multiple realizations of a full league season"</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> project_league_season(season_stats, n_samples, priors)</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>simulated_seasons <span class="op">=</span> project_year(season_stats, priors)</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>rc_histogram(simulated_seasons, season_stats)</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>plt.legend([<span class="st">"Simulated"</span>, <span class="st">"Actual"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>&lt;matplotlib.legend.Legend at 0x12da04d90&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2021-07-21-Baseball-Replacement-Level_files/figure-html/cell-14-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>And on a logarithmic scale, to better see the behavior for small values of runs/out:</p>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>rc_histogram(simulated_seasons, season_stats, scale<span class="op">=</span><span class="st">"log"</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>plt.legend([<span class="st">"Simulated"</span>, <span class="st">"Actual"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>&lt;matplotlib.legend.Legend at 0x12d7f2bb0&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2021-07-21-Baseball-Replacement-Level_files/figure-html/cell-15-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>From this, we can see that our simulation method is able to reproduce the distribution in the real data, though it is smoother as we are able to draw many more samples than are available in a single season. However, one important difference is that since we needed to specify a prior (and one that was fairly pessimistic), there is an extra peak near zero runs/out in the simulation. These players are not really relevant for estimating replacement level, so we will need to determine a way to scrub them from the distribution.</p>
+<p>Additionally, on the logarithmic scale we note that distribution is not symmetric – there are more players in the real data that are worse than average than players that are better than average. This suggests that there are some players getting attempts that are significantly worse than most major league players, which are likely to be indicative of replacement level.</p>
+<p>We can check this by plotting what distribution we would expect if all players’ abilities were drawn from our prior:</p>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>season_prior_level <span class="op">=</span> project_player_season(np.zeros(<span class="dv">6</span>), <span class="dv">1000</span>, full_season_pa, priors)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>rc_histogram(season_prior_level)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2021-07-21-Baseball-Replacement-Level_files/figure-html/cell-16-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>And again on a logarithmic scale:</p>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>rc_histogram(season_prior_level, scale<span class="op">=</span><span class="st">"log"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2021-07-21-Baseball-Replacement-Level_files/figure-html/cell-17-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>This looks similar to the peak closer to zero in the above simulated distribution, confirming that we have a number of players for which we do not have evidence that they are significantly better than our prior. The remaining players that perform better than this level are players where we have evidence of how good they are. These are either “good” major league players, or if they are too far on the negative side of the distribution, then I propose that these are a good representation of replacement players. Thus, we need to determine a method to separate out these parts of the overall distribution.</p>
+</section>
+<section id="approximating-the-distributions" class="level2">
+<h2 class="anchored" data-anchor-id="approximating-the-distributions">Approximating the distributions</h2>
+<p>To try and separate out distributions of the “good” players, “sub-replacement” players, and “not enough data” players, we need to first hypothesize the form we might expect the distributions of simulated player seasons to take. One constraint is that we know that Runs Created has to be positive. A commonly used distribution for positive random variables is a Lognormal distribution. It is fairly easy to check if a variable is Lognormal, as we simply can make a histogram with a log horizontal scale and check if the data looks roughly normal on this scale:</p>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>rc_histogram(hypothetical_player_seasons, scale<span class="op">=</span><span class="st">"log"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2021-07-21-Baseball-Replacement-Level_files/figure-html/cell-18-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>This looks reasonably symmetric, so fitting a normal distribution to the data on a log scale is probably a reasonble way to approximate this distribution. While I might in some situations dig into the log-normality of these distributions more carefully, for the sake of this analysis this is probably a reasonable approximation to make.</p>
+<section id="bayesian-gaussian-mixture-models" class="level3">
+<h3 class="anchored" data-anchor-id="bayesian-gaussian-mixture-models">Bayesian Gaussian Mixture Models</h3>
+<p>To separate out the three parts of the distribution, I will fit a Gaussian Mixture Model to the data on a logarithmic scale. A Gaussian Mixture Model approximates a probability distribution as the sum of several Normal distributions, allowing us to tease out the three components by scrutinizing the parameters of the distributions. I can fit this type of model readily using the Scikit-Learn package:</p>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.mixture <span class="im">import</span> BayesianGaussianMixture</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.utils._testing <span class="im">import</span> ignore_warnings</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.exceptions <span class="im">import</span> ConvergenceWarning</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="at">@ignore_warnings</span>(category<span class="op">=</span>ConvergenceWarning)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit_mixture_model(simulated_seasons, n_components):</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"Fit a Gaussian Mixture model to the given season"</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    rc <span class="op">=</span> runs_created(simulated_seasons)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    rc <span class="op">=</span> np.reshape(rc[rc <span class="op">&gt;</span> <span class="fl">0.</span>], (<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> BayesianGaussianMixture(n_components<span class="op">=</span>n_components).fit(np.log(rc)<span class="op">/</span>np.log(<span class="fl">10.</span>))</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>n_components <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>gmm <span class="op">=</span> fit_mixture_model(simulated_seasons, n_components)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>I occasionally get <code>ConvergenceWarning</code>s when fitting this model. Further inspection has shown that these models usually seem to make reasonable predictions, so for the sake of clean presentation I suppress such warnings here. We can plot the mixture model on top of the data to which it has been fit as follows:</p>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_normal_from_gmm(gmm, index):</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"converts gmm model to callable pdf function"</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> index <span class="op">&gt;=</span> <span class="dv">0</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> index <span class="op">&lt;</span> <span class="bu">len</span>(np.squeeze(gmm.weights_))</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    weights_array <span class="op">=</span> np.reshape(np.squeeze(gmm.weights_), (<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    mean_array <span class="op">=</span> np.reshape(np.squeeze(gmm.means_), (<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    cov_array <span class="op">=</span> np.reshape(np.squeeze(gmm.covariances_), (<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> norm_pdf(x):</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span>(weights_array[index]<span class="op">*</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>               scipy.stats.norm.pdf(x, loc<span class="op">=</span>mean_array[index],</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>                                    scale<span class="op">=</span>np.sqrt(cov_array[index])))</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> norm_pdf</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_distribution_sum(simulated_seasons, n_components):</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">"plot the Gaussian mixture models with the underlying data"</span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>    rc_histogram(simulated_seasons, scale<span class="op">=</span><span class="st">"log"</span>)</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>    gmm <span class="op">=</span> fit_mixture_model(simulated_seasons, n_components)</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>    pdfs <span class="op">=</span> [get_normal_from_gmm(gmm, i) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_components)]</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>    logrc_vals <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">4.</span>, <span class="fl">1.</span>, <span class="dv">101</span>)</span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (pdf, i) <span class="kw">in</span> <span class="bu">zip</span>(pdfs, <span class="bu">range</span>(n_components)):</span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>        plt.plot(logrc_vals, pdf(logrc_vals), label<span class="op">=</span><span class="st">"Distribution </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(i))</span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>    plt.plot(logrc_vals, np.<span class="bu">sum</span>(np.array([pdf(logrc_vals) <span class="cf">for</span> pdf <span class="kw">in</span> pdfs]), axis<span class="op">=</span><span class="dv">0</span>), label<span class="op">=</span><span class="st">"Sum"</span>)</span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Means: </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(np.squeeze(gmm.means_)))</span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Variances: </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(np.squeeze(gmm.covariances_)))</span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a>plot_distribution_sum(simulated_seasons, n_components)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Means: [-1.01128144 -1.39076184 -0.71722101]
+Variances: [0.07110075 0.33645528 0.02934296]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2021-07-21-Baseball-Replacement-Level_files/figure-html/cell-20-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>We see that the Gaussian Mixture Model was able to fit the three components approximately where we would expect. (Note that because the Gaussian Mixture Model does not always put the components in the same order after fitting, the numbering of the different distributions may not always be the same. Thus, I try not to refer to the legend labels in the following for consistency.)</p>
+<p>At the lowest end, we see a very broad distribution over the full range of the plot, which is quite similar to what was observed when just plotting samples from the prior on a logarithmic scale above. These are players for which data is scarce, and we will ignore these.</p>
+<p>Then there is the high end, where most of the mass in the distribution can be found. These are the good, every day major league players. While we could use this distribution to understand how good a particular player is, it likely does not contain any replacement players so we cannot use it to independently assess what level replacement is. Note that this is precisely why we went to the trouble of doing this simulation – the standard 80% of league average heuristic is arbitrary because it is based on players that are clearly <em>not</em> replacement level.</p>
+<p>This leaves the intermediate distribution – the players that are clearly below the typical major league player, but also those where we have evidence of how good they are over the prior distribution that I specify. Thus, perhaps this distribution is representative of the production of replacement players in this particular season. To get a replacement level estimate, I just have to separate out this distribution, and for simplicity’s sake, use the mean of this to estimate replacement level:</p>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_replacement_level(gmm):</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Determine the mean runs created/out for players in the sub-replacement distribution</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co">    (assumes the highest mean is associated with good players, while the second highest</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co">    mean is replacement level)</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    means <span class="op">=</span> np.sort(np.squeeze(gmm.means_))</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">len</span>(means) <span class="op">&gt;=</span> <span class="dv">2</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fl">10.</span><span class="op">**</span>(means[<span class="op">-</span><span class="dv">2</span>])</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Estimated replacement level: </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(extract_replacement_level(gmm)))</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Heuristic replacement level: </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(heuristic_replacement_level(season_stats)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimated replacement level: 0.09505133831076636
+Heuristic replacement level: 0.1321843895833081</code></pre>
+</div>
+</div>
+<p>This is somewhat below the heuristic estimate, but we have a much less arbitrary way of estimating it so we can better understand what it means. Our estimate of replacement level is the expected runs created per out from the population of players where (1) we have evidence from their hitting that they are better than our pessimistic prior, and (2) we cannot explain the presence of these players in the distribution of simulated season statistics based on an assumption of normality in the simulated data. This happens to be about 60% of the league average, rather than 80% of the league average, though I am less interested in getting the exact numbers to line up than better understanding the various distributions that fall out of the analysis and using them to explain replacement level more precisely, so this will be fine for these purposes.</p>
+<p>With this machinery in place, one thing we can easily do is compute this for every year since 1900 in baseball history:</p>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bayesian_replacement_level(year, conn, priors, n_components):</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"Full function for Bayesian replacement level estimation"</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    season_stats <span class="op">=</span> rc_base_query(year, conn)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    league_season <span class="op">=</span> project_year(season_stats, priors)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    gmm <span class="op">=</span> fit_mixture_model(league_season, n_components)</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> extract_replacement_level(gmm)</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_heuristic_replacement_level(year, conn):</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">"full function for heuristic replacement level calculation"</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>    season_stats <span class="op">=</span> rc_base_query(year, conn)</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> heuristic_replacement_level(season_stats)</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_time_plot(start, end, priors, n_components, conn):</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">"plot the evolution of estimates for replacement level over time"</span></span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>    start <span class="op">=</span> <span class="bu">int</span>(start)</span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>    end <span class="op">=</span> <span class="bu">int</span>(end)</span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>    n_components <span class="op">=</span> <span class="bu">int</span>(n_components)</span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>    years <span class="op">=</span> np.arange(start, end)</span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>    heuristic_estimates <span class="op">=</span> [compute_heuristic_replacement_level(yr, conn) <span class="cf">for</span> yr <span class="kw">in</span> years]</span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a>    bayesian_estimates <span class="op">=</span> [bayesian_replacement_level(yr, conn, priors, n_components) <span class="cf">for</span> yr <span class="kw">in</span> years]</span>
+<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a>    plt.plot(years, heuristic_estimates, label<span class="op">=</span><span class="st">"Heuristic"</span>)</span>
+<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a>    plt.plot(years, bayesian_estimates, label<span class="op">=</span><span class="st">"Bayesian"</span>)</span>
+<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
+<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"Year"</span>)</span>
+<span id="cb28-35"><a href="#cb28-35" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">"Replacement Runs Created/Out"</span>)</span>
+<span id="cb28-36"><a href="#cb28-36" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb28-37"><a href="#cb28-37" aria-hidden="true" tabindex="-1"></a>make_time_plot(<span class="dv">1900</span>, <span class="dv">2020</span>, priors, n_components, conn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2021-07-21-Baseball-Replacement-Level_files/figure-html/cell-22-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>As we can see, this method gives a good indication of the variability in replacement level over the course of the history of baseball that mirrors the traditional heuristic, though the level is somewhat lower (as mentioned above). We also note that the difference between the two measures is smaller prior to 1920, with more stable differences after that despite some significant fluctuations over time. We see that it captures the overall trends in run production that are well documented – runs were scarce in the <a href="https://en.wikipedia.org/wiki/Dead-ball_era">“dead ball” era</a> prior to 1920, then show an uptick, a decrease in the 1940’s that holds fairly stable until an increase in the late 1990’s and early 2000’s during the <a href="https://en.wikipedia.org/wiki/Doping_in_baseball">“steriod” era</a>, and a lull again in the 2010’s that has since increased again.</p>
+</section>
+</section>
+<section id="discussion" class="level2">
+<h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
+<p>As mentioned above, our estimate of runs created is somewhat crude for this analysis. Extending this to be more accurate requires factoring in base running, correcting for the effect of each stadium on run production, and being more precise in how the runs each team scores can be attributed to each player (i.e.&nbsp;the “a player cannot be on base for themselves” effect). One additional factor to consider is fielding luck – more modern measurement techniques can track the ball when it is hit, and corrections can be made for hard hit balls that are likely to have been hits but the defense was positioned correctly to make an out. However, this data is only available for modern play, so projecting these effects over the course of baseball history is not possible.</p>
+<p>A similar analysis can be done for a pitchers. Pitchers are fundamentally measured by their ability to get outs and not giving up hits or walks, just with the desired outcomes reversed when compared to hitters. However, much analysis by statisticians have shown that there is significant randomness in the fraction of batted balls that turn into hits versus outs, so the simplest way to study pitchers is to look at the things that are entirely in the pitcher’s control: walks, strikeouts (i.e.&nbsp;the batter was unable to hit the ball and this out can entirely be credited to the pitcher’s ability), and home runs over a number of innings pitched. This is known as <a href="https://en.wikipedia.org/wiki/Defense_independent_pitching_statistics">Fielding Independent Pitching (FIP)</a>, and can be converted into a number of runs saved. This can then be analyzed in a similar fashion to the runs that a hitter creates to measure pitcher value.</p>
+<p>How would a team be likely to use this data and approach? First, we can simulate the range of seasons that any player would be likely to produce given their actual statistics, which is useful for evaluating individual players. This approach can also determine if a team has been lucky or unlucky in terms of their hits producing runs. Very often, a team that produces more runs than would be expected with a statistic like runs created is likely doing so based on luck, and would not necessarily be expected to sustain the same level over the remainder of a full season. There are a number of ways we could use this approach to further evaluate players and teams, though this is beyond the scope of this story.</p>
+<p>Beyond baseball, measuring marginal utility is more difficult because the value is often subjective and hard to boil down to a clear metric from which a baseline level can be estimated. For instance, I love getting coffee from my local cafe. Should I be comparing this to coffee I make at home? Get from Starbucks? From the instant machine at my local convenience store? Depending on the circumstance, “available with minimal effort” is highly dependent on context and mood. Until we find a way to quantify that in an objective way, sports will remain one of the most popular avenues to rigorously quantify and analyze marginal utility.</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
