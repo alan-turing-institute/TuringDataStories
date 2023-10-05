@@ -8,7 +8,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-20-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-Our stories are published online via fastpages, you can check them out [here](https://alan-turing-institute.github.io/TuringDataStories-fastpages/).
+Our stories are published online using Quarto and GitHub Pages: you can check them out [here](https://alan-turing-institute.github.io/TuringDataStories/).
 Looking for how to get involved? [Click here.](https://github.com/alan-turing-institute/TuringDataStories#contributing)
 
 ### Our vision
@@ -49,9 +49,11 @@ All contributors are asked to follow our [code of conduct](CODE_OF_CONDUCT.md) a
 
 ### How to Read Stories
 
-Our stories are published online via fastpages. You can check them out [here](https://alan-turing-institute.github.io/TuringDataStories-fastpages/).
+Our stories are published online using Quarto and GitHub Pages. You can check them out [here](https://alan-turing-institute.github.io/TuringDataStories/).
 
 Alternatively, click the binder badge at the top of this README to load an interactive version of our stories.
+
+To build the website locally, install [Quarto](https://quarto.org/) and run `quarto render` from the top-level directory of this repository. You can also use `quarto preview` to launch a local dev server. Note that Quarto uses precalculated outputs for each notebook cell.
 
 Another option is to run the notebooks locally yourself. To do this, we recommend [installing](https://docs.conda.io/projects/conda/en/latest/user-guide/install/) conda, cloning this repository, and then [setting up an environment](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-from-an-environment-yml-file) using
 ```
