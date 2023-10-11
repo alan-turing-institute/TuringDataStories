@@ -53,7 +53,11 @@ Our stories are published online using Quarto and GitHub Pages. You can check th
 
 Alternatively, click the binder badge at the top of this README to load an interactive version of our stories.
 
-To build the website locally, install [Quarto](https://quarto.org/) and run `quarto render` from the top-level directory of this repository. You can also use `quarto preview` to launch a local dev server. Note that Quarto uses precalculated outputs for each notebook cell.
+To build the website locally, install [Quarto](https://quarto.org/) and run from the top-level directory of this repository:
+```bash
+QUARTO_DENO_EXTRA_OPTIONS=--v8-flags=--stack-size=2048 quarto render
+```
+Note that Quarto uses precalculated outputs for each notebook cell.
 
 Another option is to run the notebooks locally yourself.
 Some of the notebooks have `requirements.txt` files inside their respective subdirectories; you can set up a virtual environment to run the notebooks using
