@@ -19,6 +19,9 @@ jobs:
         uses: quarto-dev/quarto-actions/render@v2
         with:
           to: html
+        env:
+          # The US election story needs an increased call stack size, not sure why
+          QUARTO_DENO_EXTRA_OPTIONS: --v8-flags=--stack-size=2048
 
       - name: Upload files to gh-pages branch
         uses: peaceiris/actions-gh-pages@v3
