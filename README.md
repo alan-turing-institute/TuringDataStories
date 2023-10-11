@@ -79,7 +79,7 @@ Any problems, open an issue!
 ### Adding a new story
 
 Under the `stories` directory, create a new folder with the name `YYYY-MM-DD-<Title>` and place your notebook inside there.
-Make sure you have already run all the cells in your notebook.
+Make sure you have already run all the cells in your notebook. Add a `preview.png` with the figure you want to be previewed with Quarto. 
 That's all!
 
 If your notebook is not ready to be published to the web, you can prefix the folder with an underscore: Quarto will then ignore it.
