@@ -55,12 +55,20 @@ Alternatively, click the binder badge at the top of this README to load an inter
 
 To build the website locally, install [Quarto](https://quarto.org/) and run `quarto render` from the top-level directory of this repository. You can also use `quarto preview` to launch a local dev server. Note that Quarto uses precalculated outputs for each notebook cell.
 
-Another option is to run the notebooks locally yourself. To do this, we recommend [installing](https://docs.conda.io/projects/conda/en/latest/user-guide/install/) conda, cloning this repository, and then [setting up an environment](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-from-an-environment-yml-file) using
+Another option is to run the notebooks locally yourself.
+Some of the notebooks have `requirements.txt` files inside their respective subdirectories; you can set up a virtual environment to run the notebooks using
+
+```bash
+python -m venv tds_venv
+source tds_venv/bin/activate
+python -m pip install -r requirements.txt
 ```
-git clone git@github.com:alan-turing-institute/TuringDataStories.git
-cd TuringDataStories
+
+If this is not present, then you will need to instead use the `binder/environment.yml` file with [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/):
+```bash
 conda env create -f binder/environment.yml
 ```
+
 Any problems, open an issue!
 
 
