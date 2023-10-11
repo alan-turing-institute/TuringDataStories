@@ -64,6 +64,14 @@ conda env create -f binder/environment.yml
 Any problems, open an issue!
 
 
+### Adding a new story
+
+Under the `stories` directory, create a new folder with the name `YYYY-MM-DD-<Title>` and place your notebook inside there.
+Make sure you have already run all the cells in your notebook.
+That's all!
+
+If your notebook is not ready to be published to the web, you can prefix the folder with an underscore: Quarto will then ignore it.
+
 ### About the project
 
 This project was initially formed by a desire to contribute and advance to the analysis of government COVID-19 data.
