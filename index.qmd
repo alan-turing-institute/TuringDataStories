@@ -1,0 +1,18 @@
+---
+listing:
+  contents: stories 
+  sort: "date desc"
+  type: default
+  categories: true
+  sort-ui: false
+  filter-ui: false
+page-layout: full
+title-block-banner: false
+---
+
+[![](logos/TDS-logo-wide.png){fig-alt="Turing Data Stories Logo"}](https://github.com/alan-turing-institute/TuringDataStories)
+
+An open community creating “Data Stories”: A mix of open data, code, narrative 💬, visuals 📊📈 and knowledge 🧠 to help understand the world around us. 
+Want to contribute? Take a look [here](https://github.com/alan-turing-institute/TuringDataStories#contributing).
+
+# Posts
