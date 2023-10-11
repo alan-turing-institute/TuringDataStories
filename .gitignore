@@ -5,3 +5,6 @@
 
 stories/data/
 stories/2022-10-06-Boris-Bikes/routes/*
+/.quarto/
+_site/
+docs/

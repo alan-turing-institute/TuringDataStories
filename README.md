@@ -8,7 +8,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-31-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-Our stories are published online via fastpages, you can check them out [here](https://alan-turing-institute.github.io/TuringDataStories-fastpages/).
+Our stories are published online using Quarto and GitHub Pages: you can check them out [here](https://alan-turing-institute.github.io/TuringDataStories/).
 Looking for how to get involved? [Click here.](https://github.com/alan-turing-institute/TuringDataStories#contributing)
 
 ### Our vision
@@ -49,18 +49,40 @@ All contributors are asked to follow our [code of conduct](CODE_OF_CONDUCT.md) a
 
 ### How to Read Stories
 
-Our stories are published online via fastpages. You can check them out [here](https://alan-turing-institute.github.io/TuringDataStories-fastpages/).
+Our stories are published online using Quarto and GitHub Pages. You can check them out [here](https://alan-turing-institute.github.io/TuringDataStories/).
 
 Alternatively, click the binder badge at the top of this README to load an interactive version of our stories.
 
-Another option is to run the notebooks locally yourself. To do this, we recommend [installing](https://docs.conda.io/projects/conda/en/latest/user-guide/install/) conda, cloning this repository, and then [setting up an environment](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-from-an-environment-yml-file) using
+To build the website locally, install [Quarto](https://quarto.org/) and run from the top-level directory of this repository:
+```bash
+QUARTO_DENO_EXTRA_OPTIONS=--v8-flags=--stack-size=2048 quarto render
 ```
-git clone git@github.com:alan-turing-institute/TuringDataStories.git
-cd TuringDataStories
+Note that Quarto uses precalculated outputs for each notebook cell.
+
+Another option is to run the notebooks locally yourself.
+Some of the notebooks have `requirements.txt` files inside their respective subdirectories; you can set up a virtual environment to run the notebooks using
+
+```bash
+python -m venv tds_venv
+source tds_venv/bin/activate
+python -m pip install -r requirements.txt
+```
+
+If this is not present, then you will need to instead use the `binder/environment.yml` file with [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/):
+```bash
 conda env create -f binder/environment.yml
 ```
+
 Any problems, open an issue!
 
+
+### Adding a new story
+
+Under the `stories` directory, create a new folder with the name `YYYY-MM-DD-<Title>` and place your notebook inside there.
+Make sure you have already run all the cells in your notebook.
+That's all!
+
+If your notebook is not ready to be published to the web, you can prefix the folder with an underscore: Quarto will then ignore it.
 
 ### About the project
 

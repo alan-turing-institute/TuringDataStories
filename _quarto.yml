@@ -1,0 +1,17 @@
+project:
+  type: website
+  output-dir: docs
+  render:
+    - "*.qmd"
+    - "stories/*/*.ipynb"
+    - "!stories/_*"
+website:
+  title: "Turing Data Stories"
+  navbar:
+    right:
+      - icon: github
+        href: https://github.com/alan-turing-institute/turingdatastories
+format:
+  html:
+    theme: cosmo
+    css: styles.css
