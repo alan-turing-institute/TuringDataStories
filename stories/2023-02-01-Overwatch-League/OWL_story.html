@@ -1,0 +1,2603 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Markus Hauru">
+<meta name="author" content="Tim Powell">
+<meta name="author" content="Kevin Xu">
+<meta name="dcterms.date" content="2023-10-11">
+<meta name="keywords" content="data exploration, data visualisation, digital humanities, ELO, esports, modelling, overwatch, owl">
+
+<title>Turing Data Stories - Esport predictions: Overwatch League</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Turing Data Stories</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/alan-turing-institute/turingdatastories" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Esport predictions: Overwatch League</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Authors</div>
+      <div class="quarto-title-meta-contents">
+               <p>Markus Hauru </p>
+               <p>Tim Powell </p>
+               <p>Kevin Xu </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">October 11, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  <div>
+    <div class="abstract">
+      <div class="abstract-title">Abstract</div>
+      We study a single season of games in the professional esports league for Overwatch and try to predict game outcomes based on past performance.
+    </div>
+  </div>
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<table class="table">
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Overwatch League Logo courtesy of Blizzard Entertainment.</td>
+</tr>
+</tbody>
+</table>
+<section id="overwatch-league-owl" class="level2">
+<h2 class="anchored" data-anchor-id="overwatch-league-owl">Overwatch League (OWL)</h2>
+<p><a href="https://en.wikipedia.org/wiki/Overwatch_(video_game)">Overwatch</a> is an online team-based multiplayer first-person shooter (FPS) game developed and published by Blizzard Entertainment. It features different modes designed around combat between two opposing teams of six players each. It was first released in 2016 and has been highly popular among casual players, selling over 50 million copies, and as a professional esport.</p>
+<p>Matches between two teams consist of several games and each game is played on one of 21 possible maps. There are four different types of maps with varying objectives, such as controlling key locations on the map or capturing them from the opponent. Each match includes games with different map types, and typically the losing team gets to choose the next map. An individual game may further subdivide into rounds, depending on the map type. A game ends in a victory for one of the two teams or a draw.</p>
+<p><a href="https://overwatchleague.com/en-gb">The Overwatch League</a> (OWL) is the highest professional esports league for Overwatch, and is owned and run by Blizzard Entertainment. The 2021 OWL featured four midseason tournaments throughout the regular season which used a point system for season playoff seeding. OWL 2021 consisted of 20 teams split into two geographical regions: North America (NA) and Asia (APAC).</p>
+<table class="table">
+<colgroup>
+<col style="width: 100%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Overwatch gameplay from the player’s point of view. Image credit Blizzard Entertainment.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="data-story" class="level2">
+<h2 class="anchored" data-anchor-id="data-story">Data Story</h2>
+<p>This Data Story will look at the data produced during the OWL 2021 season to determine whether it is possible to predict the result of a game between two teams. We started writing this story mid way through the OWL 2022 season and thus chose to use the OWL 2021 data set because of its comprehensivity. Since then, OWL 2022 has concluded and a sequel - Overwatch 2 - has been released. We hope and believe this analysis will carry through to the new game given the great similarity between them.</p>
+<p>As one of the authors - Tim Powell - follows the OWL, we knew that it was possible to obtain the OWL data, and a discussion took place at the <a href="https://septembrse.society-rse.org/">SeptembRSE</a> conference on what could be done with it. We were curious to understand which factors influence the outcome of matches and whether past performance was strongly correlated with future outcomes. The main question this data story aims to answer is: <em>Is it possible to use a team’s historic data to predict their future performance?</em>”</p>
+</section>
+<section id="outline" class="level2">
+<h2 class="anchored" data-anchor-id="outline">Outline</h2>
+<p>The story is divided into the following parts.</p>
+<ul>
+<li><a href="#part_data_ingestion">Part 1. Data ingestion</a>
+<ul>
+<li>Getting the source data</li>
+</ul></li>
+<li><a href="#part_data_cleaning">Part 2. Data cleaning</a>
+<ul>
+<li>Refining and filtering the data to the scope of our analysis</li>
+</ul></li>
+<li><a href="#part_initial_data_exploration">Part 3. Initial data exploration</a>
+<ul>
+<li>Teams’ win rates per map</li>
+<li>Visualisation</li>
+<li>Teams’ records against each other per map</li>
+</ul></li>
+<li><a href="#part_a_benchmark_predictor">Part 4. A benchmark predictor</a>
+<ul>
+<li>The pure guess predictor</li>
+<li>A framework for training and testing models</li>
+</ul></li>
+<li><a href="#part_higher_win_rate_predictor">Part 5. Higher win rate predictor</a>
+<ul>
+<li>Predicting winners based on past history on the given map</li>
+</ul></li>
+<li><a href="#part_elo">Part 6. Skill based predictor - Elo ratings</a>
+<ul>
+<li>The Elo rating system</li>
+<li>Predicting winners based on Elo ratings</li>
+<li>Combining Elo ratings and map win rates for better predictions?</li>
+</ul></li>
+<li><a href="#part_conclusions">Part 7. Conclusions</a>
+<ul>
+<li>What we learned</li>
+<li>What we would like to do in the future</li>
+</ul></li>
+</ul>
+<p><a id="part_data_ingestion"></a> # Part 1. Data ingestion</p>
+<section id="data-source" class="level3">
+<h3 class="anchored" data-anchor-id="data-source">Data source</h3>
+<p>The official OWL website includes a stats tab that contains various data on players, heroes (characters players can choose), and matches. For this analysis, we will be using the <a href="https://overwatchleague.com/en-us/statslab">match data</a> as it includes the results of match ups between different teams in the league. Blizzard provides the data for anyone to analyse, but unfortunately it does not come with an explicit free data license that would allow us to redistribute it.</p>
+</section>
+<section id="ingestion" class="level3">
+<h3 class="anchored" data-anchor-id="ingestion">Ingestion</h3>
+<p>We start by importing all packages we’ll need in the whole story. This includes some common Python libraries to do the following: - data manipulation (pandas, numpy) - data extraction (zipfile, requests) - data visualisation (pyplot, seaborn) - machine learning and statistical modelling (sklearn) - notebook widgets (widgets, IPython.display) - utilities (io, itertools, random)</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> io</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> itertools</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> zipfile <span class="im">import</span> ZipFile</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> clear_output</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ipywidgets <span class="im">as</span> widgets</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> svm, linear_model, preprocessing</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We download a zip file containing all of the match data over the last few years, and then ingest this as a pandas dataframe, the usual python object for holding tabular data, provided by the pandas data science package.</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Download zip file and unzip</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://assets.blz-contentstack.com/v3/assets/blt321317473c90505c/bltb4a6fe3cc2efaa02/634732b68cdace44d7b8efc4/2022_Week24_match_map_stats.zip"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> requests.get(url)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> ZipFile(io.BytesIO(r.content)) <span class="im">as</span> z:</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    first_file <span class="op">=</span> z.namelist()[<span class="dv">0</span>]</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> z.<span class="bu">open</span>(first_file) <span class="im">as</span> f:</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        content <span class="op">=</span> f.read()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here’s what the raw data looks like.</p>
+<div class="cell" data-outputid="228cc913-470d-4a5b-c1cb-266bc6c77f8e" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert files to csv and a pandas dataframe</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> io.StringIO(<span class="bu">str</span>(content, <span class="st">"utf-8"</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(data)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">round_start_time</th>
+<th data-quarto-table-cell-role="th">round_end_time</th>
+<th data-quarto-table-cell-role="th">stage</th>
+<th data-quarto-table-cell-role="th">match_id</th>
+<th data-quarto-table-cell-role="th">game_number</th>
+<th data-quarto-table-cell-role="th">match_winner</th>
+<th data-quarto-table-cell-role="th">map_winner</th>
+<th data-quarto-table-cell-role="th">map_loser</th>
+<th data-quarto-table-cell-role="th">map_name</th>
+<th data-quarto-table-cell-role="th">map_round</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">team_one_name</th>
+<th data-quarto-table-cell-role="th">team_two_name</th>
+<th data-quarto-table-cell-role="th">attacker_payload_distance</th>
+<th data-quarto-table-cell-role="th">defender_payload_distance</th>
+<th data-quarto-table-cell-role="th">attacker_time_banked</th>
+<th data-quarto-table-cell-role="th">defender_time_banked</th>
+<th data-quarto-table-cell-role="th">attacker_control_perecent</th>
+<th data-quarto-table-cell-role="th">defender_control_perecent</th>
+<th data-quarto-table-cell-role="th">attacker_round_end_score</th>
+<th data-quarto-table-cell-role="th">defender_round_end_score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>01/11/18 00:12</td>
+<td>01/11/18 00:20</td>
+<td>2018: Stage 1</td>
+<td>10223</td>
+<td>1</td>
+<td>Los Angeles Valiant</td>
+<td>Los Angeles Valiant</td>
+<td>San Francisco Shock</td>
+<td>Dorado</td>
+<td>1</td>
+<td>...</td>
+<td>Los Angeles Valiant</td>
+<td>San Francisco Shock</td>
+<td>75.615050</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>240.00000</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>2</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>01/11/18 00:22</td>
+<td>01/11/18 00:27</td>
+<td>2018: Stage 1</td>
+<td>10223</td>
+<td>1</td>
+<td>Los Angeles Valiant</td>
+<td>Los Angeles Valiant</td>
+<td>San Francisco Shock</td>
+<td>Dorado</td>
+<td>2</td>
+<td>...</td>
+<td>Los Angeles Valiant</td>
+<td>San Francisco Shock</td>
+<td>75.649600</td>
+<td>75.615050</td>
+<td>125.750570</td>
+<td>0.00000</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>3</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>01/11/18 00:34</td>
+<td>01/11/18 00:38</td>
+<td>2018: Stage 1</td>
+<td>10223</td>
+<td>2</td>
+<td>Los Angeles Valiant</td>
+<td>Los Angeles Valiant</td>
+<td>San Francisco Shock</td>
+<td>Temple of Anubis</td>
+<td>1</td>
+<td>...</td>
+<td>Los Angeles Valiant</td>
+<td>San Francisco Shock</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>250.492000</td>
+<td>240.00000</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>2</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>01/11/18 00:40</td>
+<td>01/11/18 00:44</td>
+<td>2018: Stage 1</td>
+<td>10223</td>
+<td>2</td>
+<td>Los Angeles Valiant</td>
+<td>Los Angeles Valiant</td>
+<td>San Francisco Shock</td>
+<td>Temple of Anubis</td>
+<td>2</td>
+<td>...</td>
+<td>Los Angeles Valiant</td>
+<td>San Francisco Shock</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>225.789030</td>
+<td>250.49200</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>01/11/18 00:46</td>
+<td>01/11/18 00:49</td>
+<td>2018: Stage 1</td>
+<td>10223</td>
+<td>2</td>
+<td>Los Angeles Valiant</td>
+<td>Los Angeles Valiant</td>
+<td>San Francisco Shock</td>
+<td>Temple of Anubis</td>
+<td>3</td>
+<td>...</td>
+<td>Los Angeles Valiant</td>
+<td>San Francisco Shock</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>36.396057</td>
+<td>250.49200</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>4</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">13596</td>
+<td>10/09/22 22:47</td>
+<td>10/09/22 22:53</td>
+<td>2022: Countdown Cup: Qualifiers</td>
+<td>39321</td>
+<td>2</td>
+<td>Los Angeles Gladiators</td>
+<td>Los Angeles Gladiators</td>
+<td>Boston Uprising</td>
+<td>Paraíso</td>
+<td>1</td>
+<td>...</td>
+<td>Boston Uprising</td>
+<td>Los Angeles Gladiators</td>
+<td>92.450140</td>
+<td>0.000000</td>
+<td>114.112010</td>
+<td>0.00000</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>3</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">13597</td>
+<td>10/09/22 22:55</td>
+<td>10/09/22 22:59</td>
+<td>2022: Countdown Cup: Qualifiers</td>
+<td>39321</td>
+<td>2</td>
+<td>Los Angeles Gladiators</td>
+<td>Los Angeles Gladiators</td>
+<td>Boston Uprising</td>
+<td>Paraíso</td>
+<td>2</td>
+<td>...</td>
+<td>Boston Uprising</td>
+<td>Los Angeles Gladiators</td>
+<td>0.000000</td>
+<td>92.450140</td>
+<td>0.000000</td>
+<td>114.11201</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">13598</td>
+<td>10/09/22 23:07</td>
+<td>10/09/22 23:12</td>
+<td>2022: Countdown Cup: Qualifiers</td>
+<td>39321</td>
+<td>3</td>
+<td>Los Angeles Gladiators</td>
+<td>Boston Uprising</td>
+<td>Los Angeles Gladiators</td>
+<td>Dorado</td>
+<td>1</td>
+<td>...</td>
+<td>Boston Uprising</td>
+<td>Los Angeles Gladiators</td>
+<td>68.543530</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.00000</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">13599</td>
+<td>10/09/22 23:13</td>
+<td>10/09/22 23:15</td>
+<td>2022: Countdown Cup: Qualifiers</td>
+<td>39321</td>
+<td>3</td>
+<td>Los Angeles Gladiators</td>
+<td>Boston Uprising</td>
+<td>Los Angeles Gladiators</td>
+<td>Dorado</td>
+<td>2</td>
+<td>...</td>
+<td>Boston Uprising</td>
+<td>Los Angeles Gladiators</td>
+<td>68.549540</td>
+<td>68.543530</td>
+<td>137.413010</td>
+<td>0.00000</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">13600</td>
+<td>10/09/22 23:25</td>
+<td>10/09/22 23:35</td>
+<td>2022: Countdown Cup: Qualifiers</td>
+<td>39321</td>
+<td>4</td>
+<td>Los Angeles Gladiators</td>
+<td>Los Angeles Gladiators</td>
+<td>Boston Uprising</td>
+<td>Colosseo</td>
+<td>1</td>
+<td>...</td>
+<td>Los Angeles Gladiators</td>
+<td>Boston Uprising</td>
+<td>55.379028</td>
+<td>73.830414</td>
+<td>0.000000</td>
+<td>0.00000</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+
+<p>13601 rows × 25 columns</p>
+</div>
+</div>
+</div>
+<p>Each row is a round in an Overwatch match. For instance, on the first row we can see the first round of the first game in a match between Los Angeles Valiant and San Francisco Shock, played on the map Dorado. Valiant went on to win both the game (called <code>map_winner</code> in the data) and the match. NaNs (not-a-number) mark missing values.</p>
+<p><a id="part_data_cleaning"></a> # Part 2. Data cleaning</p>
+<p>Next we reduce the data to only the information that we need.</p>
+<p>Let’s start with the ‘Stage’ column, allowing us to filter based on the Overwatch season.</p>
+<div class="cell" data-outputid="d3129b96-18f6-46a1-94ab-bd824cf21452" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"stage"</span>].unique()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>array(['2018: Stage 1', '2018: Stage 1 Title Matches', '2018: Stage 2',
+       '2018: Stage 2 Title Matches', '2018: Stage 3',
+       '2018: Stage 3 Title Matches', '2018: Stage 4',
+       '2018: Stage 4 Title Matches', '2018: Championship',
+       '2019: Stage 1', '2019: Stage 1 Title Matches', '2019: Stage 2',
+       '2019: Stage 2 Title Matches', '2019: Stage 3',
+       '2019: Stage 3 Title Matches', '2019: Stage 4',
+       '2019: Postseason Play-in', '2019: Playoffs &amp; Grand Finals',
+       '2020: Regular Season', '2020: May Melee: North America Knockouts',
+       '2020: May Melee: Asia', '2020: May Melee: North America',
+       '2020: Summer Showdown: North America Knockouts',
+       '2020: Summer Showdown: Asia',
+       '2020: Summer Showdown: North America',
+       '2020: Countdown Cup: North America Knockouts',
+       '2020: Countdown Cup: Asia', '2020: Countdown Cup: North America',
+       '2020: North America Playoffs', '2020: Asia Playoffs',
+       '2020: Grand Finals', '2021: May Melee: Qualifiers',
+       '2021: May Melee: Tournament', '2021: June Joust: Qualifiers',
+       '2021: June Joust: Tournament',
+       '2021: Summer Showdown: Qualifiers',
+       '2021: Summer Showdown: Tournament',
+       '2021: Countdown Cup: Qualifiers',
+       '2021: Countdown Cup: Tournament', '2021: Postseason',
+       '2022: Kickoff Clash: Qualifiers',
+       '2022: Kickoff Clash: Tournament',
+       '2022: Midseason Madness: Qualifiers',
+       '2022: Midseason Madness: Tournament',
+       '2022: Summer Showdown: Qualifiers',
+       '2022: Summer Showdown: Tournament',
+       '2022: Countdown Cup: Qualifiers'], dtype=object)</code></pre>
+</div>
+</div>
+<p>For this analysis we’re going to use the 2021 season, as it was the most recent, complete data set at the time of writing. Focussing on a single season is useful to avoid having to think too much about changes in team rosters: typically players remain in a team for the entire season, but between seasons many players move teams. Trying to analyse the effect of such transfers would be very interesting, but with limited time, we focus on the team-level analysis, and thus constrain ourselves to a single season.</p>
+<p>The columns of the dataframe include plenty of information we don’t care about: Recall that each match subdivides into games, which subdivide into rounds. We will keep our analysis on the level of games (which are always played on a single map), and thus can leave out all information about who won the match, or about the individual round, such as how far the payload (an object fought over on some map types) progressed.</p>
+<div class="cell" data-outputid="3ea3dc56-d138-4a8d-81b4-11f2ac77f15f" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Reduce data to only the OWL 2021 stage and only the relevant columns</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>kept_columns <span class="op">=</span> [</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"match_id"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"game_number"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"map_round"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"map_winner"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"map_loser"</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"team_one_name"</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"team_two_name"</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"map_name"</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"round_start_time"</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co"># We also encourage the reader to modify the string to run the analysis on a </span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co"># different year.</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>owl21_reduced <span class="op">=</span> df.loc[df[<span class="st">"stage"</span>].<span class="bu">str</span>.contains(<span class="st">"2021"</span>), kept_columns] </span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>owl21_reduced</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">match_id</th>
+<th data-quarto-table-cell-role="th">game_number</th>
+<th data-quarto-table-cell-role="th">map_round</th>
+<th data-quarto-table-cell-role="th">map_winner</th>
+<th data-quarto-table-cell-role="th">map_loser</th>
+<th data-quarto-table-cell-role="th">team_one_name</th>
+<th data-quarto-table-cell-role="th">team_two_name</th>
+<th data-quarto-table-cell-role="th">map_name</th>
+<th data-quarto-table-cell-role="th">round_start_time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">9071</td>
+<td>37234</td>
+<td>1</td>
+<td>1</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>Busan</td>
+<td>04/16/21 19:08</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9072</td>
+<td>37234</td>
+<td>1</td>
+<td>2</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>Busan</td>
+<td>04/16/21 19:12</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">9073</td>
+<td>37234</td>
+<td>1</td>
+<td>3</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>Busan</td>
+<td>04/16/21 19:18</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9074</td>
+<td>37234</td>
+<td>2</td>
+<td>1</td>
+<td>Dallas Fuel</td>
+<td>Houston Outlaws</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>King's Row</td>
+<td>04/16/21 19:30</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">9075</td>
+<td>37234</td>
+<td>2</td>
+<td>2</td>
+<td>Dallas Fuel</td>
+<td>Houston Outlaws</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>King's Row</td>
+<td>04/16/21 19:39</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">11220</td>
+<td>37441</td>
+<td>3</td>
+<td>2</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>Atlanta Reign</td>
+<td>Shanghai Dragons</td>
+<td>King's Row</td>
+<td>09/26/21 01:57</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">11221</td>
+<td>37441</td>
+<td>3</td>
+<td>3</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>Atlanta Reign</td>
+<td>Shanghai Dragons</td>
+<td>King's Row</td>
+<td>09/26/21 02:05</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">11222</td>
+<td>37441</td>
+<td>3</td>
+<td>4</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>Atlanta Reign</td>
+<td>Shanghai Dragons</td>
+<td>King's Row</td>
+<td>09/26/21 02:09</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">11223</td>
+<td>37441</td>
+<td>4</td>
+<td>1</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>Havana</td>
+<td>09/26/21 02:53</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">11224</td>
+<td>37441</td>
+<td>4</td>
+<td>2</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>Havana</td>
+<td>09/26/21 03:03</td>
+</tr>
+</tbody>
+</table>
+
+<p>2154 rows × 9 columns</p>
+</div>
+</div>
+</div>
+<p>For the purpose of this analysis round start times are not required except for the purpose of sorting the rounds to be chronologically ordeded. Note also that there are multiple rows for each game, because there are typically multiple rounds. As we are only considering game level results, round results are removed from the data. We then reset the index to have continuous numbering of the games starting from 0.</p>
+<div class="cell" data-outputid="0eb61a19-3998-46ad-ac29-1379b9243226" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>owl21_reduced <span class="op">=</span> owl21_reduced.sort_values(<span class="st">"round_start_time"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>kept_columns <span class="op">=</span> [</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"match_id"</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"map_winner"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"map_loser"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"team_one_name"</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"team_two_name"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"map_name"</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>owl21_reduced <span class="op">=</span> (</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    owl21_reduced[kept_columns].drop_duplicates().reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>owl21_reduced</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">match_id</th>
+<th data-quarto-table-cell-role="th">map_winner</th>
+<th data-quarto-table-cell-role="th">map_loser</th>
+<th data-quarto-table-cell-role="th">team_one_name</th>
+<th data-quarto-table-cell-role="th">team_two_name</th>
+<th data-quarto-table-cell-role="th">map_name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>37234</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>Busan</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>37234</td>
+<td>Dallas Fuel</td>
+<td>Houston Outlaws</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>King's Row</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>37234</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>Dallas Fuel</td>
+<td>Houston Outlaws</td>
+<td>Havana</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>37234</td>
+<td>Dallas Fuel</td>
+<td>Houston Outlaws</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>Volskaya Industries</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>37234</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>Ilios</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">889</td>
+<td>37442</td>
+<td>Atlanta Reign</td>
+<td>Dallas Fuel</td>
+<td>Dallas Fuel</td>
+<td>Atlanta Reign</td>
+<td>Dorado</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">890</td>
+<td>37441</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>Atlanta Reign</td>
+<td>Shanghai Dragons</td>
+<td>Ilios</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">891</td>
+<td>37441</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>Hanamura</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">892</td>
+<td>37441</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>Atlanta Reign</td>
+<td>Shanghai Dragons</td>
+<td>King's Row</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">893</td>
+<td>37441</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>Havana</td>
+</tr>
+</tbody>
+</table>
+
+<p>894 rows × 6 columns</p>
+</div>
+</div>
+</div>
+<p>We are left with a data set of 894 games to study.</p>
+<p><a id="part_initial_data_exploration"></a> # Part 3. Initial data exploration</p>
+<p>Our eventual goal is to predict the outcomes of future games based on past history of the teams involved. For example, a predictor should be able to use information from the first 200 games to predict the result of the 201st game.</p>
+<p>Before we do that however, let’s start with exploring the data to get an initial idea of what it looks like and how teams perform. We start by collecting lists of all maps and teams.</p>
+<div class="cell" data-outputid="f588aab6-3ea2-4d1e-ae69-8ba0501bb244" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get list of maps</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>map_list <span class="op">=</span> owl21_reduced[<span class="st">"map_name"</span>].unique()</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>map_list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>array(['Busan', "King's Row", 'Havana', 'Volskaya Industries', 'Ilios',
+       'Eichenwalde', 'Watchpoint: Gibraltar', 'Hanamura',
+       'Lijiang Tower', 'Blizzard World', 'Dorado', 'Temple of Anubis',
+       'Oasis', 'Nepal', 'Numbani', 'Rialto', 'Hollywood', 'Junkertown',
+       'Route 66'], dtype=object)</code></pre>
+</div>
+</div>
+<div class="cell" data-outputid="55c1a900-402a-43cc-87a8-538cf4da25c1" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get list of teams</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>team_winners <span class="op">=</span> <span class="bu">set</span>(owl21_reduced[<span class="st">"map_winner"</span>])</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>team_losers <span class="op">=</span> <span class="bu">set</span>(owl21_reduced[<span class="st">"map_loser"</span>])</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>team_names <span class="op">=</span> <span class="bu">list</span>(team_winners <span class="op">|</span> team_losers)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>team_names.remove(<span class="st">"draw"</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>team_names</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>['Los Angeles Valiant',
+ 'Shanghai Dragons',
+ 'Guangzhou Charge',
+ 'Los Angeles Gladiators',
+ 'London Spitfire',
+ 'Florida Mayhem',
+ 'Boston Uprising',
+ 'Vancouver Titans',
+ 'Philadelphia Fusion',
+ 'Chengdu Hunters',
+ 'San Francisco Shock',
+ 'New York Excelsior',
+ 'Atlanta Reign',
+ 'Toronto Defiant',
+ 'Washington Justice',
+ 'Hangzhou Spark',
+ 'Paris Eternal',
+ 'Dallas Fuel',
+ 'Seoul Dynasty',
+ 'Houston Outlaws']</code></pre>
+</div>
+</div>
+<p>To get an idea of the performance of various teams, we compute their win rate for each map: The number of times they’ve won on that map, divided by the number of times they’ve played the map.</p>
+<div class="cell" data-outputid="c26f0bec-49eb-4a3b-ebad-3c62cd146d59" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> map_data(team_list, map_list, df):</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Collect stats on wins, losses, and draws per map and per team."""</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># make dataframe</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    column_names <span class="op">=</span> (<span class="st">"team_name"</span>, <span class="st">"map"</span>, <span class="st">"win_%"</span>, <span class="st">"win"</span>, <span class="st">"draw"</span>, <span class="st">"lose"</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    team_map_data_df <span class="op">=</span> pd.DataFrame(columns<span class="op">=</span>column_names)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># iterate through teams</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> team <span class="kw">in</span> team_list:</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># iterate through maps</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> map_name <span class="kw">in</span> map_list:</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>            <span class="co"># filter to specific team and map</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>            map_filter <span class="op">=</span> df[<span class="st">"map_name"</span>] <span class="op">==</span> map_name</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>            team_filter <span class="op">=</span> (df[<span class="st">"team_one_name"</span>] <span class="op">==</span> team) <span class="op">|</span> (df[<span class="st">"team_two_name"</span>] <span class="op">==</span> team)</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>            team_map_df <span class="op">=</span> df[map_filter <span class="op">&amp;</span> team_filter]</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>            <span class="co"># calculate data and add to list</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>            num_win <span class="op">=</span> (team_map_df.map_winner <span class="op">==</span> team).<span class="bu">sum</span>()</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>            num_lose <span class="op">=</span> (team_map_df.map_loser <span class="op">==</span> team).<span class="bu">sum</span>()</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>            num_total <span class="op">=</span> <span class="bu">len</span>(team_map_df)</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>            num_draw <span class="op">=</span> num_total <span class="op">-</span> num_win <span class="op">-</span> num_lose</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>            win_rate <span class="op">=</span> num_win <span class="op">/</span> num_total <span class="cf">if</span> num_total <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> np.nan</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>            map_data_list <span class="op">=</span> [team, map_name, <span class="bu">round</span>(win_rate, <span class="dv">4</span>), num_win, num_draw, num_lose]</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>            <span class="co"># append data list to dataframe</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>            team_map_data_df.loc[<span class="bu">len</span>(team_map_data_df)] <span class="op">=</span> map_data_list</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>    team_map_data_df[<span class="st">"games_played"</span>] <span class="op">=</span> team_map_data_df[[<span class="st">"win"</span>, <span class="st">"draw"</span>, <span class="st">"lose"</span>]].<span class="bu">sum</span>(</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>        axis<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> team_map_data_df</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>all_teams_map_data <span class="op">=</span> map_data(team_names, map_list, owl21_reduced)</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>all_teams_map_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">team_name</th>
+<th data-quarto-table-cell-role="th">map</th>
+<th data-quarto-table-cell-role="th">win_%</th>
+<th data-quarto-table-cell-role="th">win</th>
+<th data-quarto-table-cell-role="th">draw</th>
+<th data-quarto-table-cell-role="th">lose</th>
+<th data-quarto-table-cell-role="th">games_played</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Los Angeles Valiant</td>
+<td>Busan</td>
+<td>0.0000</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Los Angeles Valiant</td>
+<td>King's Row</td>
+<td>0.3333</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Los Angeles Valiant</td>
+<td>Havana</td>
+<td>0.0000</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>Los Angeles Valiant</td>
+<td>Volskaya Industries</td>
+<td>0.0000</td>
+<td>0</td>
+<td>1</td>
+<td>4</td>
+<td>5</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Los Angeles Valiant</td>
+<td>Ilios</td>
+<td>0.0000</td>
+<td>0</td>
+<td>0</td>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">375</td>
+<td>Houston Outlaws</td>
+<td>Numbani</td>
+<td>0.5000</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">376</td>
+<td>Houston Outlaws</td>
+<td>Rialto</td>
+<td>0.5000</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">377</td>
+<td>Houston Outlaws</td>
+<td>Hollywood</td>
+<td>0.0000</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">378</td>
+<td>Houston Outlaws</td>
+<td>Junkertown</td>
+<td>0.5000</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">379</td>
+<td>Houston Outlaws</td>
+<td>Route 66</td>
+<td>1.0000</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+
+<p>380 rows × 7 columns</p>
+</div>
+</div>
+</div>
+<p>Let’s see what the distribution of win rates looks like over maps and teams. The win rate isn’t very meaningful if the team has only played the map a handful of times, so we also set a cut-off, where we only consider team-map combinations that occur at least four times during the season</p>
+<div class="cell" data-outputid="edc8c17b-b9a2-4a5e-b78b-f04cca00635e" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_win_rate_distribution(owl21_reduced, all_teams_map_data, min_games<span class="op">=</span><span class="dv">4</span>):</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Plot a heatmap of win rates by team and map."""</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    filtered_all_teams_map_data <span class="op">=</span> all_teams_map_data.copy()</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    filtered_all_teams_map_data[<span class="st">"win_%"</span>] <span class="op">=</span> filtered_all_teams_map_data[<span class="st">"win_%"</span>].where(</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>        all_teams_map_data[<span class="st">"games_played"</span>] <span class="op">&gt;=</span> min_games, np.nan</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Visualise win rates of teams vs maps</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The pivot call turns the values in the map column into individual</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># columns, one for each map.</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    team_map_matrix <span class="op">=</span> filtered_all_teams_map_data.set_index(<span class="st">"team_name"</span>).pivot(</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span><span class="st">"map"</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    )[<span class="st">"win_%"</span>]</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sort teams by total wins and maps by total match count.</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    team_order <span class="op">=</span> owl21_reduced[<span class="st">"map_winner"</span>].value_counts().drop(<span class="st">"draw"</span>)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    map_order <span class="op">=</span> owl21_reduced[<span class="st">"map_name"</span>].value_counts()</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    team_map_matrix <span class="op">=</span> team_map_matrix.loc[team_order.index, map_order.index]</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    ax <span class="op">=</span> sns.heatmap(team_map_matrix, vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="dv">1</span>, square<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">"viridis"</span>)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="st">'Map name'</span>)</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(<span class="st">'Team name'</span>)</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    cbar <span class="op">=</span> ax.collections[<span class="dv">0</span>].colorbar</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    cbar.set_label(<span class="st">'Win rate'</span>)</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>plot_win_rate_distribution(owl21_reduced, all_teams_map_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="OWL_story_files/figure-html/cell-11-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>On the vertical axis here are the teams, ordered by total number of wins over the season. On the horizontal axis are maps, ordered by how many times they were played during the season. The colours code the win rates.</p>
+<p>Some observations: * Due to the season being quite short, there are many teams that didn’t play certain maps more than 4 times. This also varies between teams, because the good teams get to play more matches, and thus have fewer maps for which they have little data. This lack of data will cause us problems later. * The good teams seem to be good on almost all maps, the bad teams are bad on almost all maps. This suggests that there is not much map specialisation. * There are some exceptions to the above point. E.g. Dallas Fuel is the second best team by total win count, but has a very low win rate on Route 66. Conversely, Boston Uprising is one of the worst teams, but has a very good record on Ilios. * Some maps are much more popular than others. Almost all teams have played more than four game on Temple of Anubis, Volskaya Industries, and Hanamura, whereas only three teams have more than four games on Hollywood.</p>
+<table class="table">
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">A top-down schematic of one of the most popular maps, Temple of Anubis. This is an Assault type map, where the attacking team starts at the bottom right and tries to capture the two capture points, A and B, from the defenders. Image made by <a href="https://statbanana.com/images">statbanana</a>.</td>
+</tr>
+</tbody>
+</table>
+<p>If you’re curious about a particular team’s performance, you can use the below widget to browse how they did on each map.</p>
+<div class="cell" data-outputid="440773fd-63d1-4376-ff69-44273e52b965" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> widgets.Output()</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># See https://ipywidgets.readthedocs.io/en/latest/</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># for what widgets are.</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> on_team_selection(change):</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> out:</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>        clear_output()</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>        team <span class="op">=</span> team_selector.value</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        team_filter <span class="op">=</span> all_teams_map_data[<span class="st">"team_name"</span>] <span class="op">==</span> change[<span class="st">"new"</span>]</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(all_teams_map_data[team_filter].to_string(index<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>team_selector <span class="op">=</span> widgets.Dropdown(</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    options<span class="op">=</span>team_names, value<span class="op">=</span><span class="va">None</span>, description<span class="op">=</span><span class="st">"Team Name"</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>display(team_selector)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>display(out)</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>team_selector.observe(on_team_selection, names<span class="op">=</span><span class="st">"value"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"75749fa36392412791e00b4856069790","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"7ad2dcd10a0c47e9a2049f6601e6a463","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+</div>
+<p><a id="part_a_benchmark_predictor"></a> # Part 4. A benchmark predictor</p>
+<p>Our goal is to create various predictors - models that can take in historical data to predict the result of a future game.</p>
+<p>To assess the performance of our models fairly we split our data set into training and test sets. We choose an unusually large fraction, the last 50% of our data, to be the test set. This is because our models will require very little training, as we will see.</p>
+<p>We considered using a separate validation set as well, that wouldn’t be used when comparing various models, but only used to check the final performance of our chosen best model at the very end. This would guard against overfitting in model selection and hyperparameter tuning. However, since we’ll be doing very little hyperparameter tuning, and will only deal with a handful of simple models, we chose against it. This helps make the most of our quite small data set.</p>
+<p>In addition to guarding against overfitting as usual, the train/test split serves another purpose for us: our data is time series data, and our goal is to predict games late in the season, based on what we learned earlier in the season. By testing all our models on the test set that is the latter half of the season we ensure we don’t do something silly, like try to “predict” the first games based on what we learned from the last ones.</p>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up test-training data sets.</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>test_fraction <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>train_fraction <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> test_fraction</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>n_games <span class="op">=</span> <span class="bu">len</span>(owl21_reduced)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>n_train <span class="op">=</span> <span class="bu">int</span>(np.<span class="bu">round</span>(n_games <span class="op">*</span> train_fraction))</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>train_data <span class="op">=</span> owl21_reduced.iloc[:n_train, :]</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>test_data <span class="op">=</span> owl21_reduced.iloc[n_train:, :]</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>n_test <span class="op">=</span> <span class="bu">len</span>(test_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="framework-for-evaluating-predictors" class="level3">
+<h3 class="anchored" data-anchor-id="framework-for-evaluating-predictors">Framework for evaluating predictors</h3>
+<p>We also set up a framework for evaluating different models and for defining predictors. This helps to reduce code duplication, and gives a neat interface for testing model performance.</p>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _get_model_rate(model, actual_winners, predictors):</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Compute the success rate of a predictor model."""</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    predicted_results <span class="op">=</span> model.predict(predictors)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    predicted_winners <span class="op">=</span> predicted_results.loc[:, <span class="st">"map_winner"</span>]</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    correct_predictions <span class="op">=</span> (predicted_winners <span class="op">==</span> actual_winners).<span class="bu">sum</span>()</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    rate <span class="op">=</span> correct_predictions <span class="op">/</span> <span class="bu">len</span>(actual_winners)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> rate</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_and_test(train_data, test_data, model_class, <span class="op">*</span>args, <span class="op">**</span>kwargs):</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Train and test a model of a given class.</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co">    The `model_class` argument should be a class with two methods with signatures</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="co">    `train(self, train_data)` and `predict(self, predictors)`. `train` should return</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="co">    `None` and modify the model object in-place to do the training.  `predict` should</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="co">    return a DataFrame with the same index as `predictors`, and with a column</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="co">    `"map_winner"` that includes the predictions for each game's winner.</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="co">      train_data: Training data set.</span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="co">      test_data: Test data set to test model performance on.</span></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="co">      model_class: A class with `train` and `predict` methods as described above.</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="co">      *args, **kwargs: Additional arguments are passed to the constructor of</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="co">        `model_class`. These could be e.g. parameters for the model</span></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="co">      A dictionary with the following keys:</span></span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a><span class="co">      test_rate: The proportion of games the model predicted correctly in the test set.</span></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a><span class="co">      train_rate: The proportion of games the model predicted correctly in the training</span></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a><span class="co">          set.</span></span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a><span class="co">      model: The trained model.</span></span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> model_class(<span class="op">*</span>args, <span class="op">**</span>kwargs)</span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>    model.train(train_data)</span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>    test_predictors <span class="op">=</span> test_data.drop(</span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>[<span class="st">"map_winner"</span>, <span class="st">"map_loser"</span>],</span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>        errors<span class="op">=</span><span class="st">"ignore"</span>,</span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>    test_winners <span class="op">=</span> test_data.loc[:, <span class="st">"map_winner"</span>]</span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>    test_rate <span class="op">=</span> _get_model_rate(model, test_winners, test_predictors)</span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>    train_predictors <span class="op">=</span> train_data.drop(</span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>        columns<span class="op">=</span>[<span class="st">"map_winner"</span>, <span class="st">"map_loser"</span>],</span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>        errors<span class="op">=</span><span class="st">"ignore"</span>,</span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>    train_winners <span class="op">=</span> train_data.loc[:, <span class="st">"map_winner"</span>]</span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>    train_rate <span class="op">=</span> _get_model_rate(model, train_winners, train_predictors)</span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"test rate"</span>: test_rate, <span class="st">"train rate"</span>: train_rate, <span class="st">"model"</span>: model}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="guessing-predictors" class="level3">
+<h3 class="anchored" data-anchor-id="guessing-predictors">Guessing predictors</h3>
+<p>To get a sense of how good our predictors are, it is useful to first develop a benchmark predictor. We start with the simplest predictor imaginable: random guessing. We should expect that our actual models will be much more accurate than this one, and that something is going wrong if they are not.</p>
+<p>Given that we know the result of each game can either be a ‘team 1 wins’, ‘team 2 wins’, or ‘draw’, we can create a benchmark predictor that simply selects one of the above at random as the result of each game.</p>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> PureRandomModel:</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""A model class that predicts the outcome of a game purely at random."""</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> train(<span class="va">self</span>, train_data):</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""training does nothing as it is all random!"""</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _random_predictions(<span class="va">self</span>, team_one, team_two, map_name):</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>        choices <span class="op">=</span> [team_one, team_two, <span class="st">"draw"</span>]</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>        victor <span class="op">=</span> random.choice(choices)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> victor</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> predict(<span class="va">self</span>, predictors):</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Guess the outcome at random."""</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>        predictors[<span class="st">"map_winner"</span>] <span class="op">=</span> predictors.<span class="bu">apply</span>(</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>            <span class="kw">lambda</span> x: <span class="va">self</span>._random_predictions(</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>                x[<span class="st">"team_one_name"</span>], x[<span class="st">"team_two_name"</span>], x[<span class="st">"map_name"</span>]</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>            axis<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> predictors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="17d3d33a-59af-4572-f901-8ccca67b75f9" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>train_and_test(train_data, test_data, PureRandomModel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<pre><code>{'test rate': 0.31543624161073824,
+ 'train rate': 0.3042505592841163,
+ 'model': &lt;__main__.PureRandomModel at 0x17f8af220&gt;}</code></pre>
+</div>
+</div>
+<p>Try running the above cell a few times - you’ll find that the accuracy for the test and training data seems to fluctuate a lot. This is because each time we run the cell, our model guesses randomly, and the data set isn’t quite large enough for <a href="https://en.wikipedia.org/wiki/Law_of_large_numbers">the law of large numbers</a> to kick in with force.</p>
+<p>The main thing to note is how inaccurate the guessing model is. This is because the pure random distribition is unrealistic - very few games are actually drawn meaning a predictor that guesses a draw 1 in 3 times does not really come close. We retrospectively know that only around 2% of maps were drawn in the 2021 season.</p>
+<p>We could improve on this by randomly picking between team 1 or team 2 winning, and never predict a draw, although this requires prior knowledge about Overwatch which we were trying to avoid with our simplest imaginable predictor. We could also count the actual proportion of draws in the data and weigh the probabilities proportionally, but this would use future knowledge: the predictor would somehow be using knowledge that there are, say 10 draws by the end of season, to predict whether a match in the middle of the season is a draw. Alternatively we could use the proportion of draws in the previous season.</p>
+<p>For brevity we won’t provide code for the above predictors, but we encourage the reader to experiment with the notebook version of this story and try and write the above predictors themselves. For example, to try the first option you just need to remove <code>'draw'</code> from <code>victors</code>. This leads to approximately 48% accuracy, which can be considered a lower bound for the modelling we do next: If our accuracy isn’t significantly better than that, we aren’t doing anything worthwhile.</p>
+<p><a id="part_higher_win_rate_predictor"></a> # Part 5. Higher win rate predictor</p>
+<p>Now let’s look at something marginally more intelligent by using prior data. Here we create a model that looks at previous wins on a given map: When predicting who will win between team A and team B on map C, we look at team A’s win rate on map C and compare it to team B’s win rate on map C. Whoever has the higher win rate will be predicted to win this game.</p>
+<p>Note that we could also consider the previous history of team A playing against team B in particular. We tried this approach but found that our data set was too small for that to yield interesting results. Hence we focus on each team’s win rate individually.</p>
+<p>We have almost all the data we need for such a predictor in our <code>all_teams_map_data</code> dataframe that we used earlier for the exploratory plotting: We have the win rate for each team and map. However, we are dealing with time series data, progressing over the season, so we have to be a bit careful: We don’t want to use win rates based on the whole season, including the end part of it, to make predictions on the matches early in the season. Instead, we need the map win rates to be <em>rolling</em>, i.e.&nbsp;we need to know the win rate of each team on each map at each point during the season. We compute that below.</p>
+<div class="cell" data-outputid="8bba2a93-17a7-407a-a238-acbbb2c76a13" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If the team hasn't played this map we set its win rate to be 0.5. This is a type of</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># uninformed prior.</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>NO_INFO_PRIOR <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _compute_win_rate(row, team_name, map_name):</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    wins <span class="op">=</span> row.loc[[(team_name, map_name, <span class="st">"wins"</span>)]].iloc[<span class="dv">0</span>]</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    losses <span class="op">=</span> row.loc[[(team_name, map_name, <span class="st">"losses"</span>)]].iloc[<span class="dv">0</span>]</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    num_played <span class="op">=</span> wins <span class="op">+</span> losses</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    rate <span class="op">=</span> wins <span class="op">/</span> num_played <span class="cf">if</span> num_played <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> NO_INFO_PRIOR</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> rate</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rolling_map_rates(df_full, team_names, map_names):</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Make a dataframe of rolling per map, per team win rates."""</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    columns_to_copy <span class="op">=</span> [</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">"match_id"</span>,</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">"map_name"</span>,</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"map_winner"</span>,</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"map_loser"</span>,</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"team_one_name"</span>,</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"team_two_name"</span>,</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df_full.loc[:, columns_to_copy].copy()</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>    N_games <span class="op">=</span> <span class="bu">len</span>(df)</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># We need a column for each 3-tuple of team, map, and win/loss, counting how many</span></span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># times that team has won/lost on that map, up to the point in the season indexed by</span></span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># the rows. If this seems a bit confusing, seeing what the output looks like below</span></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># may clarify.</span></span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>    team_map_tuples <span class="op">=</span> <span class="bu">list</span>(itertools.product(team_names, map_names, [<span class="st">"wins"</span>, <span class="st">"losses"</span>]))</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>    initial_column <span class="op">=</span> pd.Series([np.nan] <span class="op">*</span> N_games, index<span class="op">=</span>df.index, dtype<span class="op">=</span>np.float_)</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>    initial_column.iloc[<span class="dv">0</span>] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>    map_rate_columns <span class="op">=</span> pd.concat(</span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>        [initial_column.copy() <span class="cf">for</span> _ <span class="kw">in</span> team_map_tuples],</span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>        axis<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>        keys<span class="op">=</span>team_map_tuples,</span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.concat([df, map_rate_columns], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># We also want columns for team1 and team2 map rates for the map that is</span></span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>    <span class="co"># being played.</span></span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"team_one_winrate"</span>] <span class="op">=</span> initial_column.copy()</span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"team_two_winrate"</span>] <span class="op">=</span> initial_column.copy()</span>
+<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a>    <span class="co"># When the team has never played the map, we assume it has a 50-50 rate.</span></span>
+<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a>    df.loc[<span class="dv">0</span>, <span class="st">"team_one_winrate"</span>] <span class="op">=</span> NO_INFO_PRIOR</span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>    df.loc[<span class="dv">0</span>, <span class="st">"team_two_winrate"</span>] <span class="op">=</span> NO_INFO_PRIOR</span>
+<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> df.index:</span>
+<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a>        map_name <span class="op">=</span> df.loc[i, <span class="st">"map_name"</span>]</span>
+<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a>        winner <span class="op">=</span> df.loc[i, <span class="st">"map_winner"</span>]</span>
+<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a>        loser <span class="op">=</span> df.loc[i, <span class="st">"map_loser"</span>]</span>
+<span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a>        team1 <span class="op">=</span> df.loc[i, <span class="st">"team_one_name"</span>]</span>
+<span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a>        team2 <span class="op">=</span> df.loc[i, <span class="st">"team_two_name"</span>]</span>
+<span id="cb20-53"><a href="#cb20-53" aria-hidden="true" tabindex="-1"></a>        df.loc[i, <span class="st">"team_one_winrate"</span>] <span class="op">=</span> _compute_win_rate(df.loc[i, :], team1, map_name)</span>
+<span id="cb20-54"><a href="#cb20-54" aria-hidden="true" tabindex="-1"></a>        df.loc[i, <span class="st">"team_two_winrate"</span>] <span class="op">=</span> _compute_win_rate(df.loc[i, :], team2, map_name)</span>
+<span id="cb20-55"><a href="#cb20-55" aria-hidden="true" tabindex="-1"></a>        <span class="co"># The numbers of wins and losses for each team-map pair are the same as on</span></span>
+<span id="cb20-56"><a href="#cb20-56" aria-hidden="true" tabindex="-1"></a>        <span class="co"># the previous row, except that some get incremented by one.</span></span>
+<span id="cb20-57"><a href="#cb20-57" aria-hidden="true" tabindex="-1"></a>        df.loc[i <span class="op">+</span> <span class="dv">1</span>, team_map_tuples] <span class="op">=</span> df.loc[i, team_map_tuples]</span>
+<span id="cb20-58"><a href="#cb20-58" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> winner <span class="op">!=</span> <span class="st">"draw"</span>:</span>
+<span id="cb20-59"><a href="#cb20-59" aria-hidden="true" tabindex="-1"></a>            df.loc[i <span class="op">+</span> <span class="dv">1</span>, [(winner, map_name, <span class="st">"wins"</span>)]] <span class="op">=</span> (</span>
+<span id="cb20-60"><a href="#cb20-60" aria-hidden="true" tabindex="-1"></a>                df.loc[i, [(winner, map_name, <span class="st">"wins"</span>)]] <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb20-61"><a href="#cb20-61" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb20-62"><a href="#cb20-62" aria-hidden="true" tabindex="-1"></a>            df.loc[i <span class="op">+</span> <span class="dv">1</span>, [(loser, map_name, <span class="st">"losses"</span>)]] <span class="op">=</span> (</span>
+<span id="cb20-63"><a href="#cb20-63" aria-hidden="true" tabindex="-1"></a>                df.loc[i, [(loser, map_name, <span class="st">"losses"</span>)]] <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb20-64"><a href="#cb20-64" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb20-65"><a href="#cb20-65" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> winner <span class="op">==</span> <span class="st">"draw"</span>:</span>
+<span id="cb20-66"><a href="#cb20-66" aria-hidden="true" tabindex="-1"></a>            <span class="co"># We count a draw as half a win and half a loss for both teams.</span></span>
+<span id="cb20-67"><a href="#cb20-67" aria-hidden="true" tabindex="-1"></a>            df.loc[i <span class="op">+</span> <span class="dv">1</span>, [(team1, map_name, <span class="st">"wins"</span>)]] <span class="op">=</span> (</span>
+<span id="cb20-68"><a href="#cb20-68" aria-hidden="true" tabindex="-1"></a>                df.loc[i, [(team1, map_name, <span class="st">"wins"</span>)]] <span class="op">+</span> <span class="fl">0.5</span></span>
+<span id="cb20-69"><a href="#cb20-69" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb20-70"><a href="#cb20-70" aria-hidden="true" tabindex="-1"></a>            df.loc[i <span class="op">+</span> <span class="dv">1</span>, [(team1, map_name, <span class="st">"losses"</span>)]] <span class="op">=</span> (</span>
+<span id="cb20-71"><a href="#cb20-71" aria-hidden="true" tabindex="-1"></a>                df.loc[i, [(team1, map_name, <span class="st">"losses"</span>)]] <span class="op">+</span> <span class="fl">0.5</span></span>
+<span id="cb20-72"><a href="#cb20-72" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb20-73"><a href="#cb20-73" aria-hidden="true" tabindex="-1"></a>            df.loc[i <span class="op">+</span> <span class="dv">1</span>, [(team2, map_name, <span class="st">"wins"</span>)]] <span class="op">=</span> (</span>
+<span id="cb20-74"><a href="#cb20-74" aria-hidden="true" tabindex="-1"></a>                df.loc[i, [(team2, map_name, <span class="st">"wins"</span>)]] <span class="op">+</span> <span class="fl">0.5</span></span>
+<span id="cb20-75"><a href="#cb20-75" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb20-76"><a href="#cb20-76" aria-hidden="true" tabindex="-1"></a>            df.loc[i <span class="op">+</span> <span class="dv">1</span>, [(team2, map_name, <span class="st">"losses"</span>)]] <span class="op">=</span> (</span>
+<span id="cb20-77"><a href="#cb20-77" aria-hidden="true" tabindex="-1"></a>                df.loc[i, [(team2, map_name, <span class="st">"losses"</span>)]] <span class="op">+</span> <span class="fl">0.5</span></span>
+<span id="cb20-78"><a href="#cb20-78" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb20-79"><a href="#cb20-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-80"><a href="#cb20-80" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
+<span id="cb20-81"><a href="#cb20-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-82"><a href="#cb20-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-83"><a href="#cb20-83" aria-hidden="true" tabindex="-1"></a>df_maprates <span class="op">=</span> rolling_map_rates(owl21_reduced, team_names, map_list)</span>
+<span id="cb20-84"><a href="#cb20-84" aria-hidden="true" tabindex="-1"></a>df_maprates</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">match_id</th>
+<th data-quarto-table-cell-role="th">map_name</th>
+<th data-quarto-table-cell-role="th">map_winner</th>
+<th data-quarto-table-cell-role="th">map_loser</th>
+<th data-quarto-table-cell-role="th">team_one_name</th>
+<th data-quarto-table-cell-role="th">team_two_name</th>
+<th data-quarto-table-cell-role="th">(Los Angeles Valiant, Busan, wins)</th>
+<th data-quarto-table-cell-role="th">(Los Angeles Valiant, Busan, losses)</th>
+<th data-quarto-table-cell-role="th">(Los Angeles Valiant, King's Row, wins)</th>
+<th data-quarto-table-cell-role="th">(Los Angeles Valiant, King's Row, losses)</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">(Houston Outlaws, Rialto, wins)</th>
+<th data-quarto-table-cell-role="th">(Houston Outlaws, Rialto, losses)</th>
+<th data-quarto-table-cell-role="th">(Houston Outlaws, Hollywood, wins)</th>
+<th data-quarto-table-cell-role="th">(Houston Outlaws, Hollywood, losses)</th>
+<th data-quarto-table-cell-role="th">(Houston Outlaws, Junkertown, wins)</th>
+<th data-quarto-table-cell-role="th">(Houston Outlaws, Junkertown, losses)</th>
+<th data-quarto-table-cell-role="th">(Houston Outlaws, Route 66, wins)</th>
+<th data-quarto-table-cell-role="th">(Houston Outlaws, Route 66, losses)</th>
+<th data-quarto-table-cell-role="th">team_one_winrate</th>
+<th data-quarto-table-cell-role="th">team_two_winrate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>37234.0</td>
+<td>Busan</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.500000</td>
+<td>0.500000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>37234.0</td>
+<td>King's Row</td>
+<td>Dallas Fuel</td>
+<td>Houston Outlaws</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.500000</td>
+<td>0.500000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>37234.0</td>
+<td>Havana</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>Dallas Fuel</td>
+<td>Houston Outlaws</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.500000</td>
+<td>0.500000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>37234.0</td>
+<td>Volskaya Industries</td>
+<td>Dallas Fuel</td>
+<td>Houston Outlaws</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.500000</td>
+<td>0.500000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>37234.0</td>
+<td>Ilios</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.500000</td>
+<td>0.500000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">890</td>
+<td>37441.0</td>
+<td>Ilios</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>Atlanta Reign</td>
+<td>Shanghai Dragons</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>...</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>0.200000</td>
+<td>0.769231</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">891</td>
+<td>37441.0</td>
+<td>Hanamura</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>...</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>0.687500</td>
+<td>0.600000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">892</td>
+<td>37441.0</td>
+<td>King's Row</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>Atlanta Reign</td>
+<td>Shanghai Dragons</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>...</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>0.769231</td>
+<td>0.666667</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">893</td>
+<td>37441.0</td>
+<td>Havana</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>...</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>0.600000</td>
+<td>0.333333</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">894</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>...</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+
+<p>895 rows × 768 columns</p>
+</div>
+</div>
+</div>
+<p>In this dataframe, on row <code>i</code>, the column <code>(team_name, map_name, outcome)</code> is the number of times the team <code>team_name</code> has won/lost (for <code>outcome="win"</code> or <code>outcome="loss"</code>) on that map up to that point in the season. This win/loss-count does not include yet the result of the game played on row <code>i</code>, that will be included in the win/loss-counts on row <code>i+1</code>.</p>
+<p>We needed to make a couple of non-trivial choices in creating this dataframe: * If a team has never played a map, we consider it to have a win rate of 0.5, as if it had won half of its games. * We count a draw as half a win and half a loss for both teams. This has the nice feature that the sum of wins and losses is the number of games played.</p>
+<p>We now use this to create a <code>LargerMapRate</code> predictor that predicts that the team with better win rate on that map up to that point in the season will win. If the win rates are exactly equal, we guess either win or lose at random. The other reasonable choice would be guessing a draw, but that would result in predicting far too many draws.</p>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> LargerMapRateModel:</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""A model class that predicts the winner of a game to be the one that had a larger</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co">    win rate on the given map. Note that we never predict draws. We could predict a draw</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co">    when the rates are exactly equal, but that happens quite often, especially early in</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co">    the season, and thus doing so would predict too many draws. It's better to just</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co">    guess a winner than predict a draw in those cases.</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> train(<span class="va">self</span>, train_data):</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># All the necessary information has been computed already, there isn't any</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># training to do.</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> predict(<span class="va">self</span>, predictors):</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Predict the winner of each game to be the team with the higher win rate</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="co">        on the given map.</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>        team1 <span class="op">=</span> predictors[<span class="st">"team_one_name"</span>]</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>        team2 <span class="op">=</span> predictors[<span class="st">"team_two_name"</span>]</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>        rate1 <span class="op">=</span> predictors[<span class="st">"team_one_winrate"</span>]</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>        rate2 <span class="op">=</span> predictors[<span class="st">"team_two_winrate"</span>]</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>        coin_flips <span class="op">=</span> np.random.choice([<span class="va">True</span>, <span class="va">False</span>], size<span class="op">=</span><span class="bu">len</span>(team1))</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>        random_winner <span class="op">=</span> team1.where(coin_flips, other<span class="op">=</span>team2)</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>        predictors[<span class="st">"map_winner"</span>] <span class="op">=</span> team1.where(</span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>            rate1 <span class="op">&gt;</span> rate2, other<span class="op">=</span>team2.where(rate2 <span class="op">&gt;</span> rate1, other<span class="op">=</span>random_winner)</span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> predictors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="e08be065-698f-42df-ff75-b005c7f6abb8" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>train_data <span class="op">=</span> df_maprates.iloc[:n_train, :]</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>test_data <span class="op">=</span> df_maprates.iloc[n_train:, :]</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>train_and_test(train_data, test_data, LargerMapRateModel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<pre><code>{'test rate': 0.5334821428571429,
+ 'train rate': 0.5190156599552572,
+ 'model': &lt;__main__.LargerMapRateModel at 0x2851c4880&gt;}</code></pre>
+</div>
+</div>
+<p>We seem to be reaching an accuracy of a bit more than 50%. It’s hard to say at the moment whether the higher accuracy from this predictor is <a href="https://en.wikipedia.org/wiki/Statistical_significance"><em>significant</em></a> compared to our earlier random guessing. We might just be getting lucky. One way to study whether that might be the case is to resample our data, using a technique called <a href="https://en.wikipedia.org/wiki/Bootstrapping_(statistics)">bootstrapping</a>. To do that, we take our <code>N</code> games that we are testing our model on, and random sample, with replacement, from it another set of <code>N</code> games. Some of the original games may feature in the new, sampled set several times, some may not feature at all. This emulates sampling again from the same probability distribution of games, as if e.g.&nbsp;another, independent season had been played. If we do this resampling procedure <code>k</code> times and look at the range of accuracies we get when we run our model, that gives us some idea of how much random variation there is in our results. Let’s write a function that does such bootstrapping that we can reuse.</p>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_and_test_bootstrap(train_data, test_data, model_class, k<span class="op">=</span><span class="dv">50</span>):</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Bootstrap k samples of test data, and test the trained model on them.</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Return descriptive statistics of accuracy over the sampled test sets.</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> [</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>        train_and_test(</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>            train_data, test_data.sample(frac<span class="op">=</span><span class="fl">1.0</span>, replace<span class="op">=</span><span class="va">True</span>), model_class</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(k)</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    train_rate <span class="op">=</span> results[<span class="dv">0</span>][<span class="st">"train rate"</span>]</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    test_rates <span class="op">=</span> [r[<span class="st">"test rate"</span>] <span class="cf">for</span> r <span class="kw">in</span> results]</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    test_rate_mean <span class="op">=</span> np.mean(test_rates)</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    test_rate_std <span class="op">=</span> np.std(test_rates)</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>    test_rate_percentiles <span class="op">=</span> np.percentile(test_rates, [<span class="dv">10</span>, <span class="dv">90</span>])</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    example_model <span class="op">=</span> results[<span class="dv">0</span>][<span class="st">"model"</span>]</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"train rate"</span>: train_rate,</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"test rate mean"</span>: test_rate_mean,</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"test rate std"</span>: test_rate_std,</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"test rate 90th percentiles"</span>: test_rate_percentiles,</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>        <span class="st">"example model"</span>: example_model,</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="8201c1ac-ff7a-44c5-9b60-3ab2465f734f" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>train_and_test_bootstrap(train_data, test_data, LargerMapRateModel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<pre><code>{'train rate': 0.5078299776286354,
+ 'test rate mean': 0.530982142857143,
+ 'test rate std': 0.019437030393303505,
+ 'test rate 90th percentiles': array([0.50870536, 0.55401786]),
+ 'example model': &lt;__main__.LargerMapRateModel at 0x17fcfacb0&gt;}</code></pre>
+</div>
+</div>
+<p>With 50 iterations of bootstrap the average accuracy we got was 53%, with a standard deviation of 2% and 10th and 90th percentile accuracies of 50% and 56%. This gives us some confidence that we are indeed doing something better than random guessing, though whether our true accuracy (at the limit of infinite data set size) is 51.5% or 55% or something else in that ballpark, we can not say.</p>
+<p>Note that our use of bootstrap here is quite crude and simple. For one, we are only resampling within the latter half of the season, our test set, mostly to avoid the problem that early in the season win rates are quite meaningless since few games have been played. We can not interpret these numbers directly as something like confidence intervals, but they do give some indication of the level of randomness in our results.</p>
+<p>Note also that at this point the whole train/test split is superficial: There’s no training happening, and thus no risk of overfitting. In fact, our model performs a bit better on the test set than the training set. This is because the training set includes the early season, when most teams haven’t played most maps yet, and we thus don’t have any information to base our predictions on.</p>
+<table class="table">
+<colgroup>
+<col style="width: 100%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Overwatch players can choose from many characters, called heroes, with different abilities. We don’t use any data specific to choices of heroes, nor do we use information particular to the different game modes, but simply focus on the question of which team won against which team on which map. Image credit Blizzard Entertainment.</td>
+</tr>
+</tbody>
+</table>
+<p><a id="part_elo"></a> # Part 6. Skill based predictor - Elo ratings</p>
+<p>The map win rate predictor may have been a bit better than random guessing, but it certainly isn’t blowing our socks off. Let’s now try something more interesting.</p>
+<p>For competitive games, it is natural to introduce some kind of skill based system, where higher skilled teams are considered more likely to win than lower skilled teams. One such system, originally developed for chess, is called <a href="https://en.wikipedia.org/wiki/Elo_rating_system">Elo ratings</a>. We will use it here.</p>
+<p>Each team will begin with an initial Elo rating - we have chosen to use 1500, but this is an arbitrary choice that doesn’t matter. Each time a team wins a game their Elo increases, and each time they lose it decreases. The clever bit is how the <em>amount</em> by which the Elo changes depends on who the game was played against.</p>
+<p>Whenever a team plays against another team, their respective Elos are compared to create an expectation for the match up, where the team with the higher Elo is expected to win. How much the two teams’ Elos differ will influence how much the teams will gain / lose Elo based on the result of the match. If team A has a much higher Elo than team B then they are heavily expected to win and will not gain much Elo if they beat team B. If however, they lose to team B in an upset then they will lose a lot of Elo. The Elo ratings are zero-sum, meaning team B will gain / lose the opposite amount.</p>
+<p>To be explicit, if the ratings of the two teams are <span class="math inline">\(R_A\)</span> and <span class="math inline">\(R_B\)</span>, then the expected “score” for team A is</p>
+<p><span class="math display">\[ E_A = \frac{1}{1+10^{(R_B - R_A)/400}} \]</span></p>
+<p>and conversely for team B it is <span class="math inline">\(E_B = 1 - E_A\)</span>. The 400 is another arbitrary scale constant, like the starting value of 1500. The expected scores can be related to the players’ probability of winning, but we refer the reader to the <a href="https://en.wikipedia.org/wiki/Elo_rating_system#Theory">Wikipedia article</a> for the details.</p>
+<p>The updated Elo ratings for teams A and B after the game are</p>
+<p><span class="math display">\[ R'_A = R_A + k \cdot (S_A - E_A) \]</span> <span class="math display">\[ R'_B = R_B + k \cdot (S_B - E_B) = R_B - k \cdot (S_A - E_A) \]</span></p>
+<p>Here <span class="math inline">\(S_A\)</span> is the outcome score of the game for team A (similarly for team B and <span class="math inline">\(S_B\)</span>), which we choose to be 1 if team A won, 0 if they lost, and 0.5 in the case of a draw.</p>
+<p>The parameter <span class="math inline">\(k\)</span> in the update formula above is a free parameter that sets the variance or the “learning rate” of the system. Higher values of <span class="math inline">\(k\)</span> will mean that teams’ Elo ratings change quickly based on how well they’ve done in the last few games, whereas with a low <span class="math inline">\(k\)</span> value the ratings are quite “rigid” and change only slowly.</p>
+<p>Typically when data is low (e.g.&nbsp;with a new team), there is a lot of uncertainty about their skill level so a high <span class="math inline">\(k\)</span> value may be preferable. On the other hand, once a team has played a lot, the model has a fairly accurate view of their skill and a lower <span class="math inline">\(k\)</span> value might be used to avoid overfitting to the last few games. In chess for example, a high <span class="math inline">\(k\)</span> value will be used in low rated tournaments, and a low <span class="math inline">\(k\)</span> value for higher rated tournaments.</p>
+<p>As it can be difficult to know at what point to vary <span class="math inline">\(k\)</span> we will keep it static throughout this story.</p>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>INITIAL_ELO <span class="op">=</span> <span class="dv">1500</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>ELO_SCALE <span class="op">=</span> <span class="dv">400</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> expected(A, B):</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Expected 'score' for the game, based on the Elo ratings of the participants A and</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="co">    B. The score is in the range from 0 to 1, and relates to the probability of team A</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="co">    or team B winning, with score of 0 meaning extreme confidence in A winning and score</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="co">    of 1 meaning extreme confidence in B winning.</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> <span class="dv">10</span> <span class="op">**</span> ((B <span class="op">-</span> A) <span class="op">/</span> ELO_SCALE))</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> elo(old, exp, score, k<span class="op">=</span><span class="dv">32</span>):</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""New Elo for a team based on their old Elo rating, and expected and actual outcome</span></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="co">    of the game.</span></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> old <span class="op">+</span> k <span class="op">*</span> (score <span class="op">-</span> exp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Below we compute rolling Elo ratings for all teams at all points of the season, similarly to what we did with map win rates.</p>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rolling_elo(owl21_reduced, team_names):</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Make a data frame with one column per team, with values of the ELO rating of each</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co">    team at each given moment in the season. The value on row i does not include the</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co">    changes to ELO ratings caused by the game played on row i, those will only be</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co">    included on row i+1.</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    df_elo <span class="op">=</span> owl21_reduced.copy().reset_index().drop(columns<span class="op">=</span><span class="st">"index"</span>)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    N_games <span class="op">=</span> <span class="bu">len</span>(df_elo)</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    initial_column <span class="op">=</span> pd.Series([np.nan] <span class="op">*</span> N_games, index<span class="op">=</span>df_elo.index, dtype<span class="op">=</span>np.float_)</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    initial_column.iloc[<span class="dv">0</span>] <span class="op">=</span> INITIAL_ELO</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> team <span class="kw">in</span> team_names:</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>        df_elo[team] <span class="op">=</span> initial_column.copy()</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"team_one_elo"</span>] <span class="op">=</span> initial_column.copy()</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"team_two_elo"</span>] <span class="op">=</span> initial_column.copy()</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> df_elo.index:</span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>        team1 <span class="op">=</span> df_elo.loc[i, <span class="st">"team_one_name"</span>]</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>        team2 <span class="op">=</span> df_elo.loc[i, <span class="st">"team_two_name"</span>]</span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>        elo1_pre <span class="op">=</span> df_elo.loc[i, team1]</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>        elo2_pre <span class="op">=</span> df_elo.loc[i, team2]</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>        df_elo.loc[i, <span class="st">"team_one_elo"</span>] <span class="op">=</span> elo1_pre</span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>        df_elo.loc[i, <span class="st">"team_two_elo"</span>] <span class="op">=</span> elo2_pre</span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>        exp1 <span class="op">=</span> expected(elo1_pre, elo2_pre)</span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>        exp2 <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> exp1</span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>        winner <span class="op">=</span> df_elo.loc[i, <span class="st">"map_winner"</span>]</span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> team1 <span class="op">==</span> winner:</span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>            score1 <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> team2 <span class="op">==</span> winner:</span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a>            score1 <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> winner <span class="op">==</span> <span class="st">"draw"</span>:</span>
+<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a>            score1 <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">"something went wrong"</span>)</span>
+<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a>        score2 <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> score1</span>
+<span id="cb28-35"><a href="#cb28-35" aria-hidden="true" tabindex="-1"></a>        elo1_post <span class="op">=</span> elo(elo1_pre, exp1, score1)</span>
+<span id="cb28-36"><a href="#cb28-36" aria-hidden="true" tabindex="-1"></a>        elo2_post <span class="op">=</span> elo(elo2_pre, exp2, score2)</span>
+<span id="cb28-37"><a href="#cb28-37" aria-hidden="true" tabindex="-1"></a>        df_elo.loc[i <span class="op">+</span> <span class="dv">1</span>, team_names] <span class="op">=</span> df_elo.loc[i, team_names]</span>
+<span id="cb28-38"><a href="#cb28-38" aria-hidden="true" tabindex="-1"></a>        df_elo.loc[i <span class="op">+</span> <span class="dv">1</span>, team1] <span class="op">=</span> elo1_post</span>
+<span id="cb28-39"><a href="#cb28-39" aria-hidden="true" tabindex="-1"></a>        df_elo.loc[i <span class="op">+</span> <span class="dv">1</span>, team2] <span class="op">=</span> elo2_post</span>
+<span id="cb28-40"><a href="#cb28-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df_elo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="ecc92273-2174-439d-d873-fbf14551c013" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>df_elo <span class="op">=</span> rolling_elo(owl21_reduced, team_names)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>df_elo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="23">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">match_id</th>
+<th data-quarto-table-cell-role="th">map_winner</th>
+<th data-quarto-table-cell-role="th">map_loser</th>
+<th data-quarto-table-cell-role="th">team_one_name</th>
+<th data-quarto-table-cell-role="th">team_two_name</th>
+<th data-quarto-table-cell-role="th">map_name</th>
+<th data-quarto-table-cell-role="th">Los Angeles Valiant</th>
+<th data-quarto-table-cell-role="th">Shanghai Dragons</th>
+<th data-quarto-table-cell-role="th">Guangzhou Charge</th>
+<th data-quarto-table-cell-role="th">Los Angeles Gladiators</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">Atlanta Reign</th>
+<th data-quarto-table-cell-role="th">Toronto Defiant</th>
+<th data-quarto-table-cell-role="th">Washington Justice</th>
+<th data-quarto-table-cell-role="th">Hangzhou Spark</th>
+<th data-quarto-table-cell-role="th">Paris Eternal</th>
+<th data-quarto-table-cell-role="th">Dallas Fuel</th>
+<th data-quarto-table-cell-role="th">Seoul Dynasty</th>
+<th data-quarto-table-cell-role="th">Houston Outlaws</th>
+<th data-quarto-table-cell-role="th">team_one_elo</th>
+<th data-quarto-table-cell-role="th">team_two_elo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>37234.0</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>Busan</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>...</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>37234.0</td>
+<td>Dallas Fuel</td>
+<td>Houston Outlaws</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>King's Row</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>...</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1484.000000</td>
+<td>1500.000000</td>
+<td>1516.000000</td>
+<td>1516.000000</td>
+<td>1484.000000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>37234.0</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>Dallas Fuel</td>
+<td>Houston Outlaws</td>
+<td>Havana</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>...</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1501.469502</td>
+<td>1500.000000</td>
+<td>1498.530498</td>
+<td>1501.469502</td>
+<td>1498.530498</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>37234.0</td>
+<td>Dallas Fuel</td>
+<td>Houston Outlaws</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>Volskaya Industries</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>...</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1485.334159</td>
+<td>1500.000000</td>
+<td>1514.665841</td>
+<td>1514.665841</td>
+<td>1485.334159</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>37234.0</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>Houston Outlaws</td>
+<td>Dallas Fuel</td>
+<td>Ilios</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>...</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1500.000000</td>
+<td>1502.681733</td>
+<td>1500.000000</td>
+<td>1497.318267</td>
+<td>1497.318267</td>
+<td>1502.681733</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">890</td>
+<td>37441.0</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>Atlanta Reign</td>
+<td>Shanghai Dragons</td>
+<td>Ilios</td>
+<td>1183.216157</td>
+<td>1756.568699</td>
+<td>1453.558171</td>
+<td>1687.413399</td>
+<td>...</td>
+<td>1714.071836</td>
+<td>1508.428907</td>
+<td>1470.163957</td>
+<td>1441.604268</td>
+<td>1450.904232</td>
+<td>1585.810683</td>
+<td>1533.992033</td>
+<td>1496.310344</td>
+<td>1714.071836</td>
+<td>1756.568699</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">891</td>
+<td>37441.0</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>Hanamura</td>
+<td>1183.216157</td>
+<td>1770.621348</td>
+<td>1453.558171</td>
+<td>1687.413399</td>
+<td>...</td>
+<td>1700.019187</td>
+<td>1508.428907</td>
+<td>1470.163957</td>
+<td>1441.604268</td>
+<td>1450.904232</td>
+<td>1585.810683</td>
+<td>1533.992033</td>
+<td>1496.310344</td>
+<td>1770.621348</td>
+<td>1700.019187</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">892</td>
+<td>37441.0</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>Atlanta Reign</td>
+<td>Shanghai Dragons</td>
+<td>King's Row</td>
+<td>1183.216157</td>
+<td>1783.414025</td>
+<td>1453.558171</td>
+<td>1687.413399</td>
+<td>...</td>
+<td>1687.226510</td>
+<td>1508.428907</td>
+<td>1470.163957</td>
+<td>1441.604268</td>
+<td>1450.904232</td>
+<td>1585.810683</td>
+<td>1533.992033</td>
+<td>1496.310344</td>
+<td>1687.226510</td>
+<td>1783.414025</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">893</td>
+<td>37441.0</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>Shanghai Dragons</td>
+<td>Atlanta Reign</td>
+<td>Havana</td>
+<td>1183.216157</td>
+<td>1795.094231</td>
+<td>1453.558171</td>
+<td>1687.413399</td>
+<td>...</td>
+<td>1675.546304</td>
+<td>1508.428907</td>
+<td>1470.163957</td>
+<td>1441.604268</td>
+<td>1450.904232</td>
+<td>1585.810683</td>
+<td>1533.992033</td>
+<td>1496.310344</td>
+<td>1795.094231</td>
+<td>1675.546304</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">894</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>1183.216157</td>
+<td>1805.796297</td>
+<td>1453.558171</td>
+<td>1687.413399</td>
+<td>...</td>
+<td>1664.844237</td>
+<td>1508.428907</td>
+<td>1470.163957</td>
+<td>1441.604268</td>
+<td>1450.904232</td>
+<td>1585.810683</td>
+<td>1533.992033</td>
+<td>1496.310344</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+
+<p>895 rows × 28 columns</p>
+</div>
+</div>
+</div>
+<p>The columns in this dataframe that are the names of individual teams are their Elo ratings. To illustrate the development of Elo ratings over the season we plot them.</p>
+<div class="cell" data-outputid="7498fe37-b55b-4fbc-ab6a-9a81bca75694" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>plt.plot(df_elo.loc[:, team_names])</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Game number"</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Elo rating"</span>)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="OWL_story_files/figure-html/cell-25-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Each line is the Elo rating of one team. They all start at 1500, and as games are played teams gain/lose Elo as they win/lose games. The fact that the spread of the ratings is still growing late in the season is an indication that we are limited in the amount of data we have.</p>
+<p>We split the dataframe of Elo ratings into training and test sets with the same ratio as before, and make a model that always predicts that the team with a higher rating will win.</p>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>elo_train <span class="op">=</span> df_elo.iloc[:n_train, :].copy()</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>elo_test <span class="op">=</span> df_elo.iloc[n_train:, :].copy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> LargerELOModel:</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""A model class that predicts the winner of a game to be the one that had a larger</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co">    ELO rating.</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> train(<span class="va">self</span>, train_data):</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># All the necessary information has been computed already, there isn't any</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>        <span class="co"># training to do.</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> predict(<span class="va">self</span>, predictors):</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Predict the winner of each game to be the team with the higher ELO."""</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>        team1 <span class="op">=</span> predictors[<span class="st">"team_one_name"</span>]</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>        team2 <span class="op">=</span> predictors[<span class="st">"team_two_name"</span>]</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>        elo1 <span class="op">=</span> predictors[<span class="st">"team_one_elo"</span>]</span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>        elo2 <span class="op">=</span> predictors[<span class="st">"team_two_elo"</span>]</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>        predictors[<span class="st">"map_winner"</span>] <span class="op">=</span> team1.where(</span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>            elo1 <span class="op">&gt;</span> elo2, other<span class="op">=</span>team2.where(elo2 <span class="op">&gt;</span> elo1, other<span class="op">=</span><span class="st">"draw"</span>)</span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> predictors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="7994d945-30cd-4b10-a996-1af8fe352a0f" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>train_and_test_bootstrap(elo_train, elo_test, LargerELOModel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="27">
+<pre><code>{'train rate': 0.6062639821029083,
+ 'test rate mean': 0.6234821428571429,
+ 'test rate std': 0.02344255897782005,
+ 'test rate 90th percentiles': array([0.60200893, 0.64866071]),
+ 'example model': &lt;__main__.LargerELOModel at 0x2851e9db0&gt;}</code></pre>
+</div>
+</div>
+<p>This model clearly outperforms the earlier map win rate based model, reaching an accuracy roughly between 59% and 65%.</p>
+<p>As an aside, we tried varying the <span class="math inline">\(k\)</span> parameter for the Elo system, and couldn’t find a value that would have significantly improved the accuracy we see here. We leave this analysis out of the story, for brevity.</p>
+<table class="table">
+<colgroup>
+<col style="width: 100%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Professional Overwatch players in a tournament. We model skill using Elo ratings on the level of teams, not individual players. Image credit Blizzard Entertainment.</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="combining-elo-and-map-win-rates" class="level2">
+<h2 class="anchored" data-anchor-id="combining-elo-and-map-win-rates">Combining Elo and map win rates</h2>
+<p>The Elo system is simple, elegant, and evidently quite powerful. However, it feels crude in how it entirely disregards all data about the maps: It’s only concerned with who won against who. Perhaps we can improve on it by combining the Elo ratings with the map win rates, and use both for making our predictions? Let’s try.</p>
+<div class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> combine_elo_and_maprates(df_elo, df_maprates, team_names, map_names):</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Combine rolling Elo and rolling map win rates into a single dataframe."""</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    team_map_pairs <span class="op">=</span> <span class="bu">list</span>(itertools.product(team_names, map_names, [<span class="st">"wins"</span>, <span class="st">"losses"</span>]))</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    df_maprates <span class="op">=</span> df_maprates[team_map_pairs <span class="op">+</span> [<span class="st">"team_one_winrate"</span>, <span class="st">"team_two_winrate"</span>]]</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    df_elo_maprates <span class="op">=</span> pd.concat(</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>        [df_elo, df_maprates],</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>        axis<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df_elo_maprates</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> encode_map_winner(df):</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Encode game outcome as +1, 0, -1."""</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    team1 <span class="op">=</span> df[<span class="st">"team_one_name"</span>]</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    team2 <span class="op">=</span> df[<span class="st">"team_two_name"</span>]</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    winner <span class="op">=</span> df[<span class="st">"map_winner"</span>]</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    N_games <span class="op">=</span> <span class="bu">len</span>(team1)</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    ones <span class="op">=</span> pd.Series([<span class="dv">1</span>] <span class="op">*</span> N_games)</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>    minus_ones <span class="op">=</span> pd.Series([<span class="op">-</span><span class="dv">1</span>] <span class="op">*</span> N_games)</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>    winner_number <span class="op">=</span> ones.where(</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>        winner <span class="op">==</span> team1, other<span class="op">=</span>minus_ones.where(winner <span class="op">==</span> team2, other<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> winner_number</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="1ca8ec68-1da3-4bed-9afa-53e1ac40dc0e" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>df_combined <span class="op">=</span> combine_elo_and_maprates(df_elo, df_maprates, team_names, map_list)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>df_combined[<span class="st">"map_winner"</span>] <span class="op">=</span> encode_map_winner(df_combined)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>prediction_columns <span class="op">=</span> [</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"map_winner"</span>,</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"team_one_winrate"</span>,</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"team_two_winrate"</span>,</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"team_one_elo"</span>,</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"team_two_elo"</span>,</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>combined_train <span class="op">=</span> df_combined.loc[:n_train, prediction_columns].copy()</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>combined_test <span class="op">=</span> df_combined.loc[n_train : n_games <span class="op">-</span> <span class="dv">1</span>, prediction_columns].copy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We have combined the rolling Elo numbers and map win rates into a single dataframe. We have also encoded the outcomes of games numerically into a single column, so that <code>1</code> means team one won, <code>-1</code> means team two won, and <code>0</code> means the game was a draw. This allows using various statistical models meant for numerical rather than categorical data.</p>
+<p>Previously we could simply predict that the team with the higher map win rate or higher Elo would win. Now that we use both as predictors, we have to decide how to combine them into a single prediction. Given how simple our predictors are, a natural starting point is a linear model, that models the numerically encoded (1,0, or -1) game winner as a linear combination of the win rates and the Elo scores of both teams. Note that this is the first time that any statistical modelling is happening in this story, and thus the first time that overfitting could in theory become a concern, and we need to actually use the trainining/test split we did in the beginning.</p>
+<div class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> LinearClassifier:</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># See</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>        <span class="co"># https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.RidgeClassifier.html</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.model <span class="op">=</span> linear_model.RidgeClassifier()</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> train(<span class="va">self</span>, train_data):</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.model.fit(</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>            train_data.drop(columns<span class="op">=</span><span class="st">"map_winner"</span>),</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>            train_data[<span class="st">"map_winner"</span>],</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> predict(<span class="va">self</span>, predictors):</span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>        predictors[<span class="st">"map_winner"</span>] <span class="op">=</span> <span class="va">self</span>.model.predict(predictors)</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> predictors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="59efb70f-5829-4b17-c3bb-34fe49fbd713" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict who wins using ELO and map win/loss information</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>train_and_test_bootstrap(combined_train, combined_test, LinearClassifier)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="32">
+<pre><code>{'train rate': 0.6160714285714286,
+ 'test rate mean': 0.6223266219239374,
+ 'test rate std': 0.021320696901629056,
+ 'test rate 90th percentiles': array([0.59261745, 0.64451902]),
+ 'example model': &lt;__main__.LinearClassifier at 0x28658d330&gt;}</code></pre>
+</div>
+</div>
+<p>Combining the Elo and map win rates with a linear model gives a prediction accuracy somewhere around 60% to 66%. It is hard to say that this yields any improvement over only using the Elo data. This is somewhat disappointing; It seems our attempt at using more granular information than just plain Elo is of little help. This is compatible though with for instance the earlier observation that good teams do well an almost all maps and bad teams similarly do badly.</p>
+<p>One could hypothesise that the issue is that our linear model is too crude and biased for this purpose. We did some experimentation around this, and it seems to not be the case: For instance some support vector machines perform no better.</p>
+<p><a id="part_conclusions"></a> # Part 7: Conclusions</p>
+<p>We started with the question of whether we can predict outcomes of Overwatch games using data from earlier that same season. The answer seems to be “yes, to a limited extent”.</p>
+<p>After trying a simple win rate based model, we settled on using the Elo ratings system, which assigns a skill rating to each team based on who they win and lose against, rewarding more points for winning against highly ranked opponents. This got us to a range where we could correctly predict the outcomes of about 60-65% of the games in the last half of the season. That’s substantially better than chance, but it’s not overwhelmingly impressive. We hoped to improve on that by adding some map specific information, that would take into account some teams being especially good or bad on particular maps, but failed to improve the prediction accuracy significantly.</p>
+<p>We of course can not know if some other model or way of doing the predictions would yield better results. However, from toying around with various methods, some of which we left out of the final story, the feeling we were left with is that we are probably close to what can be achieved with our current approach. To improve further we would either try modelling on a more granular scale of individual players, taking into account player transfers within a season, or find another angle of how to utilise map specific data. There is, of course, also a natural limit to how good our predictions can ever be, because there is inherent variation in how individual games go. We may or may not be close to that limit.</p>
+<p>Overall, we were surprised by how general our analysis turned out to be: In the end the method that we got the most mileage out of were the Elo ratings, which can be applied to almost any game or sport. It’s entirely blind to any particular features of Overwatch as a game. This is bad in that it leaves us with the feeling that we didn’t understand anything very deep about Overwatch as a game through this analysis, but good in that our above code can be reused almost verbatim on other competitive games. Partially this might be because we didn’t try even try to utilise some very Overwatch-specific details about things like the various characters players can choose, but map specific expertise would be the most obvious feature to expect, and even that didn’t seem to be very useful for our predictions.</p>
+<p>We wrote the bulk of this story in the middle of 2022 and thus ran our analysis on the 2021 season. By the time we were polishing the story for review the 2022 season had finished, so we ran the same analysis on that one too. It’s very easy to do by simply changing the file to download and read data from in the very beginning, and we encourage the reader to do it. The main conclusions from 2022 are the same as above with 2021: Map win rate based predictions are still a bit better than chance but not much; Elo ratings yield better predictions than that, though nothing much above 60%; and combining Elo and map win rate isn’t much better than just using Elo. The numbers do shift around a bit though, accuracies going up or down by a few percentage points.</p>
+<p>The most interesting future exploration would be to move from the team-level to the player-level, and try to model the skill levels of the individuals that make up the teams. This would open whole new possibilities of using data from multiple seasons and tracking players across them as they may change teams. This would also enable us to for instance predict the performance of a rebuilt team at the beginning of a season based on who they’ve added to their roster, or model which teams seem to perform as more or less than the sum of their parts. That, though, is all work for another data story.</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div></main> <!-- /main -->
+<script type="application/vnd.jupyter.widget-state+json">
+{"89d91a44b6794629a3d2bcbd54c5c4ca":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"DropdownModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"DropdownModel","_options_labels":["Los Angeles Valiant","Paris Eternal","Shanghai Dragons","London Spitfire","San Francisco Shock","Dallas Fuel","Guangzhou Charge","Washington Justice","Los Angeles Gladiators","New York Excelsior","Atlanta Reign","Vancouver Titans","Florida Mayhem","Chengdu Hunters","Houston Outlaws","Seoul Dynasty","Toronto Defiant","Boston Uprising","Hangzhou Spark","Philadelphia Fusion"],"_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"DropdownView","description":"Team Name","description_tooltip":null,"disabled":false,"index":5,"layout":"IPY_MODEL_98d2c26d8b564f07a1bd03559a4ae1b4","style":"IPY_MODEL_e5da3a3c399b4b8f99820104e213a27f"}},"98d2c26d8b564f07a1bd03559a4ae1b4":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"afd59a3108dd4370ab393150896dac2d":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"e5da3a3c399b4b8f99820104e213a27f":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"DescriptionStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"DescriptionStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":""}},"f4ff65f65f8547719d20a62e7fd2d2ae":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_afd59a3108dd4370ab393150896dac2d","msg_id":"","outputs":[{"name":"stdout","output_type":"stream","text":["  team_name                   map  win_% win draw lose  games_played\n","Dallas Fuel                 Busan 0.6364   7    0    4          11.0\n","Dallas Fuel            King's Row 0.6000   6    0    4          10.0\n","Dallas Fuel                Havana 0.5000   2    0    2           4.0\n","Dallas Fuel   Volskaya Industries 0.8667  13    1    1          15.0\n","Dallas Fuel                 Ilios 0.2857   2    0    5           7.0\n","Dallas Fuel           Eichenwalde 0.5714   4    0    3           7.0\n","Dallas Fuel Watchpoint: Gibraltar 0.7143   5    0    2           7.0\n","Dallas Fuel              Hanamura 0.5000   5    1    4          10.0\n","Dallas Fuel         Lijiang Tower 0.6429   9    0    5          14.0\n","Dallas Fuel        Blizzard World 0.5000   4    0    4           8.0\n","Dallas Fuel                Dorado 0.2000   1    0    4           5.0\n","Dallas Fuel      Temple of Anubis 0.5000   5    2    3          10.0\n","Dallas Fuel                 Oasis 0.6250   5    0    3           8.0\n","Dallas Fuel                 Nepal 0.8750   7    0    1           8.0\n","Dallas Fuel               Numbani 0.5000   3    0    3           6.0\n","Dallas Fuel                Rialto 0.7500   3    0    1           4.0\n","Dallas Fuel             Hollywood 0.5000   2    0    2           4.0\n","Dallas Fuel            Junkertown 0.6000   3    0    2           5.0\n","Dallas Fuel              Route 66 0.0000   0    0    4           4.0\n"]}]}}}
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
