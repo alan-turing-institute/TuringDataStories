@@ -1,0 +1,38 @@
+year,Artist,from_country,to_country,points,total_points,rank,from_code2,from_code3,to_code2,to_code3,Official_languages,Language_sung,Contains_English,Contains_NonEnglish,Contains_Multiple_Languages,Number_of_Languages,Contains_Own_Language,gender,migration_v2p,population_p,prop_emigrants_v2p,migration_p2v,population_v,prop_emigrants_p2v,migration_pop_year,comps_without_win,has_border,comp_round
+2023,Alessandra,,norway,,,5.0,,,NO,NOR,norwegian sami languages,['english'],True,False,False,1,False,female,,5379475.0,,,,,,12,,sf1
+2023,The Busker,,malta,,,,,,MT,MLT,maltese english,['english'],True,False,False,1,True,group,,515332.0,,,,,,66,,sf1
+2023,Luke Black,,serbia,,,24.0,,,RS,SRB,serbian,"['serbian', 'english']",True,True,True,2,True,male,,6899126.0,,,,,,14,,sf1
+2023,Sudden Lights,,latvia,,,,,,LV,LVA,latvian,['english'],True,False,False,1,False,group,,1977527.0,,,,,,20,,sf1
+2023,Mimicat,,portugal,,,23.0,,,PT,PRT,portuguese,['portuguese'],False,True,False,1,True,female,,10297081.0,,,,,,4,,sf1
+2023,Wild Youth,,ireland,,,,,,IE,IRL,irish english,['english'],True,False,False,1,True,group,,4701957.0,,,,,,26,,sf1
+2023,Let 3,,croatia,,,13.0,,,HR,HRV,croatian,['croatian'],False,True,False,1,True,group,,4203604.0,,,,,,67,,sf1
+2023,Remo Forrer,,switzerland,,,20.0,,,CH,CHE,french bern fribourg geneva jura neuchâtel valais vaud german aargau appenzell ausserrhoden appenzell innerrhoden basel-landschaft basel-stadt bern fribourg glarus graubünden lucerne nidwalden obwalden saint gallen schaffhausen schwyz solothurn thurgau uri valais zug zürich italian ticino graubünden romansh graubünden,['english'],True,False,False,1,False,male,,8638167.0,,,,,,33,,sf1
+2023,Noa Kirel,,israel,,,3.0,,,IL,ISR,hebrew,['english'],True,False,False,1,False,female,,,,,,,,3,,sf1
+2023,Pasha Parfeni,,"moldova, republic of",,,,,,MD,MDA,romanian,['romanian'],False,True,False,1,True,male,,,,,,,,66,,sf1
+2023,Loreen,,sweden,,,1.0,,,SE,SWE,swedish,['english'],True,False,False,1,False,female,,10353442.0,,,,,,6,,sf1
+2023,TuralTuranX,,azerbaijan,,,,,,AZ,AZE,azerbaijani,['english'],True,False,False,1,False,group,,,,,,,,10,,sf1
+2023,Vesna,,czechia,,,10.0,,,CZ,CZE,czech slovak,"['english', 'ukrainian', 'czech', 'bulgarian']",True,True,True,4,True,female,,10697858.0,,,,,,66,,sf1
+2023,Mia Nicolai and Dion Cooper,,netherlands,,,,,,NL,NLD,dutch frisian in the province friesland,['english'],True,False,False,1,False,group,,17441500.0,,,,,,2,,sf1
+2023,Käärijä,,finland,,,2.0,,,FI,FIN,finnish swedish,['finnish'],False,True,False,1,True,male,,5529543.0,,,,,,15,,sf1
+2023,Reiley,,denmark,,,,,,DK,DNK,danish,['english'],True,False,False,1,False,male,,5683483.0,,,,,,9,,sf2
+2023,Brunette,,armenia,,,14.0,,,AM,ARM,armenian,"['english', 'armenian']",True,True,True,2,True,female,,,,,,,,66,,sf2
+2023,Theodor Andrei,,romania,,,,,,RO,ROU,romanian,"['romanian', 'english']",True,True,True,2,True,male,,19265250.0,,,,,,66,,sf2
+2023,Alika,,estonia,,,8.0,,,EE,EST,võro estonian,['english'],True,False,False,1,False,female,,1329522.0,,,,,,20,,sf2
+2023,Gustaph,,belgium,,,7.0,,,BE,BEL,dutch french german,['english'],True,False,False,1,False,male,,11538604.0,,,,,,35,,sf2
+2023,Andrew Lambrou,,cyprus,,,12.0,,,CY,CYP,greek turkish,['english'],True,False,False,1,False,male,,1237537.0,,,,,,66,,sf2
+2023,Diljá,,iceland,,,,,,IS,ISL,icelandic icelandic sign language,['english'],True,False,False,1,False,female,,366463.0,,,,,,66,,sf2
+2023,Victor Vernicos,,greece,,,,,,GR,GRC,greek,['english'],True,False,False,1,False,male,,10698599.0,,,,,,16,,sf2
+2023,Blanka,,poland,,,19.0,,,PL,POL,polish,['english'],True,False,False,1,False,female,,37899070.0,,,,,,66,,sf2
+2023,Joker Out,,slovenia,,,21.0,,,SI,SVN,slovenian slovene,['slovene'],False,True,False,1,True,group,,2063531.0,,,,,,67,,sf2
+2023,Iru,,georgia,,,,,,GE,GEO,georgian,['english'],True,False,False,1,False,female,,3725276.0,,,,,,67,,sf2
+2023,Piqued Jacks,,san marino,,,,,,SM,SMR,italian,['english'],True,False,False,1,False,group,,34007.0,,,,,,66,,sf2
+2023,Teya and Salena,,austria,,,15.0,,,AT,AUT,german,['english'],True,False,False,1,False,group,,8642699.0,,,,,,8,,sf2
+2023,Albina and Familja Kelmendi,,albania,,,22.0,,,AL,ALB,albanian,['albanian'],False,True,False,1,True,group,,,,,,,,66,,sf2
+2023,Monika Linkytė,,lithuania,,,11.0,,,LT,LTU,samogitian lithuanian,['english'],True,False,False,1,False,female,,2794885.0,,,,,,66,,sf2
+2023,Voyager,,australia,,,9.0,,,AU,AUS,none english has de facto status,['english'],True,False,False,1,True,group,,25655289.0,,,,,,66,,sf2
+2023,La Zarra,,france,,,16.0,,,FR,FRA,breton corsican french,['french'],False,True,False,1,True,female,,67571107.0,,,,,,44,,f
+2023,Lord of the Lost,,germany,,,26.0,,,DE,DEU,german,['english'],True,False,False,1,False,group,,83160871.0,,,,,,11,,f
+2023,Marco Mengoni,,italy,,,4.0,,,IT,ITA,italian,['italian'],False,True,False,1,True,male,,59438851.0,,,,,,1,,f
+2023,Blanca Paloma,,spain,,,17.0,,,ES,ESP,spanish,['spanish'],False,True,False,1,True,female,,47365655.0,,,,,,52,,f
+2023,Tvorchi,,ukraine,,,6.0,,,UA,UKR,ukrainian,"['english', 'ukrainian']",True,True,True,2,True,group,,,,,,,,5,,f
+2023,Mae Muller,,united kingdom,,,25.0,,,GB,GBR,none english has de facto status,['english'],True,False,False,1,True,female,,67081000.0,,,,,,24,,f
